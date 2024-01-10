@@ -85,4 +85,4 @@ function _createProducts() {
   }
 }
 
-// _createProducts()
+_createProducts()

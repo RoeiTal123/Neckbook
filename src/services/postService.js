@@ -118,4 +118,4 @@ function _createPosts() {
   }
 }
 
-// _createPosts()
+_createPosts()
