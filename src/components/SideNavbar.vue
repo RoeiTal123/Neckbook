@@ -112,9 +112,9 @@
 
 <script>
 
-import { groupService } from '@/services/groupService';
-import { utilService } from '@/services/util.service';
-import SvgIcon from '../components/SvgIcon.vue';
+import { groupService } from '../services/groupService';
+import { utilService } from '../services/util.service';
+import SvgIcon from './SvgIcon.vue';
 
 export default {
     props: {

@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import { userService } from '@/services/userService';
+import { userService } from '../services/userService';
 
-import SvgIcon from '../components/SvgIcon.vue';
+import SvgIcon from './SvgIcon.vue';
 
 export default {
     data() {

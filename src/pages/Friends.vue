@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import SideNavbar from '@/components/SideNavbar.vue';
-import { userService } from '@/services/userService';
+import SideNavbar from '../components/SideNavbar.vue';
+import { userService } from '../services/userService';
 
 export default {
     data() {

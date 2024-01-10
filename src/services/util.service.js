@@ -174,7 +174,7 @@ function getRandomColor() {
 
 function checkVideoType(fileInput) {
   // const fileInput = document.getElementById('videoInput');
-  const resultOfCheck = ''
+  let resultOfCheck = ''
 
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];

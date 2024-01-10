@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import PageDisplay from '@/components/PageDisplay.vue';
-import ProductList from '@/components/ProductList.vue';
-import SideNavbar from '@/components/SideNavbar.vue';
-import SvgIcon from '@/components/SvgIcon.vue';
-import { productService } from '@/services/productService';
+import PageDisplay from '../components/PageDisplay.vue';
+import ProductList from '../components/ProductList.vue';
+import SideNavbar from '../components/SideNavbar.vue';
+import SvgIcon from '../components/SvgIcon.vue';
+import { productService } from '../services/productService';
 export default {
     data() {
         return {

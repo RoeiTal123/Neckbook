@@ -14,8 +14,8 @@
 import UserOptions from '../components/UserOptions.vue'
 import MainPageCenter from '../components/MainPageCenter.vue'
 import UserContacts from '../components/UserContacts.vue'
-import { postService } from '@/services/postService'
-import { groupService } from '@/services/groupService'
+import { postService } from '../services/postService'
+import { groupService } from '../services/groupService'
 
     export default {
         data(){

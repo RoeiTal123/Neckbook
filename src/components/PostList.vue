@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import PostPreview from '../components/PostPreview.vue';
+import PostPreview from './PostPreview.vue';
     export default {
         props:{
             posts:{

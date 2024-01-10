@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import SideNavbar from '@/components/SideNavbar.vue';
-import PageDisplay from '@/components/PageDisplay.vue';
-import { groupService } from '@/services/groupService';
-import { userService } from '@/services/userService';
-import { postService } from '@/services/postService';
-import PostList from '@/components/PostList.vue';
+import SideNavbar from '../components/SideNavbar.vue';
+import PageDisplay from '../components/PageDisplay.vue';
+import { groupService } from '../services/groupService';
+import { userService } from '../services/userService';
+import { postService } from '../services/postService';
+import PostList from '../components/PostList.vue';
 
 export default {
     data() {

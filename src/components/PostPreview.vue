@@ -131,8 +131,8 @@
 </template>
 
 <script>
-import { userService } from '@/services/userService';
-import { utilService } from '@/services/util.service';
+import { userService } from '../services/userService';
+import { utilService } from '../services/util.service';
 
 import SvgIcon from '../components/SvgIcon.vue';
 

@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import { userService } from '@/services/userService';
-import PostList from '../components/PostList.vue';
+import { userService } from '../services/userService';
+import PostList from './PostList.vue';
 
 export default {
     props: {

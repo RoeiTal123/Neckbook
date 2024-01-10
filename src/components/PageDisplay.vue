@@ -14,9 +14,9 @@
 
 <script>
 
-import ProfilePage from '@/pages/ProfilePage.vue';
+import ProfilePage from '../pages/ProfilePage.vue';
 import GroupDisplay from './GroupDisplay.vue';
-// import Marketplace from '@/pages/Marketplace.vue';
+// import Marketplace from '../pages/Marketplace.vue';
 
 export default {
     data() {

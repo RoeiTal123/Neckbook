@@ -97,11 +97,11 @@
 </template>
 
 <script>
-import { postService } from '@/services/postService';
-import { userService } from '@/services/userService';
-import { groupService } from '@/services/groupService';
-import SvgIcon from '../components/SvgIcon.vue';
-import PostList from '../components/PostList.vue';
+import { postService } from '../services/postService';
+import { userService } from '../services/userService';
+import { groupService } from '../services/groupService';
+import SvgIcon from './SvgIcon.vue';
+import PostList from './PostList.vue';
 import { toRaw } from 'vue';
 
 export default {
