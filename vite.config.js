@@ -12,9 +12,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  build: {
+    outDir: 'dist', // Specify your desired output directory
+  },
+  base: '/Neckbook/',
 })
-
-module.exports = {
-  publicPath: '/Neckbook/'
-}
