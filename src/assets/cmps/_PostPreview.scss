@@ -1,0 +1,190 @@
+.post-preview {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;
+    background-color: #ffffff;
+    margin-block-end: 1em;
+    border-radius: 0.5em;
+
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75em 1em;
+        padding-block-end: 0;
+
+        &>* {
+            display: flex;
+        }
+
+        img {
+            height: 2.5em;
+            width: 2.5em;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .post-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-inline-start: 0.5em;
+
+            :nth-child(even) {
+                font-size: 12px;
+            }
+        }
+
+        i {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 2.25em;
+            width: 2.25em;
+            padding: 0.5em;
+            border-radius: 50%;
+
+            svg {
+                &:hover {
+                    background-color: #0000000a;
+                    border-radius: 0.5em;
+                }
+            }
+        }
+
+    }
+
+    .description {
+        padding: 1em;
+        padding-block-start: 1em;
+    }
+
+    .post-images {
+        max-width: 100%;
+        max-height: 750px;
+        overflow-y: hidden;
+        .one-image {
+            img {
+                display: block;
+                max-height: 680px;
+                max-width: 100%;
+                margin: auto;
+            }
+        }
+
+        .two-image {
+            display: flex;
+            flex-direction: column;
+
+            img {
+                display: block;
+                max-height: 50%;
+                max-width: 100%;
+                margin: auto;
+            }
+        }
+
+        .three-image {
+            display: flex;
+            flex-direction: column;
+
+            img {
+                display: block;
+                max-height: 50%;
+                max-width: 100%;
+                margin: auto;
+            }
+
+            div {
+                display: flex;
+
+                img {
+                    display: block;
+                    max-height: 50%;
+                    max-width: 50%;
+                    margin: auto;
+                }
+            }
+        }
+
+        .four-image {
+            display: flex;
+            flex-direction: column;
+
+            div {
+                display: flex;
+
+                img {
+                    display: block;
+                    max-height: 50%;
+                    max-width: 50%;
+                    margin: auto;
+                }
+            }
+        }
+    }
+
+    .post-interacted {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 1em;
+        height: 3em;
+        border-block-end: 0.75px solid #ced0d4;
+        color: #65676B;
+
+        .like-count {
+            display: flex;
+            align-items: center;
+            gap: -0.25em;
+
+            i {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 2.25em;
+                width: 2.25em;
+                padding: 0.5em;
+                border-radius: 50%;
+
+                svg {
+                    &:hover {
+                        background-color: #0000000a;
+                        border-radius: 0.5em;
+                    }
+                }
+            }
+        }
+
+        .viewers-interactions {
+            gap: 0.75em;
+        }
+    }
+
+    .post-interactions{
+        display: flex;
+        align-items: center;
+        height: 2.75em;
+        width: 100%;
+        padding: 0 1em;
+        color: #65676B;
+
+        .interaction{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: calc(100% / 3);
+            gap: 0.5em;
+            .like{
+                height: 1.25em;
+                width: 1.25em;
+            }
+            i{
+                height: 1.25em;
+                width: 1.25em;
+            }
+        }
+    }
+}

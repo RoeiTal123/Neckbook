@@ -1,0 +1,30 @@
+
+
+// components
+@import url('./cmps/SideNavbar/_GroupsNavbar.scss'); 
+
+@import url('./cmps/SideNavbar/_FriendsNavbar.scss');
+
+
+
+@import url('./cmps/_GroupDisplay.scss');
+
+@import url('./cmps/_Header.scss');
+
+@import url('./cmps/_PostPreview.scss');
+
+@import url('./cmps/_UserOptions.scss');
+
+//pages
+
+@import url('./pages/_ProfilePage.scss');
+@import url('./pages/_Friends.scss');
+
+//general settings
+
+@import url('./main/_Font.scss');
+@import url('./main/_MainStyling.scss');
+
+//skeletons
+
+@import url('./skeletons/_PostSkeleton.scss')

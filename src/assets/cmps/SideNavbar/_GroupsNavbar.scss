@@ -1,0 +1,120 @@
+.side-navbar {
+  .user-options {
+    .other-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: fit-content;
+      color: #65676B;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.2em;
+        // margin-inline-start: 0.5em;
+
+        :nth-child(1) {
+          font-family: "Helvetica-Bold";
+        }
+
+        :nth-child(2) {
+          display: flex;
+          align-items: center;
+        }
+
+        img {
+          width: 0.75em;
+          height: 0.75em;
+          margin-inline-end: 0.25em;
+        }
+      }
+
+      button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background-color: #e4e6eb;
+        img{
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: #dadce1;
+        }
+      }
+
+      .group-cover {
+        width: 3em;
+        height: 3em;
+        border-radius: 0.5em;
+        object-fit: cover;
+      }
+    }
+
+    .options {
+      .group-option {
+        a {
+          display: flex;
+          text-decoration: none;
+          color: #65676b;
+          width: 100%;
+          padding: 0.25em;
+          border-radius: 0.5em;
+          div {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: transparent;
+            img {
+              height: 3em;
+              width: 3em;
+              border-radius: 0.5em;
+              object-fit: cover;
+              background-color: transparent;
+            }
+          }
+
+          &:hover{
+            background-color: #f0f2f5;
+          }
+        }
+      }
+    }
+  }
+}
+
+.btn-make-visible{
+  display: none;
+  padding: 0;
+  height: 2.25em;
+  width: 2.25em;
+  border: 0;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+
+  img{
+    width: 1.25em;
+    height: 1.25em;
+  }
+
+  &.visible{
+    display: flex;
+    position: absolute;
+    top: 68px;
+    left: 12px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: #dadce1;
+  }
+}
