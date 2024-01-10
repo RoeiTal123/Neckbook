@@ -1,5 +1,7 @@
-!<template>
-    homepage
+<template>
+    <RouterLink to="/main">
+        main
+    </RouterLink>
 </template>
 
 <script>
