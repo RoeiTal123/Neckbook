@@ -2,9 +2,9 @@
     <section class="main-page">
         <section class="sticky">
             <UserOptions />
-            
+
             <MainPageCenter :posts="posts" />
-            
+
             <UserContacts />
         </section>
     </section>
@@ -17,30 +17,29 @@ import UserContacts from '../components/UserContacts.vue'
 import { postService } from '../services/postService'
 import { groupService } from '../services/groupService'
 
-    export default {
-        data(){
-            return{
-                posts: []
-            }
-        },
-        components: {
+export default {
+    data() {
+        return {
+            posts: []
+        }
+    },
+    components: {
         UserOptions,
         MainPageCenter,
         UserContacts
-        },
-        async created(){
-            this.posts=await postService.query()
-        }
+    },
+    async created() {
+        this.posts = await postService.query()
     }
+}
 </script>
 
 <style lang="scss">
-.main-page{
-    .sticky{
+.main-page {
+    .sticky {
         display: flex;
-        justify-content:space-between;
-        background-color:#f0f2f5;
-        flex-grow: 1;
+        justify-content: space-between;
+        background-color: #f0f2f5;
         position: sticky;
         top: 0;
     }

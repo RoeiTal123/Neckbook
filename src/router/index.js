@@ -9,6 +9,7 @@ import Messenger from '../pages/Messenger.vue'
 import Groups from '../pages/Groups.vue'
 import ProfilePage from '../pages/ProfilePage.vue'
 
+import PostDisplay from '../components/PostDisplay.vue'
 import PageDisplay from '../components/PageDisplay.vue'
 import ProductDisplay from '../components/ProductDisplay.vue'
 
@@ -49,9 +50,13 @@ const router = createRouter({
       name: 'marketplace',
       component: Marketplace,
       children:[{
-        path: 'product/:id',
+        path: 'product',
         name: 'product-display',
-        component: ProductDisplay
+        children:[{
+          path:':id',
+          name:'product-display',
+          component:ProductDisplay
+        }]
       }]
     },
     {
@@ -78,6 +83,11 @@ const router = createRouter({
       path: '/profile/:id',
       name: 'profile',
       component: ProfilePage
+    },
+    {
+      path: '/:catchAll*/post/:id',
+      name: 'post-display',
+      component: PostDisplay
     }
   ]
 })

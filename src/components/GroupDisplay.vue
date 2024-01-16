@@ -142,7 +142,6 @@ export default {
         async updateGroup() {
             this.group = {}
             const groupId = this.$route.params.id;
-            console.log(groupId)
             this.group = await groupService.getById(groupId)
         },
         async updatePosts() {

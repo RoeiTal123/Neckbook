@@ -81,7 +81,8 @@ const users = [
         chats: [],
         friendRequests:[{_id:'u003',type:'pending',createdAt:Date.now()-600000}],
         friends:['u002'],
-        isAdmin: true
+        isAdmin: true,
+        createdAt:Date.now()
     },
     {
         _id: 'u002',
@@ -99,7 +100,8 @@ const users = [
         chats: [],
         friendRequests:[],
         friends:['u001','u003'],
-        isAdmin: false
+        isAdmin: false,
+        createdAt:Date.now()
     },
     {
         _id: 'u003',
@@ -117,13 +119,14 @@ const users = [
         chats: [],
         friendRequests:[{_id:'u001',type:'pending',createdAt:Date.now()-600000}],
         friends:[],
-        isAdmin: true
+        isAdmin: true,
+        createdAt:Date.now()
     },
 ]
 
-_createUsers()
+// _createUsers()
 
-setLoggedinUser(users[0])
+// setLoggedinUser(users[0])
 
 async function _createUsers() {
     localStorage.setItem('user', JSON.stringify(users))

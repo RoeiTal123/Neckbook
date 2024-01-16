@@ -51,7 +51,7 @@ export default {
     position: sticky;
     top: 4.75em;
     flex-grow: 1;
-    height: 100%;
+    height: fit-content;
     max-width: 22.5em;
     min-width: 18.125em;
     padding: 0 0.5em;

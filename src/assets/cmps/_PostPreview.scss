@@ -7,6 +7,11 @@
     margin-block-end: 1em;
     border-radius: 0.5em;
 
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
+
     .post-header {
         display: flex;
         justify-content: space-between;
@@ -131,14 +136,13 @@
         align-items: center;
         margin: 0 1em;
         height: 3em;
-        border-block-end: 0.75px solid #ced0d4;
         color: #65676B;
-
+        
         .like-count {
             display: flex;
             align-items: center;
             gap: -0.25em;
-
+            
             i {
                 display: flex;
                 justify-content: center;
@@ -147,7 +151,7 @@
                 width: 2.25em;
                 padding: 0.5em;
                 border-radius: 50%;
-
+                
                 svg {
                     &:hover {
                         background-color: #0000000a;
@@ -156,7 +160,7 @@
                 }
             }
         }
-
+        
         .viewers-interactions {
             gap: 0.75em;
         }
@@ -166,9 +170,13 @@
         display: flex;
         align-items: center;
         height: 2.75em;
-        width: 100%;
-        padding: 0 1em;
+        margin: 0 1em;
         color: #65676B;
+        border-block-start: 0.75px solid #ced0d4;
+        
+        &.display{
+            border-block-end: 0.75px solid #ced0d4;
+        }
 
         .interaction{
             display: flex;

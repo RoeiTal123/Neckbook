@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-</nav>
+    </nav>
 </template>
 
 <script>
