@@ -124,10 +124,10 @@ const users = [
     },
 ]
 
-// _createUsers()
-
-// setLoggedinUser(users[0])
-
 async function _createUsers() {
     localStorage.setItem('user', JSON.stringify(users))
 }
+
+// _createUsers()
+
+// setLoggedinUser(users[0])

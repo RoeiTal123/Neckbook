@@ -47,7 +47,7 @@ async function save(product) {
     savedProduct = await storageService.put(STORAGE_KEY, product)
   } else {
     // product.owner = userService.getLoggedinUser()
-    savedProduct = await storageService.product(STORAGE_KEY, product)
+    savedProduct = await storageService.post(STORAGE_KEY, product)
   }
   return savedProduct
 }
@@ -85,4 +85,4 @@ function _createProducts() {
   }
 }
 
-_createProducts()
+// _createProducts()

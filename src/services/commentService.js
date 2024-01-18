@@ -43,11 +43,13 @@ async function remove(commentId) {
 
 async function save(comment) {
     let savedComment
-    if (comment._id) {
+    const allComments=await query()
+    console.log(allComments)
+    if (allComments.includes(comment._id)) {
         savedComment = await storageService.put(STORAGE_KEY, comment)
     } else {
         // comment.owner = userService.getLoggedinUser()
-        savedComment = await storageService.comment(STORAGE_KEY, comment)
+        savedComment = await storageService.post(STORAGE_KEY, comment)
     }
     return savedComment
 }
@@ -56,6 +58,20 @@ function getDefaultFilter() {
     return {
         search: ''
     }
+}
+
+function _createComment(postId,ownerId,txt){
+    const newComment = {
+        _id: utilService.makeId(),
+        postId,
+        ownerId,
+        txt,
+        imgUrls: [],
+        videoUrl: null,
+        likedByUsers: [],
+        createdAt: Date.now()
+    }
+    return newComment
 }
 
 function _createComments() {
@@ -95,4 +111,4 @@ function _createComments() {
     }
 }
 
-_createComments()
+// _createComments()

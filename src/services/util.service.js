@@ -9,6 +9,7 @@ export const utilService = {
   loadFromStorage,
   getAssetSrc,
   timeAgoString,
+  timeString,
   getRandomColor,
   getRandomMidColor,
   formatDate,
@@ -140,6 +141,29 @@ function timeAgoString(timestamp) {
     return `${minutesAgo} minute${minutesAgo === 1 ? '' : 's'} ago`
   }
   else return 'a few seconds ago'
+}
+
+function timeString(timestamp) {
+  const now = new Date().getTime()
+  const secondsAgo = Math.floor((now - timestamp) / 1000)
+  const minutesAgo = Math.floor(secondsAgo / 60)
+  const hoursAgo = Math.floor(minutesAgo / 60)
+  const daysAgo = Math.floor(hoursAgo / 24)
+  const monthsAgo = Math.floor(daysAgo / 30)
+
+  if (monthsAgo >= 2) {
+    return `${monthsAgo}mo`
+  }
+  else if (daysAgo >= 2) {
+    return `${daysAgo}d`
+  }
+  else if (hoursAgo >= 1) {
+    return `${hoursAgo}h`
+  }
+  else if (minutesAgo >= 1) {
+    return `${minutesAgo}m`
+  }
+  else return 'seconds ago'
 }
 
 function formatDate(timestamp) {

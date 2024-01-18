@@ -78,7 +78,7 @@ function _createPosts() {
         videoUrl:null,
         likedByUsers: ['fake id'],
         sharedByUsers: [],
-        comments:[{commenterId:'u001',txt:'great post',likedByUsers:[],replies:[],createdAt:Date.now()+60000}],
+        comments:['c001','c002','c003'],
         createdAt: Date.now()
       },
       {
@@ -118,4 +118,4 @@ function _createPosts() {
   }
 }
 
-_createPosts()
+// _createPosts()

@@ -47,7 +47,7 @@ async function save(group) {
     savedGroup = await storageService.put(STORAGE_KEY, group)
   } else {
     // group.owner = userService.getLoggedinUser()
-    savedGroup = await storageService.group(STORAGE_KEY, group)
+    savedGroup = await storageService.post(STORAGE_KEY, group)
   }
   return savedGroup
 }
@@ -83,4 +83,4 @@ function _createGroups() {
   }
 }
 
-_createGroups()
+// _createGroups()
