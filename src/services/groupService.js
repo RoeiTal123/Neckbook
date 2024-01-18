@@ -2,7 +2,15 @@ import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'group'
-// _createGroups()
+
+loadData()
+
+async function loadData() {
+  // console.log(await storageService.query(STORAGE_KEY).length===undefined)
+  if (await storageService.query(STORAGE_KEY).length === undefined) {
+    _createGroups()
+  }
+}
 
 export const groupService = {
   query,
@@ -62,25 +70,23 @@ function _createGroups() {
   let groups = utilService.loadFromStorage(STORAGE_KEY)
   if (!groups || !groups.length) {
     groups = [
-        {
+      {
         _id: "g001",
-        name:'programming is fun!',
-        coverImgUrl:'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704624641/projects/Neckbook/group-images/code_sadrhr.jpg',
+        name: 'programming is fun!',
+        coverImgUrl: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704624641/projects/Neckbook/group-images/code_sadrhr.jpg',
         description: "for programmers only",
         groupType: 'Public',
         admins: ['u003'],
-        members:['u003','u001'],
-        posts:['p003'],
-        events:[],
-        files:[],
+        members: ['u003', 'u001'],
+        posts: ['p003'],
+        events: [],
+        files: [],
         mediaUrls: [],
-        videoUrls:[],
-        lastPostAt:Date.now(),
+        videoUrls: [],
+        lastPostAt: Date.now(),
         createdAt: Date.now()
       }
     ]
     utilService.saveToStorage(STORAGE_KEY, groups)
   }
 }
-
-// _createGroups()

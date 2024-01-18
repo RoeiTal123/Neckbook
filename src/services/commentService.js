@@ -2,7 +2,15 @@ import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'comment'
-// _createComments()
+
+loadData()
+
+async function loadData(){
+    // console.log(await storageService.query(STORAGE_KEY).length===undefined)
+    if(await storageService.query(STORAGE_KEY).length===undefined){
+        _createComments()
+    }
+}
 
 export const commentService = {
     query,
@@ -110,5 +118,3 @@ function _createComments() {
         utilService.saveToStorage(STORAGE_KEY, comments)
     }
 }
-
-// _createComments()

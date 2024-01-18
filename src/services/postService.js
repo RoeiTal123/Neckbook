@@ -2,7 +2,15 @@ import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'post'
-// _createPosts()
+
+loadData()
+
+async function loadData(){
+    // console.log(await storageService.query(STORAGE_KEY).length===undefined)
+    if(await storageService.query(STORAGE_KEY).length===undefined){
+      _createPosts()
+    }
+}
 
 export const postService = {
   query,
@@ -117,5 +125,3 @@ function _createPosts() {
     utilService.saveToStorage(STORAGE_KEY, posts)
   }
 }
-
-// _createPosts()

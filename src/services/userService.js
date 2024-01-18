@@ -1,7 +1,19 @@
 import { storageService } from './async-storage.service'
 
 const SESSION_KEY_LOGGEDIN_USER = 'loggedinUser'
-const BASE_URL = 'user'
+const STORAGE_KEY = 'user'
+
+loadData()
+
+async function loadData() {
+    // console.log(await storageService.query(STORAGE_KEY).length === undefined)
+    if (await storageService.query(STORAGE_KEY).length === undefined) {
+        _createUsers()
+
+        setLoggedinUser(users[0])
+    }
+}
+
 
 export const userService = {
     login,
@@ -17,21 +29,21 @@ export const userService = {
 window.userService = userService
 
 function getUsers() {
-    return storageService.query(BASE_URL)
+    return storageService.query(STORAGE_KEY)
 }
 
 async function getById(userId) {
-    const user = await storageService.get(BASE_URL, userId)
+    const user = await storageService.get(STORAGE_KEY, userId)
     return user
 }
 
 function remove(userId) {
-    return storageService.remove(BASE_URL, userId)
+    return storageService.remove(STORAGE_KEY, userId)
 }
 
 async function update(userId) {
-    const user = await storageService.get(BASE_URL, userId)
-    await storageService.put(BASE_URL, user)
+    const user = await storageService.get(STORAGE_KEY, userId)
+    await storageService.put(STORAGE_KEY, user)
 
     // // Handle case in which admin updates other user's details
     if (getLoggedinUser()._id === user._id) setLoggedinUser(user)
@@ -39,7 +51,7 @@ async function update(userId) {
 }
 
 async function login(userCred) {
-    const users = await storageService.query(BASE_URL)
+    const users = await storageService.query(STORAGE_KEY)
     const user = users.find((user) => user.username === userCred.username)
     if (user) {
         return setLoggedinUser(user)
@@ -47,7 +59,7 @@ async function login(userCred) {
 }
 
 async function signup(userCred) {
-    const user = await storageService.post(BASE_URL, userCred)
+    const user = await storageService.post(STORAGE_KEY, userCred)
     return setLoggedinUser(user)
 }
 
@@ -71,18 +83,18 @@ const users = [
         username: 'peter123',
         password: '123',
         avatar: 'https://qph.cf2.quoracdn.net/main-qimg-9fde28d147c243b690bdf975f8474145-lq',
-        cover:'',
+        cover: '',
         mood: '',
-        intro:{bio:'a worker for the daily beaugle',details:'im a photographer'},
+        intro: { bio: 'a worker for the daily beaugle', details: 'im a photographer' },
         blockedUsers: [],
         blockedGroups: [],
-        posts:['p001'],
+        posts: ['p001'],
         groups: ['g001'],
         chats: [],
-        friendRequests:[{_id:'u003',type:'pending',createdAt:Date.now()-600000}],
-        friends:['u002'],
+        friendRequests: [{ _id: 'u003', type: 'pending', createdAt: Date.now() - 600000 }],
+        friends: ['u002'],
         isAdmin: true,
-        createdAt:Date.now()
+        createdAt: Date.now()
     },
     {
         _id: 'u002',
@@ -90,18 +102,18 @@ const users = [
         username: 'jane123',
         password: '123',
         avatar: 'https://img.freepik.com/premium-photo/robot-face-with-green-eyes-black-face_14865-1671.jpg?w=2000',
-        cover:'',
+        cover: '',
         mood: '',
-        intro:{bio:'a online logo designer',details:'i design digital logos'},
+        intro: { bio: 'a online logo designer', details: 'i design digital logos' },
         blockedUsers: [],
         blockedGroups: [],
-        posts:['p002'],
+        posts: ['p002'],
         groups: [],
         chats: [],
-        friendRequests:[],
-        friends:['u001','u003'],
+        friendRequests: [],
+        friends: ['u001', 'u003'],
         isAdmin: false,
-        createdAt:Date.now()
+        createdAt: Date.now()
     },
     {
         _id: 'u003',
@@ -109,18 +121,18 @@ const users = [
         username: 'roei123',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704104110/projects/Neckbook/user-images/me_nqkfek.jpg',
-        cover:'',
+        cover: '',
         mood: '',
-        intro:{bio:'',details:''},
+        intro: { bio: '', details: '' },
         blockedUsers: [],
         blockedGroups: [],
-        posts:['p003'],
+        posts: ['p003'],
         groups: ['g001'],
         chats: [],
-        friendRequests:[{_id:'u001',type:'pending',createdAt:Date.now()-600000}],
-        friends:[],
+        friendRequests: [{ _id: 'u001', type: 'pending', createdAt: Date.now() - 600000 }],
+        friends: [],
         isAdmin: true,
-        createdAt:Date.now()
+        createdAt: Date.now()
     },
 ]
 
