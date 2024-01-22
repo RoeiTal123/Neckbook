@@ -1,0 +1,103 @@
+.comment-preview {
+    display: flex;
+    gap: 0.375em;
+
+    img {
+        width: 2em;
+        height: 2em;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .comment-details {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 0.25em;
+
+        .user-output {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5em;
+            width: fit-content;
+            padding: 0.5em;
+            background-color: #f0f2f5;
+            border-radius: 1em;
+
+            span {
+                font-family: "Helvetica-Bold";
+            }
+
+            a {
+                color: #0866FF;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .user-input {
+            display: flex;
+            gap: 1em;
+            padding-inline-start: 0.5em;
+
+            span {
+                font-family: "Helvetica-Bold";
+                font-size: 12px;
+            }
+
+            .liked {
+                color: #0866FF;
+            }
+        }
+
+        .replies-section {
+            .reply-addition {
+                display: flex;
+                padding-block: 0.5em;
+                gap: 0.375em;
+
+                img {
+                    width: 2em;
+                    height: 2em;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                .reply {
+                    display: flex;
+                    flex-direction: column;
+                    height: 5em;
+                    flex: 1;
+                    padding: 0.75em;
+                    border: 0;
+                    border-radius: 1em;
+                    background-color: #f0f2f5;
+
+                    input {
+                        background-color: transparent;
+                        margin-block-end: 1em;
+                        border: 0;
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                    .reply-actions {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        flex: 1;
+
+                        img {
+                            height: 1em;
+                            width: 1em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

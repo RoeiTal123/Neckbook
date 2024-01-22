@@ -2,9 +2,17 @@
     <div class="blur"></div>
     <section v-if="post !== null" class="post-display">
         <div class="header">
+            <div></div>
             <span>
                 {{ user.fullName }}'s Post
             </span>
+            <div>
+                <div class="x">
+                    <span @click="goBack()">
+                        <SvgIcon :iconName="'close'" />
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="post-container">
             <PostPreview :post="post" />
@@ -31,6 +39,7 @@ import { utilService } from '../services/util.service';
 import SvgIcon from './SvgIcon.vue';
 import PostPreview from './PostPreview.vue';
 import CommentSection from './CommentSection.vue';
+import router from '../router';
 
 export default {
     // props: {
@@ -72,7 +81,7 @@ export default {
             // console.log('this post : ', this.post)
         },
         async setUserData() {
-            this.loggedinUser= await userService.getLoggedinUser()
+            this.loggedinUser = await userService.getLoggedinUser()
             this.user = await userService.getById(this.post.ownerId)
             //console.log('this user : ',this.user)
         },
@@ -97,23 +106,28 @@ export default {
                 txt,
                 imgUrl: null,
                 videoUrl: null,
+                level: 1,
+                replies: [],
                 likedByUsers: [],
                 createdAt: Date.now()
             }
-            console.log('new comment: ',newComment)
-            try{
+            // console.log('new comment: ',newComment)
+            try {
                 commentService.save(newComment)
-                console.log('comment saved')
+                // console.log('comment saved')
                 this.post.comments.push(newComment._id)
-                try{
-                    postService.save({...this.post})
+                try {
+                    postService.save({ ...this.post })
                     console.log('comment id was added to post')
                 } catch (err) {
-                    console.log('comment id wasnt added to post : ',err)
+                    console.log('comment id wasnt added to post : ', err)
                 }
-            } catch (err){
-                console.lof('comment wasnt added : ',err)
+            } catch (err) {
+                console.lof('comment wasnt added : ', err)
             }
+        },
+        goBack() {
+            router.go(-1)
         }
     },
     components: {
@@ -144,13 +158,45 @@ export default {
 
     .header {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        align-items: center;
         padding-block: 1em;
         max-height: 60px;
         font-size: 20px;
         border-block-end: 1px solid #ced0d4;
         border-radius: 0.5em 0.5em 0 0;
         box-shadow: 1px 1px 5px 1px #ced0d4;
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 3em;
+            width: 3em;
+
+            &.x {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 1.8em;
+                width: 1.8em;
+                border-radius: 50%;
+                background-color: #e4e6eb;
+
+                &:hover {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #dadce1;
+                }
+            }
+        }
+
+        i {
+            display: block;
+            width: 1em;
+            height: 1em;
+        }
     }
 
     .post-container {
@@ -216,4 +262,5 @@ export default {
     // display: none;
     background-color: white;
     z-index: 200;
-}</style>
+}
+</style>

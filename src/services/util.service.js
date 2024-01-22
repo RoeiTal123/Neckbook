@@ -13,7 +13,10 @@ export const utilService = {
   getRandomColor,
   getRandomMidColor,
   formatDate,
-  checkVideoType
+  checkVideoType,
+  checkIfUrlInText,
+  cutUrlFromText,
+  indexsOfUrl
 }
 
 export const yearlyMonths = [
@@ -216,4 +219,55 @@ function checkVideoType(fileInput) {
     }
   }
   return resultOfCheck
+}
+
+// checkIfUrlInText()
+// cutUrlFromText()
+
+function checkIfUrlInText(text){
+  // text='https://roeital123.github.io/Neckbook/'
+  const tester='\^~{}[];@` '
+  if(text.includes('http://')||text.includes('https://')){
+    let secondTester=text.split('/')
+    secondTester=secondTester.splice(2,secondTester.length-2)
+    for (let route of secondTester){
+      for(let character of tester){
+        if(route.includes(character)){
+          console.log(`'${character}' is illegal!!!!`)
+          return
+        } else {
+          console.log('pass')
+        }
+      }
+      if(route.includes('http')||route.includes('https')){
+        console.log(`its illegal!!!!`)
+        return
+      }
+    }
+    console.log('intact Url')
+    return true
+  }
+  return false
+}
+
+function cutUrlFromText(text){
+  // text='breadybread r f https://roeital123.github.io/Neckbook/asheeydy b c urnotsupposedtogetthis'
+  const startIndex=text.indexOf('http')
+  const helper=text.slice(startIndex,text.length-startIndex+1)
+  // console.log(startIndex)
+  const endIndex=helper.indexOf(' ')
+  // console.log(endIndex)
+  const croppedUrl=text.slice(startIndex,endIndex+startIndex)
+  console.log(croppedUrl)
+  return croppedUrl
+}
+
+function indexsOfUrl(text){
+  const startIndex=text.indexOf('http')
+  const helper=text.slice(startIndex,text.length-startIndex+1)
+  // console.log(startIndex)
+  const endIndex=helper.indexOf(' ')
+  // console.log(endIndex)
+  const croppedUrl=text.slice(startIndex,endIndex+startIndex)
+  return {start:startIndex,end:endIndex}
 }

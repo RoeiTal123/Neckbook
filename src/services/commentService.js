@@ -23,7 +23,7 @@ export const commentService = {
 window.bs = commentService
 
 async function query(filterBy = { userId: '' }) {
-    let comments = await storageService.query(STORAGE_KEY)
+    let comments = [...await storageService.query(STORAGE_KEY)]
     if (filterBy.userId) {
         const regex = new RegExp(filterBy.userId, 'i')
         comments = comments.filter(
@@ -52,14 +52,23 @@ async function remove(commentId) {
 async function save(comment) {
     let savedComment
     const allComments=await query()
-    console.log(allComments)
-    if (allComments.includes(comment._id)) {
+    if (commentExists(allComments,comment)) {
+        // console.log('old comment')
         savedComment = await storageService.put(STORAGE_KEY, comment)
     } else {
-        // comment.owner = userService.getLoggedinUser()
+        // console.log('new comment')
         savedComment = await storageService.post(STORAGE_KEY, comment)
     }
     return savedComment
+}
+
+function commentExists(comments, comment){
+    for(let existingComment of comments){
+        if(existingComment._id === comment._id) {
+            return true
+        }
+    }
+    return false
 }
 
 function getDefaultFilter() {
@@ -68,7 +77,7 @@ function getDefaultFilter() {
     }
 }
 
-function _createComment(postId,ownerId,txt){
+function _createComment(postId,ownerId,txt,level=1){
     const newComment = {
         _id: utilService.makeId(),
         postId,
@@ -76,6 +85,8 @@ function _createComment(postId,ownerId,txt){
         txt,
         imgUrls: [],
         videoUrl: null,
+        replies:[],
+        level,
         likedByUsers: [],
         createdAt: Date.now()
     }
@@ -93,25 +104,53 @@ function _createComments() {
                 txt: "bad photos",
                 imgUrls: [],
                 videoUrl: null,
+                replies:["c004"],
+                level:1,
                 likedByUsers: [],
                 createdAt: Date.now()
             },{
                 _id: "c002",
                 postId: "p001",
                 ownerId: "u002",
-                txt: "bad photos",
+                txt: "not bad photos",
                 imgUrls: [],
                 videoUrl: null,
+                replies:[],
+                level:1,
                 likedByUsers: [],
                 createdAt: Date.now()
             },{
                 _id: "c003",
                 postId: "p001",
                 ownerId: "u003",
-                txt: "bad photos",
+                txt: "decent photos",
                 imgUrls: [],
                 videoUrl: null,
+                replies:[],
+                level:1,
                 likedByUsers: [],
+                createdAt: Date.now()
+            },{
+                _id: "c004",
+                postId: "p001",
+                ownerId: "u001",
+                txt: "you havent seen good photos",
+                imgUrls: [],
+                videoUrl: null,
+                replies:['c005'],
+                level:2,
+                likedByUsers: ['random id'],
+                createdAt: Date.now()
+            },{
+                _id: "c005",
+                postId: "p001",
+                ownerId: "u003",
+                txt: "i have seen many good photos",
+                imgUrls: [],
+                videoUrl: null,
+                replies:[],
+                level:3,
+                likedByUsers: ['random id'],
                 createdAt: Date.now()
             }
         ]

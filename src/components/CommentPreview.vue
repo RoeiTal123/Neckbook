@@ -4,25 +4,51 @@
         <div class="comment-details">
             <div class="user-output">
                 <span>{{ user.fullName }}</span>
-                <p>{{ comment.txt }}</p>
+                <p class="text" :id="`${comment._id}`"></p>
             </div>
             <div class="user-input">
                 <span>{{ timeAgoString() }}</span>
-                <span :class="isLiked ? 'liked' : ''" @click="likeComment()">{{isLiked ? 'Liked' : 'Like'}}</span>
-                <span>Reply</span>
+                <span :class="isLiked ? 'liked' : ''" @click="likeComment()">{{ isLiked ? 'Liked' : 'Like' }}</span>
+                <span @click="selectReply()">Reply</span>
                 <span>Share</span>
                 <span>Like Count: {{ comment.likedByUsers.length }}</span>
+            </div>
+            <div id="replies-section" class="replies-section">
+
+                <!-- <input v-if="selectedReply" type="text" :id="`reply ${comment._id}`" placeholder="write a public response" /> -->
+
+                <div v-if="selectedReply" class="reply-addition">
+                    <img :src="loggedinUser.avatar" />
+                    <div class="reply">
+                        <input type="text" :id="`reply ${comment._id}`" placeholder="Write a public reply..." />
+                        <div class="reply-actions">
+                            <div>emotes here</div><img @click="() => addReply()"
+                                src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1705565840/projects/Neckbook/svg%20images/paper-plane_djmb9g.png" />
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="replies.length !== 0" class="replies">
+                    <div class="reply" v-for="reply in replies">
+                        <CommentPreview :comment="reply" />
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </template>
 
 <script>
+
 import { userService } from '../services/userService';
+import { postService } from '../services/postService';
 import { commentService } from '../services/commentService';
 import { utilService } from '../services/util.service';
 
+import { toRaw } from 'vue';
+
 export default {
+    name: 'comment-preview',
     props: {
         comment: {
             type: Object,
@@ -31,12 +57,26 @@ export default {
     },
     data() {
         return {
+            paths: [],
             loggedinUser: {},
             user: {},
-            isLiked: null
+            post: null,
+            isLiked: null,
+            selectedReply: false,
+            replies: []
         }
     },
+    mounted() {
+        this.setText()
+    },
     methods: {
+        updateRoutes() {
+            this.paths = []
+            const currentPath = this.$route.path;
+            this.paths = currentPath.split('/')
+            this.paths = this.paths.slice(1, this.paths.length)
+            // console.log(this.paths)
+        },
         async setUser() {
             this.loggedinUser = await userService.getLoggedinUser()
             const user = await userService.getById(this.comment.ownerId)
@@ -57,60 +97,77 @@ export default {
                 this.comment.likedByUsers = this.comment.likedByUsers.filter((id) => id !== this.loggedinUser._id)
             }
             commentService.save(this.comment)
+        },
+        selectReply() {
+            if (this.selectedReply === false) {
+                this.selectedReply = true
+                // console.log(document.getElementById('reply'))
+                // console.log(document.getElementById(`reply ${(toRaw(this.comment))._id}`))
+                // document.getElementById(`reply ${(toRaw(this.comment))._id}`).value = `@${toRaw(this.user).fullName}`
+            }
+        },
+        async setPostData() {
+            this.post = await postService.getById(this.paths[this.paths.length - 1])
+            if (this.post.likedByUsers.includes(userService.getLoggedinUser()._id)) {
+                this.didLike = true
+            } else {
+                this.didLike = false
+            }
+            // console.log('this post : ', this.post)
+        },
+        setText() {
+            let textSection = document.getElementById(`${this.comment._id}`)
+            // console.log(textSection)
+            textSection.innerText = this.comment.txt
+            if (utilService.checkIfUrlInText(this.comment.txt)) {
+                let wholeInsert = `<span>${this.comment.txt}</span>`
+                wholeInsert = wholeInsert.replace(utilService.cutUrlFromText(this.comment.txt), `<a href="${utilService.cutUrlFromText(this.comment.txt)}" title="A link, press with caution">${utilService.cutUrlFromText(this.comment.txt)}</a>`)
+                textSection.innerHTML = wholeInsert
+            }
+        },
+        async setReplies() {
+            this.replies = []
+            for (const replyId of this.comment.replies) {
+                const reply = await commentService.getById(replyId);
+                this.replies.push({ ...reply });
+            }
+            // console.log('this comments : ',this.comments)
+        },
+        addReply() {
+            const txt = document.getElementById(`reply ${(toRaw(this.comment))._id}`).value
+            const newComment = {
+                _id: utilService.makeId(),
+                postId: this.post._id,
+                ownerId: this.loggedinUser._id,
+                txt,
+                imgUrl: null,
+                videoUrl: null,
+                level: this.comment.level+1,
+                replies: [],
+                likedByUsers: [],
+                createdAt: Date.now()
+            }
+            let replies=toRaw(this.comment).replies
+            replies.push(newComment._id)
+            const oldComment={...toRaw(this.comment), replies}
+            try {
+                commentService.save(oldComment).then(()=>commentService.save(newComment))
+            } catch (err) {
+                console.lof('comment wasnt added : ', err)
+            }
         }
     },
     created() {
-        this.setUser().then(()=>this.setLiked())
+        this.updateRoutes()
+        this.setUser().then(() => this.setLiked())
+        this.setPostData()
+        this.setReplies()
     }
 }
 </script>
 
 <style lang="scss">
-.comment-preview {
-    display: flex;
-    gap: 0.375em;
 
-    img {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .comment-details {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        gap: 0.25em;
-
-        .user-output {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5em;
-            width: fit-content;
-            padding: 0.5em;
-            background-color: #f0f2f5;
-            border-radius: 1em;
-
-            span {
-                font-family: "Helvetica-Bold";
-            }
-        }
-
-        .user-input {
-            display: flex;
-            gap: 1em;
-            padding-inline-start: 0.5em;
-
-            span {
-                font-family: "Helvetica-Bold";
-                font-size: 12px;
-            }
-
-            .liked{
-                color: #0866FF;
-            }
-        }
-    }
-}
 </style>
+
+<!-- @load="()=>replaceUrlWithLink()"  -->
