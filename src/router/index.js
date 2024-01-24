@@ -22,7 +22,7 @@ const router = createRouter({
       component: HomePage
     },
     {
-      path: '/main',
+      path: '/main/:catchAll*',
       name: 'main',
       component: MainPage
     },
@@ -30,18 +30,18 @@ const router = createRouter({
       path: '/friends',
       name: 'friends',
       component: Friends,
-      children:[{
-        path:':category',
-        name:'friend-requests',
-        component: PageDisplay,
-        children:[{
-          path:':id',
-          name:'request'
+      children: [{
+        path: ':category',
+        name: 'friend-requests',
+        children: [{
+          path: ':id/:catchAll*',
+          name: 'request',
+          component: PageDisplay,
         }]
       }]
     },
     {
-      path: '/videos',
+      path: '/videos/:catchAll*',
       name: 'videos',
       component: Videos
     },
@@ -49,13 +49,13 @@ const router = createRouter({
       path: '/marketplace',
       name: 'marketplace',
       component: Marketplace,
-      children:[{
+      children: [{
         path: 'product',
         name: 'product-display',
-        children:[{
-          path:':id',
-          name:'product-display',
-          component:ProductDisplay
+        children: [{
+          path: ':id',
+          name: 'product-display',
+          component: ProductDisplay
         }]
       }]
     },
@@ -73,22 +73,22 @@ const router = createRouter({
       path: '/groups',
       name: 'groups',
       component: Groups,
-      children:[{
-        path:':id',
-        name:'group-page',
+      children: [{
+        path: ':id/:catchAll*',
+        name: 'group-page',
         component: PageDisplay
       }]
     },
     {
-      path: '/profile/:id',
+      path: '/profile/:id/:catchAll*',
       name: 'profile',
       component: ProfilePage
     },
-    {
-      path: '/:catchAll*/post/:id',
-      name: 'post-display',
-      component: PostDisplay
-    }
+    // {
+    //   path: '/:catchAll*/post/:id',
+    //   name: 'post-display',
+    //   component: PostDisplay
+    // }
   ]
 })
 

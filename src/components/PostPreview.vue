@@ -56,7 +56,9 @@
             <div>
                 <div v-if="post.likedByUsers.length > 0" class="like-count">
                     <SvgIcon :iconName="'like'" />
-                    <span>{{ post.likedByUsers.length }}</span>
+                    <span v-if="!didLike">{{ post.likedByUsers.length }}</span>
+                    <span v-if="didLike && post.likedByUsers.length !==1">You and {{ post.likedByUsers.length-1 }} other{{ post.likedByUsers.length-1 !== 1 ? 's' : '' }}</span>
+                    <span v-if="didLike && post.likedByUsers.length ===1">You</span>
                     <!-- it shows 20 random names of those that liked it -->
                 </div>
                 <div v-else>

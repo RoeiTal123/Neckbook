@@ -1,11 +1,5 @@
 <template>
-    <!-- <div v-if="isDisplayMode" class="display-container">
-        <div class="blur">bread</div>
-        <div class="mini-container">
-            <PostDisplay :postId="displayedPostId" :userId="userId" />
-        </div>
-    </div> -->
-    <ul v-if="posts.length !== 0" class="post-list">
+    <ul v-if="posts && posts.length !== 0" class="post-list">
         <li v-for="post in posts" :key="post._id">
             <PostPreview :post="post" />
         </li>
@@ -17,7 +11,6 @@
 
 <script>
 import PostPreview from './PostPreview.vue';
-import PostDisplay from './PostDisplay.vue';
 export default {
     props: {
         posts: {
@@ -26,8 +19,7 @@ export default {
         }
     },
     components: {
-        PostPreview,
-        PostDisplay
+        PostPreview
     }
 }
 </script>

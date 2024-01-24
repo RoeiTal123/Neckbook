@@ -3,7 +3,8 @@
         <div class="header">
             <img id="cover" class="cover" :src="group.coverImgUrl" @error="replaceImage()" />
         </div>
-        <div class="main">
+        
+        <!-- <div class="main">
             <div class="header">
                 <div class="details" v-if="group">
                     <span>{{ group.name }}</span>
@@ -74,34 +75,42 @@
 
                     </div>
 
-                    <!-- <div class="group-media info">
-                        <div class="head">
-                            <span class="title">Photos</span>
-                            <button>See all photos</button>
-                        </div>
-                        <div v-if="media" class="media-container">
-                            <div v-for="eachMedia in media.slice(0, 4)">
-                                <div>
-
-                                </div>
-                                <img :src="photo" />
-                            </div>
-                        </div>
-                        <span v-else>no photos?</span>
-                    </div> -->
-
+                    
                 </div>
             </div>
+        </div> -->
+
+        <!-- <div class="group-media info">
+            <div class="head">
+                <span class="title">Photos</span>
+                <button>See all photos</button>
+            </div>
+            <div v-if="media" class="media-container">
+                <div v-for="eachMedia in media.slice(0, 4)">
+                    <div>
+
+                    </div>
+                    <img :src="photo" />
+                </div>
+            </div>
+            <span v-else>no photos?</span>
+        </div> -->
+
+        <div v-if="user && group && posts && photos && members && media">
+            <SubpageDisplay :pageType="'group'" :photos="photos" :members="members" :posts="posts" :user="user" :group="group"/>
         </div>
     </section>
 </template>
 
 <script>
+import SvgIcon from './SvgIcon.vue';
+import PostList from './PostList.vue';
+import SubpageDisplay from '../components/SubpageDisplay.vue';
+
 import { postService } from '../services/postService';
 import { userService } from '../services/userService';
 import { groupService } from '../services/groupService';
-import SvgIcon from './SvgIcon.vue';
-import PostList from './PostList.vue';
+
 import { toRaw } from 'vue';
 
 export default {
@@ -125,7 +134,8 @@ export default {
     },
     components: {
         PostList,
-        SvgIcon
+        SvgIcon,
+        SubpageDisplay
     },
     methods: {
         updateRoutes() {
@@ -141,12 +151,12 @@ export default {
         },
         async updateGroup() {
             this.group = {}
-            const groupId = this.$route.params.id;
+            const groupId = this.paths[1];
             this.group = await groupService.getById(groupId)
         },
         async updatePosts() {
             this.posts = []
-            const groupId = this.$route.params.id;
+            const groupId = this.paths[1];
             this.posts = await postService.query({ groupId: groupId })
         },
         updatePhotos() {
@@ -170,9 +180,9 @@ export default {
             }
         },
         replaceImage() {
-            var img = document.getElementById('cover');
-            img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'; // Set your alternate image URL here
-            img.onerror = null; // Remove the onerror handler to avoid an infinite loop
+            var img = document.getElementById('cover')
+            img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'
+            img.onerror = null
         },
         userInGroupState() {
             if(toRaw(this.members).length!==0){
@@ -208,16 +218,18 @@ export default {
         loadData() {
             this.updateRoutes()
             this.updateUser()
-            this.updateGroup().then(() =>
-                this.updatePosts().then(() =>
-                    this.updateMembers().then(() => 
-                       {
-                        this.updatePhotos()
-                        this.updateMedia()
-                       }
+            if(this.paths.length!==3){
+                this.updateGroup().then(() =>
+                    this.updatePosts().then(() =>
+                        this.updateMembers().then(() => 
+                           {
+                            this.updatePhotos()
+                            this.updateMedia()
+                           }
+                        )
                     )
                 )
-            )
+            }
         }
     },
     created() {

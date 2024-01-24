@@ -4,7 +4,6 @@
   width: 100%;
   max-width: 1250px;
   flex: 1;
-  // height: 100%;
   margin: auto;
 
   &.display{
@@ -14,7 +13,6 @@
 
   .header {
     width: 100%;
-    // height: fit-content;
     max-width: 1250px;
 
     .cover {
@@ -161,8 +159,6 @@
       .user-info {
         display: flex;
         flex-direction: column;
-        // width: 44%;
-        // margin-block-end: 1em;
         .info {
           display: flex;
           flex-direction: column;
@@ -193,8 +189,6 @@
             grid-template-columns: repeat(3, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             grid-gap: 0.25em;
-            // width: 470px;
-            // height: 470px;
             max-width: 470px;
             max-height: 470px;
             img {
@@ -210,8 +204,6 @@
             grid-template-rows: repeat(3, 1fr); 
             grid-column-gap: 0.25em;
             grid-row-gap: 1em;
-            // width: 470px;
-            // height: 586px;
             max-width: 470px;
             max-height: 586px;
             .friend-container{
@@ -259,7 +251,6 @@
         }
       }
       .user-posts {
-        // width: 55%;
         .post-list {
           margin-block-start: 0;
         }

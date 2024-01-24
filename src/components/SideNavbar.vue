@@ -181,9 +181,9 @@ export default {
             this.groups = await Promise.all(groupsPromises)
         },
         replaceImage() {
-            var img = document.getElementById('group-cover');
-            img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'; // Set your alternate image URL here
-            img.onerror = null; // Remove the onerror handler to avoid an infinite loop
+            var img = document.getElementById('group-cover')
+            img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'
+            img.onerror = null
         },
         updateGroup() {
             this.groups.map((group) => {

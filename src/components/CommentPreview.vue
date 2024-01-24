@@ -107,11 +107,15 @@ export default {
             }
         },
         async setPostData() {
-            this.post = await postService.getById(this.paths[this.paths.length - 1])
-            if (this.post.likedByUsers.includes(userService.getLoggedinUser()._id)) {
-                this.didLike = true
-            } else {
-                this.didLike = false
+            try{
+                this.post = await postService.getById(this.paths[this.paths.length - 1])
+                if (this.post.likedByUsers.includes(userService.getLoggedinUser()._id)) {
+                    this.didLike = true
+                } else {
+                    this.didLike = false
+                }
+            } catch (err){
+
             }
             // console.log('this post : ', this.post)
         },

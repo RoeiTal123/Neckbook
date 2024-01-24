@@ -38,10 +38,19 @@
         </div>
     </div>
     </nav>
+    <div v-if="paths[paths.length-1]==='post'">
+        <PostAddition />
+    </div>
+    <div v-if="paths[paths.length-2]==='post'">
+        <PostDisplay />
+    </div>
 </template>
 
 <script>
 import SvgIcon from './SvgIcon.vue'
+import PostAddition from './PostAddition.vue'
+import PostDisplay from './PostDisplay.vue'
+
 import { userService } from '../services/userService'
 
     export default {
@@ -54,7 +63,11 @@ import { userService } from '../services/userService'
             paths: [],
         }
     },
-    components: { SvgIcon },
+    components: { 
+        SvgIcon,
+        PostAddition,
+        PostDisplay
+    },
     watch: {
         $route(to, from) {
             this.updateRoutes();

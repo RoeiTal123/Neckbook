@@ -6,14 +6,15 @@
         <div class="actions">
             <div class="avatar">
                 <img class="avatar-image" :src="user.avatar" @error="replaceImage()" />
-                <button><img class="camera" :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" /></button>
+                <button><img class="camera"
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" /></button>
             </div>
             <button class="btn-edit"><img class="camera"
                     :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" /><span
                     class="text">Edit
                     cover photo</span></button>
         </div>
-        <div class="main">
+        <!-- <div class="main">
             <div class="header">
                 <div class="details" v-if="user">
                     <span>{{ user.fullName }}</span>
@@ -78,6 +79,10 @@
                     <PostList :posts="posts" />
                 </div>
             </div>
+        </div> -->
+
+        <div v-if="user && posts && photos && friends">
+            <SubpageDisplay :pageType="'user'" :photos="photos" :friends="friends" :posts="posts" :user="user"/>
         </div>
     </section>
 </template>
@@ -85,16 +90,18 @@
 <script>
 import { postService } from '../services/postService';
 import { userService } from '../services/userService';
+
 import PostList from '../components/PostList.vue';
+import SubpageDisplay from '../components/SubpageDisplay.vue';
 
 export default {
     data() {
         return {
             paths: [],
-            user: {},
-            posts: [],
-            photos: [],
-            friends: []
+            user: null,
+            posts: null,
+            photos: null,
+            friends: null
         }
     }, watch: {
         $route(to, from) {
@@ -105,7 +112,8 @@ export default {
         }
     },
     components: {
-        PostList
+        PostList,
+        SubpageDisplay
     },
     methods: {
         updateRoutes() {
@@ -117,12 +125,12 @@ export default {
         },
         async updateUser() {
             this.user = {}
-            const userId = this.$route.params.id;
+            const userId = this.paths[this.paths.length-1];
             this.user = await userService.getById(userId)
         },
         async updatePosts() {
             this.posts = []
-            const userId = this.$route.params.id;
+            const userId = this.paths[this.paths.length-1];
             this.posts = await postService.query({ userId: userId })
         },
         updatePhotos() {
@@ -145,13 +153,15 @@ export default {
         },
         loadData() {
             this.updateRoutes()
-            this.updateUser().then(() =>
-                this.updatePosts().then(() =>
-                    this.updateFriends().then(() =>
-                        this.updatePhotos()
+            if (this.paths[1] !== 'post') {
+                this.updateUser().then(() =>
+                    this.updatePosts().then(() =>
+                        this.updateFriends().then(() =>
+                            this.updatePhotos()
+                        )
                     )
                 )
-            )
+            }
         }
     },
     created() {

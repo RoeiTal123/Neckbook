@@ -29,7 +29,6 @@ export default {
 .comment-section {
     display: flex;
     flex-direction: column;
-    // padding: 0.75em 1em;
     padding-inline: 1em;
     padding-block-start: 0.75em;
 

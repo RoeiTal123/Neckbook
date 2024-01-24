@@ -16,7 +16,8 @@ export const utilService = {
   checkVideoType,
   checkIfUrlInText,
   cutUrlFromText,
-  indexsOfUrl
+  indexsOfUrl,
+  isTxtOnlySpaces
 }
 
 export const yearlyMonths = [
@@ -221,11 +222,8 @@ function checkVideoType(fileInput) {
   return resultOfCheck
 }
 
-// checkIfUrlInText()
-// cutUrlFromText()
 
 function checkIfUrlInText(text){
-  // text='https://roeital123.github.io/Neckbook/'
   const tester='\^~{}[];@` '
   if(text.includes('http://')||text.includes('https://')){
     let secondTester=text.split('/')
@@ -251,7 +249,6 @@ function checkIfUrlInText(text){
 }
 
 function cutUrlFromText(text){
-  // text='breadybread r f https://roeital123.github.io/Neckbook/asheeydy b c urnotsupposedtogetthis'
   const startIndex=text.indexOf('http')
   const helper=text.slice(startIndex,text.length-startIndex+1)
   // console.log(startIndex)
@@ -270,4 +267,16 @@ function indexsOfUrl(text){
   // console.log(endIndex)
   const croppedUrl=text.slice(startIndex,endIndex+startIndex)
   return {start:startIndex,end:endIndex}
+}
+
+function isTxtOnlySpaces(txt){
+  if(!txt){
+    return true
+  }
+  for(let character of txt){
+    if(character !== ' '){
+      return false;
+    }
+  }
+  return true
 }

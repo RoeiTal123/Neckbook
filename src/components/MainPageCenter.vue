@@ -3,7 +3,7 @@
         <div v-if="user" class="post-creation">
             <div class="header">
                 <img :src="user.avatar" />
-                <span>Whats on your mind, {{ user.fullName }}?</span>
+                <RouterLink to="/main/post"><span>Whats on your mind, {{ user.fullName }}?</span></RouterLink>
             </div>
             <div class="user-actions">
                 <div class="user-action">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
 import { userService } from '../services/userService';
 import PostList from './PostList.vue';
 
@@ -45,8 +46,9 @@ export default {
         }
     },
     components: {
-        PostList
-    },
+    PostList,
+    RouterLink
+},
     async created() {
         this.user = await userService.getLoggedinUser()
     }
@@ -80,6 +82,13 @@ export default {
             gap: 0.5em;
             border-block-end: 1px solid #e4e6eb;
             padding-block-end: 0.75em;
+
+            a{
+                flex: 1;
+                height: 2.5em;
+                text-decoration: none;
+                color: #65676B;
+            }
 
             span {
                 display: flex;

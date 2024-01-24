@@ -142,6 +142,7 @@
         margin: 0 1em;
         height: 3em;
         color: #65676B;
+        border-block-end: 0.75px solid #ced0d4;
         
         .like-count {
             display: flex;
@@ -176,9 +177,8 @@
         display: flex;
         align-items: center;
         height: 2.75em;
-        margin: 0 1em;
+        margin: 0.375em 1em;
         color: #65676B;
-        border-block-start: 0.75px solid #ced0d4;
         
         &.display{
             border-block-end: 0.75px solid #ced0d4;
@@ -191,6 +191,8 @@
             height: 100%;
             width: calc(100% / 3);
             gap: 0.5em;
+            padding-block: 0.375em;
+            border-radius: 0.25em;
             .like{
                 height: 1.25em;
                 width: 1.25em;
@@ -199,9 +201,10 @@
                 height: 1.25em;
                 width: 1.25em;
             }
-            // svg{
-            //     fill: #65676B;
-            // }
+
+            &:hover {
+                background-color: #f0f2f5;
+            }
         }
     }
 }

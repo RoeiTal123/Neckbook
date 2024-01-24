@@ -1,6 +1,6 @@
 <template>
     <section v-if="paths[0]" class="page-display">
-        <div v-if="paths[2]">
+        <div v-if="paths[0]==='profile' || paths[0]==='friends'">
             <ProfilePage />
         </div>
         <div v-if="paths[0]==='marketplace'">
@@ -34,7 +34,7 @@ export default {
             const currentPath = this.$route.path;
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
-            // console.log(this.paths)
+            console.log(this.paths)
         }
     },
     components: {
