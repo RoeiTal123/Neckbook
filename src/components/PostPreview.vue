@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="description">
-            {{ post.description }}
+            {{ post.txt }}
         </div>
         <div v-if="!post.videoUrl" class="post-images">
             <div v-if="post.imgUrls.length === 1" class="one-image">
@@ -162,6 +162,9 @@ export default {
                 this.comments.push({ ...comment });
             }
             // console.log('this comments : ',this.comments)
+        },
+        setBackground(){
+            if(this.post.background === 'none') return
         },
         likePost() {
             this.didLike = !this.didLike

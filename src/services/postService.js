@@ -28,14 +28,14 @@ async function query(filterBy = { userId: '' }) {
     const regex = new RegExp(filterBy.userId, 'i')
     posts = posts.filter(
       (post) => post.ownerId === filterBy.userId
-      // regex.test(post.title) || regex.test(post.description)
+      // regex.test(post.title) || regex.test(post.txt)
     )
   }
   if (filterBy.groupId) {
     const regex = new RegExp(filterBy.groupId, 'i')
     posts = posts.filter(
       (post) => post.postGroupId === filterBy.groupId
-      // regex.test(post.title) || regex.test(post.description)
+      // regex.test(post.title) || regex.test(post.txt)
     )
   }
   return posts
@@ -51,13 +51,23 @@ async function remove(postId) {
 
 async function save(post) {
   let savedPost
-  if (post._id) {
+  const allPosts=await query()
+  if (postExists(allPosts,post)) {
     savedPost = await storageService.put(STORAGE_KEY, post)
   } else {
     // post.owner = userService.getLoggedinUser()
     savedPost = await storageService.post(STORAGE_KEY, post)
   }
   return savedPost
+}
+
+function postExists(posts, post){
+  for(let existingPost of posts){
+      if(existingPost._id === post._id) {
+          return true
+      }
+  }
+  return false
 }
 
 function getDefaultFilter() {
@@ -72,7 +82,8 @@ function _createPosts() {
     posts = [
         {
         _id: "p001",
-        description: "I am actually the real Spiderman...",
+        txt: "I am actually the real Spiderman...",
+        background: 'none',
         ownerId: "u001",
         postType: 'normal',
         postGroupId: null,
@@ -91,7 +102,8 @@ function _createPosts() {
       },
       {
         _id: "p002",
-        description: "I will design your robot logo in 24 hours or less...",
+        txt: "I will design your robot logo in 24 hours or less...",
+        background: 'none',
         ownerId: "u002",
         postType: 'normal',
         postGroupId: null,
@@ -110,7 +122,8 @@ function _createPosts() {
       },
       {
         _id: "p003",
-        description: "i made this cool project",
+        txt: "i made this cool project",
+        background: 'none',
         ownerId: "u003",
         postType: 'group',
         postGroupId: 'g001',
