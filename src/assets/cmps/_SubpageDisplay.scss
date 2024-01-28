@@ -286,8 +286,8 @@
           max-width: 470px;
           max-height: 470px;
           img {
-            height: 100%;
             width: 100%;
+            aspect-ratio: 1;
             object-fit: cover;
           }
         }
@@ -390,6 +390,18 @@
 }
 
 @media (min-width: 900px) {
+  // .user-header {
+  //   width: 100%;
+  //   left: 0;
+  //   flex-direction: column;
+  //   align-items: center;
+  //   padding-block-start: 7em;
+
+  //   .details {
+  //     align-items: center;
+  //   }
+  // }
+
   .profile {
     .sub-page-details {
       flex-direction: row;
@@ -404,22 +416,53 @@
 }
 
 @media (max-width: 900px) {
-  .main {
-    max-width: 680px;
-    margin: auto;
-    padding: 0;
-    .header {
-      width: 100%;
-      left: 0;
-      flex-direction: column;
-      align-items: center;
-      padding-block-start: 7em;
+  .profile-page {
+    .main {
+      &.profile {
+        max-width: 680px;
+        margin: auto;
+        padding: 0;
+        .user-header {
+          width: 100%;
+          left: 0;
+          flex-direction: column;
+          // align-items: center;
+          padding-block-start: 7em;
+          padding-inline: 1em;
 
-      .details {
-        align-items: center;
+          // .details {
+          //   align-items: center;
+          // }
+        }
+
+        .sub-page-photos {
+          display: none;
+        }
+
+        .sub-page-intro {
+          display: none;
+        }
+
+        .info {
+          .friends-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            grid-column-gap: 0.25em;
+            grid-row-gap: 1em;
+            max-width: 470px;
+            max-height: 586px;
+
+            img {
+              width: 100px;
+              height: 100px;
+            }
+          }
+        }
       }
     }
-
+  }
+  .main {
     .sub-page-details {
       flex-direction: column;
       padding-inline: 1em;

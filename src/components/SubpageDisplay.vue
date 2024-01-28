@@ -1,23 +1,40 @@
 <template>
-    <div class="main" :class="pageType === 'user' ? 'profile' : '' ">
+    <div class="main" :class="pageType === 'user' ? 'profile' : ''">
         <div v-if="pageType === 'user'" class="user-header">
-            <div class="details" >
+            <div class="details">
                 <span>{{ user.fullName }}</span>
                 <span v-if="user.friends">{{ user.friends.length }} friend{{ user.friends.length > 1 ? 's' : '' }}</span>
             </div>
-            <div class="change" v-if="pageType === 'user'">
-                <button class="btn-add"><img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" /><span>Add
-                        to story</span></button>
-                <button><img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" /><span>Edit
-                        profile</span></button>
-                <button><img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" /></button>
+            <div class="change" v-if="pageType === 'user' && isProfileOfUser !== null">
+                <!-- own profile -->
+                <button v-if="isProfileOfUser" class="btn-add">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
+                    <span>Add to story</span>
+                </button>
+                <button v-if="isProfileOfUser">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" />
+                    <span>Edit profile</span>
+                </button>
+                <button v-if="isProfileOfUser">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
+                </button>
+                <!-- other' profile -->
+                <button v-if="!isProfileOfUser">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
+                    <span>Message</span>
+                </button>
+                <button v-if="!isProfileOfUser" class="btn-add">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446414/projects/Neckbook/svg%20images/add-friend_2_eomrvo.png'" />
+                    <span>Add friend</span>
+                </button>
+                <button v-if="!isProfileOfUser">
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446065/projects/Neckbook/svg%20images/avatar_hs3gdb.png'" />
+                    <span>View profile</span>
+                </button>
             </div>
         </div>
         <div v-if="pageType === 'group'" class="group-header">
-            <div class="details" >
+            <div class="details">
                 <span>{{ group.name }}</span>
                 <span><img class="state" :src="getGroupStatus()" />{{
                     group.groupType }} group · <span v-if="members.length">{{ members.length }} member{{ members.length > 1
@@ -48,6 +65,11 @@
         </div>
         <div class="sub-page-details">
             <div class="sub-page-info">
+
+                <div v-if="user && fullPath !== null && pageType === 'group'">
+                    <PostCreation :user="user" :fullPath="fullPath" />
+                </div>
+
                 <div v-if="pageType === 'group'" class="sub-page-posts">
                     <PostList :posts="posts" />
                 </div>
@@ -91,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-page-about info" v-if="group && group.description && pageType === 'group'" >
+            <div class="sub-page-about info" v-if="group && group.description && pageType === 'group'">
 
                 <div class="head">
                     <span class="title">About</span>
@@ -137,7 +159,12 @@
                         </div>
                         <span v-else>no photos?</span>
                     </div> -->
+
+
             <div v-if="pageType === 'user'" class="sub-page-posts">
+                <div v-if="user && fullPath !== null && pageType === 'user'">
+                    <PostCreation :user="user" :fullPath="fullPath" />
+                </div>
                 <PostList :posts="posts" />
             </div>
         </div>
@@ -146,9 +173,11 @@
 
 <script>
 import PostList from '../components/PostList.vue';
+import PostCreation from '../components/PostCreation.vue';
 import SvgIcon from './SvgIcon.vue';
 
 import { toRaw } from 'vue';
+import { userService } from '../services/userService';
 
 export default {
     props: {
@@ -156,49 +185,76 @@ export default {
             type: String,
             required: true
         },
-        photos:{ //both
+        photos: { //both
             type: Array,
             required: false
         },
-        posts:{ //both
+        posts: { //both
             type: Array,
             required: false
         },
-        user:{  //profile
+        user: {  //profile
             type: Object,
             required: false
         },
-        friends:{ //profile
+        friends: { //profile
             type: Array,
             required: false
         },
-        group:{  //group
+        group: {  //group
             type: Object,
             required: false
         },
-        members:{ //group
+        members: { //group
             type: Array,
             required: false
         }
     },
-    components:{
+    data() {
+        return {
+            paths: [],
+            fullPath: null,
+            isProfileOfUser: null,
+            loggedinUser: null
+        }
+    },
+    watch: {
+        $route(to, from) {
+            this.updateRoutes();
+            // console.log(to.path,' ',from.path)
+            if (to.path !== from.path) {
+                this.loadData()
+            }
+        }
+    },
+    components: {
         PostList,
+        PostCreation,
         SvgIcon
     },
-    methods:{
+    methods: {
+        updateRoutes() {
+            this.paths = []
+            this.fullPath = null
+            const currentPath = this.$route.path;
+            this.fullPath = currentPath
+            this.paths = currentPath.split('/')
+            this.paths = this.paths.slice(1, this.paths.length)
+            // console.log(this.paths)
+        },
         replaceImage() {
             var img = document.getElementById('cover')
             img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'
             img.onerror = null
         },
         userInGroupState() {
-            if(toRaw(this.members).length!==0){
-                return toRaw(this.members).find((member)=>member._id===this.user._id)
+            if (toRaw(this.members).length !== 0) {
+                return toRaw(this.members).find((member) => member._id === this.user._id)
             }
         },
-        isAdmin(){
-            if(toRaw(this.group.admins).length!==0){
-                return toRaw(this.group.admins).find((member)=>member._id===this.user._id)
+        isAdmin() {
+            if (toRaw(this.group.admins).length !== 0) {
+                return toRaw(this.group.admins).find((member) => member._id === this.user._id)
             }
         },
         getGroupStatus() {
@@ -221,7 +277,19 @@ export default {
             } else {
                 return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704803460/projects/Neckbook/svg%20images/restriction_wxosu6.png'
             }
+        },
+        async setProfileState(){
+            this.isProfileOfUser=null
+            this.loggedinUser = await userService.getLoggedinUser()
+            this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+        },
+        loadData(){
+            this.setProfileState()
         }
+    },
+    created() {
+        this.updateRoutes()
+        this.loadData()
     }
 }
 </script>

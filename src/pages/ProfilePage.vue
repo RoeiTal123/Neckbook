@@ -1,18 +1,20 @@
 <template>
-    <section class="profile-page" :class="paths[2] ? 'display' : ''">
+    <section v-if="user" class="profile-page" :class="paths[2] ? 'display' : ''">
         <div class="header">
             <img id="cover" class="cover" :src="user.cover" @error="replaceImage()" />
         </div>
         <div class="actions">
             <div class="avatar">
                 <img class="avatar-image" :src="user.avatar" @error="replaceImage()" />
-                <button><img class="camera"
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" /></button>
+                <button v-if="isProfileOfUser">
+                    <img class="camera" :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" />
+                </button>
             </div>
-            <button class="btn-edit"><img class="camera"
-                    :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" /><span
-                    class="text">Edit
-                    cover photo</span></button>
+            <button v-if="isProfileOfUser" class="btn-edit">
+                <img class="camera"
+                    :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" />
+                <span class="text">Edit cover photo</span>
+            </button>
         </div>
         <!-- <div class="main">
             <div class="header">
@@ -82,7 +84,7 @@
         </div> -->
 
         <div v-if="user && posts && photos && friends">
-            <SubpageDisplay :pageType="'user'" :photos="photos" :friends="friends" :posts="posts" :user="user"/>
+            <SubpageDisplay :pageType="'user'" :photos="photos" :friends="friends" :posts="posts" :user="user" />
         </div>
     </section>
 </template>
@@ -93,6 +95,7 @@ import { userService } from '../services/userService';
 
 import PostList from '../components/PostList.vue';
 import SubpageDisplay from '../components/SubpageDisplay.vue';
+import { toRaw } from 'vue';
 
 export default {
     data() {
@@ -101,12 +104,15 @@ export default {
             user: null,
             posts: null,
             photos: null,
-            friends: null
+            friends: null,
+            loggedinUser: null,
+            isProfileOfUser: null
         }
     }, watch: {
         $route(to, from) {
-            this.updateRoutes();
+            this.updateRoutes()
             if (to.path !== from.path) {
+                // console.log('different')
                 this.loadData()
             }
         }
@@ -124,13 +130,13 @@ export default {
             // console.log(this.paths)
         },
         async updateUser() {
-            this.user = {}
-            const userId = this.paths[this.paths.length-1];
+            this.user = null
+            const userId = this.paths[this.paths.length - 1];
             this.user = await userService.getById(userId)
         },
         async updatePosts() {
             this.posts = []
-            const userId = this.paths[this.paths.length-1];
+            const userId = this.paths[this.paths.length - 1];
             this.posts = await postService.query({ userId: userId })
         },
         updatePhotos() {
@@ -146,6 +152,11 @@ export default {
                 this.friends.push({ _id: friend._id, avatar: friend.avatar, fullName: friend.fullName });
             }
         },
+        async setProfileState() {
+            this.isProfileOfUser = null
+            this.loggedinUser = await userService.getLoggedinUser()
+            this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+        },
         replaceImage() {
             var img = document.getElementById('cover');
             img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'; // Set your alternate image URL here
@@ -154,13 +165,14 @@ export default {
         loadData() {
             this.updateRoutes()
             if (this.paths[1] !== 'post') {
-                this.updateUser().then(() =>
+                this.updateUser().then(() => {
+                    this.setProfileState()
                     this.updatePosts().then(() =>
                         this.updateFriends().then(() =>
                             this.updatePhotos()
                         )
                     )
-                )
+                })
             }
         }
     },

@@ -82,6 +82,7 @@ export default {
         background-color: #f0f2f5;
         .group-post-list{
             max-width: 680px;
+            margin-block-start: 1em;
         }
     }
 }

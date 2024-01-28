@@ -1,26 +1,17 @@
 <template>
     <section class="main-page-center">
-        <div v-if="user" class="post-creation">
-            <div class="header">
-                <img :src="user.avatar" />
-                <RouterLink to="/main/post"><span>Whats on your mind, {{ user.fullName }}?</span></RouterLink>
-            </div>
-            <div class="user-actions">
-                <div class="user-action">
-                    <img
-                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png" />
-                    <span>Photo/Video</span>
-                </div>
-            </div>
+        <div v-if="user && fullPath !== null">
+            <PostCreation :user="user" :fullPath="fullPath"/>
         </div>
         <PostList :posts="posts" />
     </section>
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
 import { userService } from '../services/userService';
+
 import PostList from './PostList.vue';
+import PostCreation from './PostCreation.vue';
 
 export default {
     props: {
@@ -30,10 +21,21 @@ export default {
         }
     }, data() {
         return {
-            user: {}
+            user: {},
+            paths: [],
+            fullPath: null
         }
     },
     methods: {
+        updateRoutes() {
+            this.paths = []
+            this.fullPath = null
+            const currentPath = this.$route.path;
+            this.fullPath = currentPath
+            this.paths = currentPath.split('/')
+            this.paths = this.paths.slice(1, this.paths.length)
+            console.log(this.paths)
+        },
         extractName() {
             if (this.user === undefined) return
             const nameParts = this.user.fullName.split(' ');
@@ -46,11 +48,12 @@ export default {
         }
     },
     components: {
-    PostList,
-    RouterLink
-},
+        PostList,
+        PostCreation
+    },
     async created() {
         this.user = await userService.getLoggedinUser()
+        this.updateRoutes()
     }
 }
 </script>
@@ -73,7 +76,7 @@ export default {
         border-radius: 0.5em;
         padding: 0.75em 1em;
         color: #65676B;
-        
+
         .header {
             display: flex;
             align-items: center;
@@ -83,7 +86,7 @@ export default {
             border-block-end: 1px solid #e4e6eb;
             padding-block-end: 0.75em;
 
-            a{
+            a {
                 flex: 1;
                 height: 2.5em;
                 text-decoration: none;

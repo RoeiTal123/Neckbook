@@ -3,7 +3,7 @@
         <div class="header">
             <img id="cover" class="cover" :src="group.coverImgUrl" @error="replaceImage()" />
         </div>
-        
+
         <!-- <div class="main">
             <div class="header">
                 <div class="details" v-if="group">
@@ -97,7 +97,8 @@
         </div> -->
 
         <div v-if="user && group && posts && photos && members && media">
-            <SubpageDisplay :pageType="'group'" :photos="photos" :members="members" :posts="posts" :user="user" :group="group"/>
+            <SubpageDisplay :pageType="'group'" :photos="photos" :members="members" :posts="posts" :user="user"
+                :group="group" />
         </div>
     </section>
 </template>
@@ -112,6 +113,7 @@ import { userService } from '../services/userService';
 import { groupService } from '../services/groupService';
 
 import { toRaw } from 'vue';
+import router from '../router';
 
 export default {
     data() {
@@ -185,13 +187,18 @@ export default {
             img.onerror = null
         },
         userInGroupState() {
-            if(toRaw(this.members).length!==0){
-                return toRaw(this.members).find((member)=>member._id===this.user._id)
+            if (toRaw(this.members).length !== 0) {
+                if (toRaw(this.members).find((member) => member._id === this.user._id)) {
+                    console.log("true")
+                    return true
+                } else {
+                    return false
+                }
             }
         },
-        isAdmin(){
-            if(toRaw(this.group.admins).length!==0){
-                return toRaw(this.group.admins).find((member)=>member._id===this.user._id)
+        isAdmin() {
+            if (toRaw(this.group.admins).length !== 0) {
+                return toRaw(this.group.admins).find((member) => member._id === this.user._id)
             }
         },
         getGroupStatus() {
@@ -215,18 +222,24 @@ export default {
                 return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704803460/projects/Neckbook/svg%20images/restriction_wxosu6.png'
             }
         },
+        goBack() {
+            router.go(-1)
+            document.getElementById('body').style.overflow = 'scroll'
+        },
         loadData() {
             this.updateRoutes()
             this.updateUser()
-            if(this.paths.length!==3){
+            if (this.paths.length !== 3) {
                 this.updateGroup().then(() =>
                     this.updatePosts().then(() =>
-                        this.updateMembers().then(() => 
-                           {
-                            this.updatePhotos()
-                            this.updateMedia()
-                           }
-                        )
+                        this.updateMembers().then(() => {
+                            if (this.userInGroupState()) {
+                                this.updatePhotos()
+                                this.updateMedia()
+                            } else {
+                                this.goBack()
+                            }
+                        })
                     )
                 )
             }

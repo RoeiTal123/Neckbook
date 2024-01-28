@@ -25,6 +25,7 @@
     }
 
   }
+
   .actions {
     display: flex;
     justify-content: space-between;
@@ -275,38 +276,46 @@
 @media (max-width:900px){
 
   .profile-page{
-    .avatar{
-      margin-inline-start: calc(50% - 86px);
-    }
+    // .avatar{
+    //   margin-inline-start: calc(50% - 86px);
+    // }
     .text{
       display: none;
     }
-    .main{
-      max-width: 680px;
-      margin: auto;
-      padding: 0;
-      .header{
-        width: 100%;
-        left: 0;
-        flex-direction: column;
-        align-items: center;
-        padding-block-start: 7em;
 
-        .details{
-          align-items: center;
-        }
-      }
-
-      .user-details{
-        flex-direction: column;
-        padding-inline: 1em;
-        .user-info{
-          width: 100%;
-        }
-        .user-posts{
-          width: 100%;
-        }
-      }
+    .actions{
+      padding-inline: 1em;
     }
+    // .main{
+    //   max-width: 680px;
+    //   margin: auto;
+    //   padding: 0;
+    //   .header{
+    //     width: 100%;
+    //     left: 0;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     padding-block-start: 7em;
+
+        
+    //     .details{
+    //       align-items: center;
+    //     }
+    //   }
+    //   .actions{
+    //     padding-inline: 1em;
+    //   }
+
+    //   .user-details{
+    //     flex-direction: column;
+    //     padding-inline: 1em;
+    //     .user-info{
+    //       width: 100%;
+    //     }
+    //     .user-posts{
+    //       width: 100%;
+    //     }
+    //   }
+    // }
   }
 }

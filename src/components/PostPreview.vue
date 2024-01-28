@@ -1,13 +1,13 @@
 <template>
     <div class="post-preview" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
         <div class="post-header">
-            <div>
+            <RouterLink :to="`/profile/${user._id}`">
                 <img :src="user.avatar" />
                 <div class="post-details">
                     <span>{{ user.username }}</span>
                     <span>{{ getPostDate() }}</span>
                 </div>
-            </div>
+            </RouterLink>
             <div>
                 <SvgIcon :iconName="'options'" />
                 <div>
@@ -52,13 +52,14 @@
                 <source :src="post.videoUrl" type="video/mp4">
             </video>
         </div>
-        <div v-if="(post.comments.length !== 0) || (post.sharedByUsers.length !== 0)" class="post-interacted">
+        <div class="post-interacted">
             <div>
                 <div v-if="post.likedByUsers.length > 0" class="like-count">
                     <SvgIcon :iconName="'like'" />
                     <span v-if="!didLike">{{ post.likedByUsers.length }}</span>
-                    <span v-if="didLike && post.likedByUsers.length !==1">You and {{ post.likedByUsers.length-1 }} other{{ post.likedByUsers.length-1 !== 1 ? 's' : '' }}</span>
-                    <span v-if="didLike && post.likedByUsers.length ===1">You</span>
+                    <span v-if="didLike && post.likedByUsers.length !== 1">You and {{ post.likedByUsers.length - 1 }} other{{
+                        post.likedByUsers.length - 1 !== 1 ? 's' : '' }}</span>
+                    <span v-if="didLike && post.likedByUsers.length === 1">You</span>
                     <!-- it shows 20 random names of those that liked it -->
                 </div>
                 <div v-else>
@@ -69,7 +70,8 @@
                 <RouterLink v-if="post.comments.length > 0" :to="`${getRoutes()}/post/${post._id}`">
                     {{ post.comments.length }} {{ (post.comments.length === 1 ? 'comment' : 'comments') }}
                 </RouterLink>
-                <span v-if="post.sharedByUsers.length !== 0">{{ post.sharedByUsers.length }} {{ (post.sharedByUsers.length === 1 ? 'share' : 'shares') }}</span>
+                <span v-if="post.sharedByUsers.length !== 0">{{ post.sharedByUsers.length }} {{ (post.sharedByUsers.length
+                    === 1 ? 'share' : 'shares') }}</span>
             </div>
         </div>
         <div class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
@@ -83,11 +85,11 @@
                     class="like" />
                 <span>Like</span>
             </div>
-            <RouterLink v-if="paths[paths.length-1]!==post._id" :to="`${getRoutes()}/post/${post._id}`" class="interaction">
+            <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post/${post._id}`" class="interaction">
                 <SvgIcon :iconName="'comment'" />
                 <span>Comment</span>
             </RouterLink>
-            <div v-if="paths[paths.length-1]===post._id" class="interaction">
+            <div v-if="paths[paths.length - 1] === post._id" class="interaction">
                 <SvgIcon :iconName="'comment'" />
                 <span>Comment</span>
             </div>
@@ -129,6 +131,14 @@ export default {
             comments: [],
             didLike: null
         }
+    }, watch: {
+        $route(to, from) {
+            this.updateRoutes()
+            if (to.path !== from.path) {
+                this.loadData()
+            }
+            // console.log(to.path !== from.path)
+        }
     },
     methods: {
         async setUserData(id) {
@@ -163,8 +173,12 @@ export default {
             }
             // console.log('this comments : ',this.comments)
         },
-        setBackground(){
-            if(this.post.background === 'none') return
+        setBackground() {
+            if (this.post.background === 'none') return
+        },
+        loadData() {
+            this.updateRoutes()
+            this.setUserData(this.post.ownerId).then(()=>this.setComments())
         },
         likePost() {
             this.didLike = !this.didLike
@@ -182,9 +196,7 @@ export default {
         CommentSection
     },
     created() {
-        this.setUserData(this.post.ownerId)
-        this.updateRoutes()
-        this.setComments()
+        this.loadData()
     }
 }
 </script>
