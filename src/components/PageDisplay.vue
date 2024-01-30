@@ -34,7 +34,7 @@ export default {
             const currentPath = this.$route.path;
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
-            console.log(this.paths)
+            // console.log(this.paths)
         }
     },
     components: {

@@ -10,7 +10,7 @@
                     </div>
                     <div class="friend-request-list">
                         <div v-for="request in requests" class="friend-request">
-                            <div v-if="request.request._id !== user._id">
+                            <div v-if="request !== undefined && request.request._id !== user._id">
                                 <img :src="request.avatar" />
                                 <div class="request-actions">
                                     <span>{{ request.fullName }}</span>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { toRaw } from 'vue';
 import SideNavbar from '../components/SideNavbar.vue';
 import { userService } from '../services/userService';
 
@@ -43,20 +44,31 @@ export default {
         }
     }, watch: {
         $route(to, from) {
-            this.updateRoutes();
+            this.updateRoutes()
         },
     },
     methods: {
+        filterRequests() {
+            let usefullRequests = []
+            for (let request of this.user.friendRequests) {
+                if (request.type !== 'accepted') {
+                    usefullRequests.push(request)
+                }
+            }
+            return usefullRequests
+        },
         async setRequests() {
-            const requestsPromises = this.user.friendRequests.map(async (request) => {
-                const userDetails = await this.getUser(request._id);
+            const filteredRequests=this.filterRequests()
+            // console.log(filteredRequests)
+            const requestsPromises = filteredRequests.map(async (request) => {
+                const userDetails = await this.getUser(request._id)
                 return {
                     _id: userDetails._id,
                     avatar: userDetails.avatar,
                     fullName: userDetails.fullName,
                     request: { ...request }
-                };
-            });
+                }
+            })
             this.requests = await Promise.all(requestsPromises);
         }, updateRoutes() {
             this.paths = []

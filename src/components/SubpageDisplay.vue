@@ -8,27 +8,37 @@
             <div class="change" v-if="pageType === 'user' && isProfileOfUser !== null">
                 <!-- own profile -->
                 <button v-if="isProfileOfUser" class="btn-add">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
                     <span>Add to story</span>
                 </button>
                 <button v-if="isProfileOfUser">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" />
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" />
                     <span>Edit profile</span>
                 </button>
                 <button v-if="isProfileOfUser">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
                 </button>
                 <!-- other' profile -->
                 <button v-if="!isProfileOfUser">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
                     <span>Message</span>
                 </button>
-                <button v-if="!isProfileOfUser" class="btn-add">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446414/projects/Neckbook/svg%20images/add-friend_2_eomrvo.png'" />
-                    <span>Add friend</span>
+                <button v-if="!isProfileOfUser" class="btn-add" @click="changeFriendrequestStatus()">
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446414/projects/Neckbook/svg%20images/add-friend_2_eomrvo.png'" />
+                    <span v-if="confirmFriend()">friends</span>
+                    <span v-if="!confirmFriend() && (typeOfRequest() === 'none' || (typeOfRequest() === 'denied'))">Add
+                        friend</span>
+                    <span v-if="!confirmFriend() && typeOfRequest() === 'received'">Accept friend</span>
+                    <span v-if="!confirmFriend() && typeOfRequest() === 'sent'">Request sent</span>
                 </button>
                 <button v-if="!isProfileOfUser">
-                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446065/projects/Neckbook/svg%20images/avatar_hs3gdb.png'" />
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446065/projects/Neckbook/svg%20images/avatar_hs3gdb.png'" />
                     <span>View profile</span>
                 </button>
             </div>
@@ -278,13 +288,84 @@ export default {
                 return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704803460/projects/Neckbook/svg%20images/restriction_wxosu6.png'
             }
         },
-        async setProfileState(){
-            this.isProfileOfUser=null
+        async setProfileState() {
+            this.isProfileOfUser = null
             this.loggedinUser = await userService.getLoggedinUser()
+            // console.log(toRaw(this.loggedinUser).friendRequests)
             this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
         },
-        loadData(){
+        loadData() {
             this.setProfileState()
+        },
+        confirmFriend() {
+            return toRaw(this.loggedinUser).friends.includes(toRaw(this.user)._id)
+        },
+        typeOfRequest() { //request types: received - the used received it, send - the user sent it, accepted - they are friends, denied - the request was denied
+            for (let request of toRaw(this.loggedinUser).friendRequests) {
+                if (request._id === toRaw(this.user)._id) {
+                    return request.type
+                }
+            }
+            return 'none'
+        },
+        updateRequest(requests, state = 'denied', counterpartId) {
+            requests.map((request) => {
+                if ((request._id === counterpartId)) {
+                    request.type = state
+                }
+            })
+            return requests
+            // console.log(requests)
+        },
+        changeFriendrequestStatus() {
+            const stateOfFriendship = this.typeOfRequest()
+            if (this.confirmFriend()) {
+                return
+            }
+            if (stateOfFriendship === 'received') {
+                //updating receiver
+                // console.log('updating receiver')
+                const receiverRequests = this.updateRequest((toRaw(this.user)).friendRequests, 'accepted', toRaw(this.loggedinUser)._id)
+                const updatedReceiver = {
+                    ...toRaw(this.user),
+                    friends: [...(toRaw(this.user)).friends, toRaw(this.loggedinUser)._id],
+                    friendRequests: receiverRequests
+                }
+                console.log(updatedReceiver)
+
+                //updating sender
+                // console.log('updating sender')
+                const senderRequests = this.updateRequest((toRaw(this.loggedinUser)).friendRequests, 'accepted', toRaw(this.user)._id)
+                const updatedSender = {
+                    ...toRaw(this.loggedinUser),
+                    friends: [...(toRaw(this.loggedinUser)).friends, toRaw(this.user)._id],
+                    friendRequests: senderRequests
+                }
+                console.log(updatedSender)
+                userService.saveLocalUser(updatedSender)
+                // userService.saveLocalUser({name:'bread'})
+                try {
+                    try {
+                        userService.save(updatedReceiver).then(() => {
+                            try {
+                                userService.save(updatedSender).then(() => {
+                                    return
+                                })
+                            } catch (err) {
+                                console.log('could not update sender : ', err)
+                            }
+                        })
+                    } catch (err) {
+                        console.log('could not update receiver : ', err)
+                    }
+
+                } catch (err) {
+                    console.log('could not save loggedinuser : ', err)
+                }
+            }
+            else {
+                console.log('you cant do that')
+            }
         }
     },
     created() {

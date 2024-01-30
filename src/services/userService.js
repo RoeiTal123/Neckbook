@@ -6,11 +6,19 @@ const STORAGE_KEY = 'user'
 loadData()
 
 async function loadData() {
-    // console.log(await storageService.query(STORAGE_KEY).length === undefined)
-    if (await storageService.query(STORAGE_KEY).length === undefined) {
-        _createUsers()
+    try {
+        const allUsers = await storageService.query(STORAGE_KEY)
 
-        setLoggedinUser(users[0])
+        if (!allUsers || allUsers.length === 0) {
+            await _createUsers()
+            const users = await storageService.query(STORAGE_KEY)
+
+            if (users && users.length > 0) {
+                setLoggedinUser(users[0])
+            }
+        }
+    } catch (error) {
+        console.error('Error loading data:', error)
     }
 }
 
@@ -25,6 +33,7 @@ export const userService = {
     getById,
     remove,
     update,
+    save
 }
 window.userService = userService
 
@@ -46,8 +55,31 @@ async function update(userId) {
     await storageService.put(STORAGE_KEY, user)
 
     // // Handle case in which admin updates other user's details
-    if (getLoggedinUser()._id === user._id) setLoggedinUser(user)
+    // if (getLoggedinUser()._id === user._id) setLoggedinUser(user)
     return user
+}
+
+
+async function save(user) {
+    let savedUser
+    const allUsers = await getUsers()
+    if (userExists(allUsers,user)) {
+        // console.log('old user')
+        savedUser = await storageService.put(STORAGE_KEY, user)
+    } else {
+        // console.log('new user')
+        savedUser = await storageService.post(STORAGE_KEY, user)
+    }
+    return savedUser
+}
+
+function userExists(users, user){
+    for(let existingUser of users){
+        if(existingUser._id === user._id) {
+            return true
+        }
+    }
+    return false
 }
 
 async function login(userCred) {
@@ -91,7 +123,7 @@ const users = [
         posts: ['p001'],
         groups: ['g001'],
         chats: [],
-        friendRequests: [{ _id: 'u003', type: 'pending', createdAt: Date.now() - 600000 }],
+        friendRequests: [{ _id: 'u002', type: 'accepted', createdAt: Date.now() - 600000 },{ _id: 'u003', type: 'received', createdAt: Date.now() - 600000 }],
         friends: ['u002'],
         isAdmin: true,
         createdAt: Date.now()
@@ -110,7 +142,7 @@ const users = [
         posts: ['p002'],
         groups: [],
         chats: [],
-        friendRequests: [],
+        friendRequests: [{ _id: 'u001', type: 'accepted', createdAt: Date.now() - 600000 }],
         friends: ['u001', 'u003'],
         isAdmin: false,
         createdAt: Date.now()
@@ -129,7 +161,7 @@ const users = [
         posts: ['p003'],
         groups: ['g001'],
         chats: [],
-        friendRequests: [{ _id: 'u001', type: 'pending', createdAt: Date.now() - 600000 }],
+        friendRequests: [{ _id: 'u001', type: 'sent', createdAt: Date.now() - 600000 }],
         friends: [],
         isAdmin: true,
         createdAt: Date.now()

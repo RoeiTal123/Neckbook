@@ -142,7 +142,7 @@ export default {
     methods: {
         updateRoutes() {
             this.paths = []
-            const currentPath = this.$route.path;
+            const currentPath = this.$route.path
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
             // console.log(this.paths)
@@ -159,9 +159,9 @@ export default {
                     _id: friendDetails._id,
                     avatar: friendDetails.avatar,
                     fullName: friendDetails.fullName,
-                };
-            });
-            this.friends = await Promise.all(friendsPromises);
+                }
+            })
+            this.friends = await Promise.all(friendsPromises)
         },
         async setGroups() {
             this.groups = []
