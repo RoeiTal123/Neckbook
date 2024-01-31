@@ -1,5 +1,5 @@
 <template>
-    <section v-if="paths[0]" class="page-display">
+    <section v-if="paths[0]" class="page-display" id="page-display">
         <div v-if="paths[0]==='profile' || paths[0]==='friends'">
             <ProfilePage />
         </div>
@@ -52,5 +52,17 @@ export default {
 .page-display {
     flex: 1;
     background-color: #f0f2f5;
+}
+@media (max-width:600px){
+    .page-display{
+        flex: 0;
+        width: 100%;
+        position: absolute;
+        left: 100%;
+        transition: all 0.5s ease-in-out;
+    }
+    .show{
+        left: 0%;
+    }
 }
 </style>

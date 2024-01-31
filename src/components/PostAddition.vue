@@ -3,12 +3,17 @@
     <section class="post-addition">
         <div class="addition-model">
             <span class="header">
-                <div></div>
-                <span>Create post</span>
                 <div>
-                    <div class="x" @click="goBack()">
+                    <div class="x-left" @click="goBack()">
                         <SvgIcon :iconName="'close'" />
                     </div>
+                </div>
+                <span>Create post</span>
+                <div>
+                    <div class="x-right" @click="goBack()">
+                        <SvgIcon :iconName="'close'" />
+                    </div>
+                    <button class="btn-add-post-header" id="btn-add-post-header" @click="createPost()">Post</button>
                 </div>
             </span>
             <div class="post">
@@ -24,7 +29,7 @@
                     </div>
                 </div>
                 <div v-if="user" class="post-add-container">
-                    <input type="text" @input="checkText()" class="post-txt" id="post-txt"
+                    <textarea @input="checkText()" class="post-txt" id="post-txt"
                         :placeholder="`What's on your mind, ${getFirstName()}?`" />
                 </div>
                 <div class="post-effects"><img
@@ -77,8 +82,10 @@ export default {
             const txt = document.getElementById('post-txt').value
             if (txt !== '') {
                 document.getElementById('btn-add-post').classList.add('allowed')
+                document.getElementById('btn-add-post-header').classList.add('allowed')
             } else {
                 document.getElementById('btn-add-post').classList.remove('allowed')
+                document.getElementById('btn-add-post-header').classList.remove('allowed')
             }
         },
         createPost() {
@@ -105,7 +112,7 @@ export default {
                 comments: [],
                 createdAt: Date.now()
             }
-            try{
+            try {
                 postService.save(newPost)
                 console.log('post created')
             } catch (err) {
@@ -133,7 +140,6 @@ export default {
 <style lang="scss">
 .post-addition {
     display: flex;
-    align-items: center;
     justify-content: center;
     position: absolute;
     top: 0;
@@ -180,8 +186,7 @@ export default {
                 height: 3.75em;
                 width: 3.75em;
 
-                &.x {
-                    display: flex;
+                &.x-right {
                     align-items: center;
                     justify-content: center;
                     height: 2.25em;
@@ -197,10 +202,14 @@ export default {
                     }
                 }
 
+                
                 i {
                     height: 1.25em;
                     width: 1.25em;
                 }
+            }
+            .btn-add-post-header {
+                display: none;
             }
         }
 
@@ -237,6 +246,7 @@ export default {
                 border: 0;
                 font-size: 24px;
                 outline: none;
+                resize: none;
             }
 
             .post-effects {
@@ -288,4 +298,91 @@ export default {
         }
 
     }
-}</style>
+}
+
+@media (min-width: 600px) {
+
+    
+    .post-addition {
+        align-items: center;
+        .addition-model{
+            .header{
+                .x-left {
+                    display: none;
+                }
+        
+                .x-right {
+                    display: flex;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .post-addition {
+        .addition-model {
+            max-width: 100%;
+            .header {
+                .btn-add-post-header {
+                    display: block;
+                    background-color: #e4e6eb;
+                    color: #bdc1c5;
+                    padding: 0.75em;
+                    border: 0;
+                    border-radius: 0.5em;
+                    transition: all 1s 0s;
+
+                    &:hover {
+                        cursor: not-allowed;
+                    }
+
+                    &.allowed {
+                        cursor: default;
+                        color: #ffffff;
+                        background-color: #0866ff;
+                    }
+                }
+
+                .x-right {
+                    display: none;
+                }
+
+                .x-left {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 2.25em;
+                    width: 2.25em;
+                    border-radius: 50%;
+                    background-color: #e4e6eb;
+
+                    &:hover {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: #dadce1;
+                    }
+                }
+            }
+
+            .post {
+                height: 100%;
+
+                .post-add-container {
+                    flex: 1;
+
+                    .post-txt {
+                        height: 100%;
+                        margin-block-end: 0;
+                    }
+                }
+
+                .btn-add-post {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+</style>

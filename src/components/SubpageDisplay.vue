@@ -22,11 +22,6 @@
                         :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
                 </button>
                 <!-- other' profile -->
-                <button v-if="!isProfileOfUser">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
-                    <span>Message</span>
-                </button>
                 <button v-if="!isProfileOfUser" class="btn-add" @click="changeFriendrequestStatus()">
                     <img
                         :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446414/projects/Neckbook/svg%20images/add-friend_2_eomrvo.png'" />
@@ -35,6 +30,11 @@
                         friend</span>
                     <span v-if="!confirmFriend() && typeOfRequest() === 'received'">Accept friend</span>
                     <span v-if="!confirmFriend() && typeOfRequest() === 'sent'">Request sent</span>
+                </button>
+                <button v-if="!isProfileOfUser">
+                    <img
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
+                    <span>Message</span>
                 </button>
                 <button v-if="!isProfileOfUser">
                     <img
@@ -348,9 +348,7 @@ export default {
                     try {
                         userService.save(updatedReceiver).then(() => {
                             try {
-                                userService.save(updatedSender).then(() => {
-                                    return
-                                })
+                                userService.save(updatedSender)
                             } catch (err) {
                                 console.log('could not update sender : ', err)
                             }

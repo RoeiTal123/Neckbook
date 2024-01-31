@@ -32,7 +32,7 @@
                         </RouterLink>
                     </div>
                     <!-- groups -->
-                    <div class="group-option group" v-for="group in groups" v-if="groups && !paths[1] && paths[0] === 'groups'">
+                    <div class="group-option group" v-for="group in groups" v-if="groups && !paths[1] && paths[0] === 'groups'" @click="() => toggleDisplay()">
                         <RouterLink :to="`/groups/${group._id}`">
                             <div><img :src="group.coverImgUrl" /></div>
                             <div>
@@ -92,7 +92,7 @@
                             </div>
                         </RouterLink>
                     </div>
-                    <div v-if="friends && paths[1] === 'all'" v-for="friend in friends" class="friend">
+                    <div v-if="friends && paths[1] === 'all'" v-for="friend in friends" class="friend" @click="() => toggleDisplay()">
                         <RouterLink :to="`/friends/all/${friend._id}`">
                             <img :src="friend.avatar" />
                             <div class="friend-actions">
@@ -209,6 +209,9 @@ export default {
                 document.getElementById('side-navbar').style.display = 'flex'
                 document.getElementById('make-visible').classList.remove('visible')
             }
+        },
+        toggleDisplay(){
+            document.getElementById('page-display').classList.toggle('show')
         },
         lastPost(date){
             return utilService.timeAgoString(date)

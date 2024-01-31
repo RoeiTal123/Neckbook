@@ -30,11 +30,11 @@
         </div>
             <div class="navbar">
             <div class="header-middle">
-            <div v-for="link in links" :key="link" class="link" :class="{ 'active-link': paths[0] === link }">
-                <RouterLink :to="`/${link}`">
-                    <SvgIcon :iconName="link" :active="paths[0] === `/${link}`" />
-                </RouterLink>
-            </div>
+                <div v-for="link in links" :key="link" class="link" :class="{ 'active-link': paths[0] === link }">
+                    <RouterLink :to="`/${link}`">
+                        <SvgIcon :iconName="link" :active="paths[0] === link" />
+                    </RouterLink>
+                </div>
         </div>
     </div>
     </nav>
