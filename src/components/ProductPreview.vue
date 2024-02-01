@@ -26,7 +26,6 @@ export default {
 <style lang="scss">
 .product {
     a {
-
         display: flex;
         flex-direction: column;
         justify-content: space-between;

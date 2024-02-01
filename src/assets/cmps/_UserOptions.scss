@@ -14,7 +14,6 @@
         align-items: start;
 
         a {
-            text-decoration: none;
             width: 100%;
             border-radius: 0.25em;
             transition: background-color 1s;
@@ -29,12 +28,6 @@
 
                 .profile {
                     border-radius: 50%;
-                }
-
-                img {
-                    height: 2.25em;
-                    width: 2.25em;
-                    object-fit: cover;
                 }
             }
             &:hover {

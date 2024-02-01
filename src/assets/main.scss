@@ -7,13 +7,23 @@
 
 
 
+@import url('./cmps/_Header.scss');
+
 @import url('./cmps/_CommentPreview.scss');
 
-@import url('./cmps/_Header.scss');
+@import url('./cmps/_PostCreation.scss');
 
 @import url('./cmps/_PostPreview.scss');
 
+@import url('./cmps/_PostAddition.scss');
+
+@import url('./cmps/_UserContacts.scss');
+
 @import url('./cmps/_UserOptions.scss');
+
+@import url('./cmps/_MainPageCenter.scss');
+
+@import url('./cmps/_ProductList.scss');
 
 
 @import url('./cmps/_SubpageDisplay.scss');
@@ -27,12 +37,16 @@
 //pages
 
 @import url('./pages/_ProfilePage.scss');
+
 @import url('./pages/_Friends.scss');
 
 //general settings
 
 @import url('./main/_Font.scss');
+
 @import url('./main/_MainStyling.scss');
+
+@import url('./main/_UniqueClasses.scss');
 
 //skeletons
 

@@ -9,7 +9,10 @@
                 </div>
             </RouterLink>
             <div>
-                <SvgIcon :iconName="'options'" />
+                <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post/${post._id}`"
+                    class="interaction">
+                    <SvgIcon :iconName="'options'" />
+                </RouterLink>
                 <div>
                     <SvgIcon :iconName="'close'" />
                 </div>
@@ -57,8 +60,9 @@
                 <div v-if="post.likedByUsers.length > 0" class="like-count">
                     <SvgIcon :iconName="'like'" />
                     <span v-if="!didLike">{{ post.likedByUsers.length }}</span>
-                    <span v-if="didLike && post.likedByUsers.length !== 1">You and {{ post.likedByUsers.length - 1 }} other{{
-                        post.likedByUsers.length - 1 !== 1 ? 's' : '' }}</span>
+                    <span v-if="didLike && post.likedByUsers.length !== 1">You and {{ post.likedByUsers.length - 1 }}
+                        other{{
+                            post.likedByUsers.length - 1 !== 1 ? 's' : '' }}</span>
                     <span v-if="didLike && post.likedByUsers.length === 1">You</span>
                     <!-- it shows 20 random names of those that liked it -->
                 </div>
@@ -67,7 +71,7 @@
                 </div>
             </div>
             <div class="viewers-interactions">
-                <RouterLink v-if="post.comments.length > 0" :to="`${getRoutes()}/post/${post._id}`">
+                <RouterLink v-if="post.comments.length > 0" :to="`${getRoutes()}/post-preview/${post._id}`">
                     {{ post.comments.length }} {{ (post.comments.length === 1 ? 'comment' : 'comments') }}
                 </RouterLink>
                 <span v-if="post.sharedByUsers.length !== 0">{{ post.sharedByUsers.length }} {{ (post.sharedByUsers.length
@@ -85,7 +89,8 @@
                     class="like" />
                 <span>Like</span>
             </div>
-            <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post/${post._id}`" class="interaction">
+            <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post-preview/${post._id}`"
+                class="interaction">
                 <SvgIcon :iconName="'comment'" />
                 <span>Comment</span>
             </RouterLink>
@@ -178,7 +183,7 @@ export default {
         },
         loadData() {
             this.updateRoutes()
-            this.setUserData(this.post.ownerId).then(()=>this.setComments())
+            this.setUserData(this.post.ownerId).then(() => this.setComments())
         },
         likePost() {
             this.didLike = !this.didLike

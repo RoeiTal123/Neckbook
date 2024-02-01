@@ -19,7 +19,7 @@
             </div>
             <div class="header-right">
                 <div v-for="link in links2" :key="link" class="link" :class="{ 'active-link': paths[0] === link }">
-                    <RouterLink :to="`/${link}`">
+                    <RouterLink class="hovered-area" :to="`/${link}`">
                         <SvgIcon :iconName="link" :active="paths[0] === link" />
                     </RouterLink>
                 </div>
@@ -38,10 +38,10 @@
         </div>
     </div>
     </nav>
-    <div v-if="paths[paths.length-1]==='post'">
+    <div v-if="paths[paths.length-1]==='post' || paths[paths.length-2]==='post'">
         <PostAddition />
     </div>
-    <div v-if="paths[paths.length-2]==='post'">
+    <div v-if="paths[paths.length-2]==='post-preview'">
         <PostDisplay />
     </div>
 </template>

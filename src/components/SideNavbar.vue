@@ -105,7 +105,7 @@
         </div>
     </div>
     <!-- works in all pages -->
-    <button class="btn-make-visible" id="make-visible" @click="changeVisibility()">
+    <button class="btn-make-visible " id="make-visible" @click="changeVisibility()">
                     <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718690/projects/Neckbook/svg%20images/logout_1_dbk2oe.png" />
     </button>
 </template>
