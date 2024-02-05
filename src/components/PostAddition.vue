@@ -28,22 +28,53 @@
                         </select>
                     </div>
                 </div>
-                <div v-if="user" class="post-add-container">
-                    <textarea @input="checkText()" class="post-txt" id="post-txt" :placeholder="`What's on your mind, ${getFirstName()}?`" />
-                </div>
-                <div v-if="addPicture" class="photos-container">
-                    pictures here
+                <div class="user-input">
+                    <div v-if="user" class="post-add-container">
+                        <textarea @input="checkText()" class="post-txt" id="post-txt"
+                            :placeholder="`What's on your mind, ${getFirstName()}?`" />
+                    </div>
+                    <div v-if="addPicture" class="media-interactions">
+                        <div class="media-container">
+                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.imgUrls">
+                                <img :src="photo" />
+                            </div>
+                            <div v-if="oldPost && oldPost.videoUrl">
+                                <video width="100%" controls>
+                                    <source :src="oldPost.videoUrl" type="video/mp4">
+                                </video>
+                            </div>
+                            <div v-if="!oldPost || (oldPost && oldPost.imgUrls.length === 0 && !oldPost.videoUrl)"
+                                class="empty-media-container" id="empty-media-container" @click="triggerHandlingFile()">
+                                <div>
+                                    <img class="normal-emote"
+                                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
+                                </div>
+                                <span>Add Photos/Videos</span>
+                                <span>or drag and drop</span>
+                            </div>
+                            <input class="add-file-input" id="add-file-input" type="file" placeholder="bread"
+                                @change="handleFile()" />
+                            <img id="new-image-here" />
+                        </div>
+                    </div>
                 </div>
                 <div class="post-effects">
-                    <img class="large-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096982/projects/Neckbook/svg%20images/font_1_yybwyi.png" />
-                    <img class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096264/projects/Neckbook/svg%20images/smile_w5wim2.png" />
+                    <img class="large-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096982/projects/Neckbook/svg%20images/font_1_yybwyi.png" />
+                    <img class="medium-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096264/projects/Neckbook/svg%20images/smile_w5wim2.png" />
                 </div>
                 <div class="document-addition">
                     <span>Add to your post</span>
                     <div class="additions">
-                        <img v-if="!oldPost" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png" @click="togglePicture()"/>
-                        <img v-if="oldPost && oldPost.videoUrl === null" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png" @click="togglePicture()"/>
-                        <img v-if="oldPost && oldPost.videoUrl !== null" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706799599/projects/Neckbook/svg%20images/images_d7ag9l.png" />
+                        <img v-if="!oldPost" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png"
+                            @click="togglePicture()" />
+                        <img v-if="oldPost && oldPost.videoUrl === null" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png"
+                            @click="togglePicture()" />
+                        <img v-if="oldPost && oldPost.videoUrl !== null" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706799599/projects/Neckbook/svg%20images/images_d7ag9l.png" />
 
                         <img class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096518/projects/Neckbook/svg%20images/mention_ltdjww.png" />
@@ -52,9 +83,13 @@
                         <img class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096513/projects/Neckbook/svg%20images/gps_1_lqlzpm.png" />
 
-                        <img v-if="!oldPost" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
-                        <img v-if="oldPost && oldPost.imgUrls.length === 0" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
-                        <img v-if="oldPost && oldPost.imgUrls.length !== 0" class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706797706/projects/Neckbook/svg%20images/gif-symbol_1_qkejga.png" title="can add with images or videos" />
+                        <img v-if="!oldPost" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
+                        <img v-if="oldPost && oldPost.imgUrls.length === 0" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
+                        <img v-if="oldPost && oldPost.imgUrls.length !== 0" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706797706/projects/Neckbook/svg%20images/gif-symbol_1_qkejga.png"
+                            title="can add with images or videos" />
                     </div>
                 </div>
                 <button v-if="oldPost" class="btn-add-post" id="btn-add-post" @click="updatePost()">
@@ -78,6 +113,7 @@ import SvgIcon from './SvgIcon.vue';
 import router from '../router';
 import { postService } from '../services/postService';
 import { utilService } from '../services/util.service';
+import { uploadService } from '../services/upload.service';
 import { toRaw } from 'vue';
 
 export default {
@@ -88,7 +124,8 @@ export default {
             oldPost: null,
             background: 'none',
             paths: [],
-            addPicture: false
+            addPicture: false,
+            newImgs:[]
         }
     },
     watch: {
@@ -102,16 +139,20 @@ export default {
             const currentPath = this.$route.path;
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
-            if(this.paths[this.paths.length-2] === 'post'){
+            if (this.paths[this.paths.length - 2] === 'post') {
                 console.log('existing post')
                 this.setPostData()
-            } 
+            }
             // console.log(this.paths)
         },
         async setPostData() {
             this.oldPost = await postService.getById(this.paths[this.paths.length - 1])
             // console.log('this post : ', this.oldPost)
-            document.getElementById('post-txt').value=toRaw(this.oldPost).txt
+            document.getElementById('post-txt').value = toRaw(this.oldPost).txt
+            if (toRaw(this.oldPost).length !== 0) {
+                this.addPicture = true
+            }
+            // console.log('bread',document.getElementById('post-txt'))
         },
         getFirstName() {
             const fullname = this.user.fullName.split(" ")
@@ -127,8 +168,39 @@ export default {
                 document.getElementById('btn-add-post-header').classList.remove('allowed')
             }
         },
-        togglePicture(){
+        togglePicture() {
             this.addPicture = !this.addPicture
+        },
+        triggerHandlingFile() {
+            // Programmatically click the hidden file input
+            document.getElementById('add-file-input').click();
+        },
+        handleFile() {
+            var fileInput = document.getElementById('add-file-input')
+            // var displayedImage = document.getElementById('new-image-here');
+
+            // Check if any file is selected
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0]
+
+                var reader = new FileReader()
+
+                reader.onload = function (e) {
+                    // Set the data URL as the source of the image
+                    // displayedImage.src = e.target.result
+                    document.getElementById('empty-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                    console.log(`url('${URL.createObjectURL(file)}')`)
+                }
+                this.uploadTheImage(fileInput)
+
+                // Read the file as a data URL
+                reader.readAsDataURL(file)
+            }
+        },
+        async uploadTheImage(inputElement){
+            const url = await uploadService.uploadImg(inputElement)
+            console.log(url.secure_url)
+            this.newImgs.push(`${url.secure_url}`)
         },
         createPost() {
             const txt = document.getElementById('post-txt').value
@@ -147,7 +219,7 @@ export default {
                 ownerId: this.user._id,
                 postType: 'normal',
                 postGroupId: null,
-                imgUrls: [],
+                imgUrls: [...this.newImgs],
                 videoUrl: null,
                 likedByUsers: [],
                 sharedByUsers: [],
@@ -172,7 +244,8 @@ export default {
                 console.log('no empty')
                 return
             }
-            const updatedPost = {...toRaw(this.oldPost), txt:txt }
+            const updatedPost = { ...toRaw(this.oldPost), txt: txt}
+            //, imgUrls: (newImgs.length !==0 ) ? [...imgUrls, ...newImgs] : imgUrls
             try {
                 postService.save(updatedPost)
                 console.log('post saved')
@@ -199,6 +272,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
