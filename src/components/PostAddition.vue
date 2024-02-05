@@ -44,7 +44,7 @@
                                 </video>
                             </div>
                             <div v-if="!oldPost || (oldPost && oldPost.imgUrls.length === 0 && !oldPost.videoUrl)"
-                                class="empty-media-container" id="empty-media-container" @click="triggerHandlingFile()">
+                                class="add-media-container" id="add-media-container" @click="triggerHandlingFile()">
                                 <div>
                                     <img class="normal-emote"
                                         src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
@@ -52,9 +52,16 @@
                                 <span>Add Photos/Videos</span>
                                 <span>or drag and drop</span>
                             </div>
+                            <div v-if="(oldPost && oldPost.imgUrls.length >= 0 && !oldPost.videoUrl)"
+                                class="add-media-mini-container" id="add-media-mini-container"
+                                @click="triggerHandlingFile()">
+                                <img class="normal-emote"
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
+                                <span>Add Photos/Videos</span>
+                            </div>
                             <input class="add-file-input" id="add-file-input" type="file" placeholder="bread"
                                 @change="handleFile()" />
-                            <img id="new-image-here" />
+                            <div class="new-image-here" id="new-image-here" />
                         </div>
                     </div>
                 </div>
@@ -125,7 +132,7 @@ export default {
             background: 'none',
             paths: [],
             addPicture: false,
-            newImgs:[]
+            newImgs: []
         }
     },
     watch: {
@@ -149,10 +156,10 @@ export default {
             this.oldPost = await postService.getById(this.paths[this.paths.length - 1])
             // console.log('this post : ', this.oldPost)
             document.getElementById('post-txt').value = toRaw(this.oldPost).txt
-            if (toRaw(this.oldPost).length !== 0) {
+            if (toRaw(this.oldPost.imgUrls).length !== 0) {
                 this.addPicture = true
             }
-            // console.log('bread',document.getElementById('post-txt'))
+            console.log('bread', this.oldPost)
         },
         getFirstName() {
             const fullname = this.user.fullName.split(" ")
@@ -185,19 +192,50 @@ export default {
 
                 var reader = new FileReader()
 
-                reader.onload = function (e) {
-                    // Set the data URL as the source of the image
-                    // displayedImage.src = e.target.result
-                    document.getElementById('empty-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
-                    console.log(`url('${URL.createObjectURL(file)}')`)
+                console.log(this.oldPost)
+                if ((this.oldPost) === null) {
+                    if (toRaw(this.newImgs).length === 0) {
+                        reader.onload = function (e) {
+                            document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                        }
+                    }
+                    else {
+                        reader.onload = function (e) {
+                            document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                            document.getElementById('new-image-here').style.height = '225px'
+                        }
+                    }
+                } else {
+                    reader.onload = function (e) {
+                        document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                        document.getElementById('new-image-here').style.height = '225px'
+                    }
                 }
+                // reader.onload = function (e) {
+                //     // Set the data URL as the source of the image
+                //     // displayedImage.src = e.target.result
+                //     if ((!this.oldPost)) {
+                //         if (!this.newImgs) {
+                //             document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                //         }
+                //         else {
+
+                //             document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                //             document.getElementById('new-image-here').style.height = '225px'
+                //         }
+                //     } else {
+                //         document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                //         document.getElementById('new-image-here').style.height = '225px'
+                //     }
+                //     // console.log(`url('${URL.createObjectURL(file)}')`)
+                // }
                 this.uploadTheImage(fileInput)
 
                 // Read the file as a data URL
                 reader.readAsDataURL(file)
             }
         },
-        async uploadTheImage(inputElement){
+        async uploadTheImage(inputElement) {
             const url = await uploadService.uploadImg(inputElement)
             console.log(url.secure_url)
             this.newImgs.push(`${url.secure_url}`)
@@ -244,7 +282,12 @@ export default {
                 console.log('no empty')
                 return
             }
-            const updatedPost = { ...toRaw(this.oldPost), txt: txt}
+            console.log(this.newImgs)
+            let allImgs = [...this.oldPost.imgUrls]
+            if (toRaw(this.newImgs).length !== 0) {
+                allImgs = allImgs.concat(toRaw(this.newImgs))
+            }
+            const updatedPost = { ...toRaw(this.oldPost), txt: txt, imgUrls: allImgs }
             //, imgUrls: (newImgs.length !==0 ) ? [...imgUrls, ...newImgs] : imgUrls
             try {
                 postService.save(updatedPost)

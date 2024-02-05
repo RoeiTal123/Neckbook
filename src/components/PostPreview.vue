@@ -9,10 +9,13 @@
                 </div>
             </RouterLink>
             <div>
-                <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post/${post._id}`"
+                <!-- <RouterLink v-if="paths[paths.length - 1] !== post._id" :to="`${getRoutes()}/post/${post._id}`"
                     class="interaction">
                     <SvgIcon :iconName="'options'" />
-                </RouterLink>
+                </RouterLink> -->
+                <div v-if="paths[paths.length - 1] !== post._id" class="interaction" @click="goToEditPost()">
+                    <SvgIcon :iconName="'options'" />
+                </div>
                 <div>
                     <SvgIcon :iconName="'close'" />
                 </div>
@@ -119,7 +122,9 @@ import SvgIcon from './SvgIcon.vue';
 import CommentSection from './CommentSection.vue';
 
 import { toRaw } from 'vue';
+
 import { RouterLink } from 'vue-router';
+import router from '../router';
 
 export default {
     props: {
@@ -193,6 +198,13 @@ export default {
                 this.post.likedByUsers = this.post.likedByUsers.filter((id) => id !== this.loggedinUser._id)
             }
             postService.save(this.post)
+        },
+        goToEditPost(){
+            if(toRaw(this.loggedinUser)._id !== toRaw(this.post).ownerId){
+                alert('not your post')
+            } else {
+                router.push(`${this.getRoutes()}/post/${toRaw(this.post)._id}`)
+            }
         }
     },
     components: {
