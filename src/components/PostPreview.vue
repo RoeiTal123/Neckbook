@@ -24,33 +24,18 @@
         <div class="description">
             {{ post.txt }}
         </div>
-        <div v-if="!post.videoUrl" class="post-images">
-            <div v-if="post.imgUrls.length === 1" class="one-image">
-                <img :src="post.imgUrls[0]" @load="loadPreview" />
+        <div v-if="!post.videoUrl" :class="`post-images ${imageCount()}`">
+            <div class="image-container first-image">
+                <img v-if="post.imgUrls[0]" :src="post.imgUrls[0]" />
             </div>
-
-            <div v-if="post.imgUrls.length === 2" class="two-image">
-                <img :src="post.imgUrls[0]" />
-                <img :src="post.imgUrls[1]" @load="loadPreview" />
+            <div class="image-container second-image">
+                <img v-if="post.imgUrls[1]" :src="post.imgUrls[1]" />
             </div>
-
-            <div v-if="post.imgUrls.length === 3" class="three-image">
-                <img :src="post.imgUrls[0]" />
-                <div>
-                    <img :src="post.imgUrls[1]" />
-                    <img :src="post.imgUrls[2]" @load="loadPreview" />
-                </div>
+            <div class="image-container third-image">   
+                <img v-if="post.imgUrls[2]" :src="post.imgUrls[2]" />
             </div>
-
-            <div v-if="post.imgUrls.length >= 4" class="four-image">
-                <div>
-                    <img :src="post.imgUrls[0]" />
-                    <img :src="post.imgUrls[1]" />
-                </div>
-                <div>
-                    <img :src="post.imgUrls[2]" />
-                    <img :src="post.imgUrls[3]" @load="loadPreview" />
-                </div>
+            <div class="image-container fourth-image">
+                <img v-if="post.imgUrls[3]" :src="post.imgUrls[3]" />
             </div>
         </div>
         <div v-else>
@@ -205,6 +190,9 @@ export default {
             } else {
                 router.push(`${this.getRoutes()}/post/${toRaw(this.post)._id}`)
             }
+        },
+        imageCount(){
+            return utilService.spellNumber(toRaw(this.post).imgUrls.length)
         }
     },
     components: {

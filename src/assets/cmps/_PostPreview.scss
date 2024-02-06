@@ -71,68 +71,62 @@
     }
 
     .post-images {
-        max-width: 100%;
+        display: grid;
+        // grid-template-columns: 1fr 1fr;
+        // grid-template-rows: 1fr 1fr;
+        max-width: 680px;
         max-height: 750px;
         overflow-y: hidden;
-        .one-image {
-            img {
-                display: block;
-                max-height: 680px;
-                max-width: 100%;
-                margin: auto;
+
+        .image-container{
+            height: 100%;
+            width: 100%;
+            text-align: center;
+
+            img{
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
             }
         }
 
-        .two-image {
-            display: flex;
-            flex-direction: column;
+        &.zero{
+            display: none;
+        }
 
-            img {
-                display: block;
-                max-height: 50%;
-                max-width: 100%;
-                margin: auto;
+        &.one{
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        &.two{
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr;
+        }
+
+        &.three{
+            grid-template: 
+            'one two'
+            'three three';
+
+            .first-image{
+                grid-area: one;
+            }
+
+            .second-image{
+                grid-area: two;
+            }
+
+            .third-image{
+                grid-area: three;
             }
         }
 
-        .three-image {
-            display: flex;
-            flex-direction: column;
-
-            img {
-                display: block;
-                max-height: 50%;
-                max-width: 100%;
-                margin: auto;
-            }
-
-            div {
-                display: flex;
-
-                img {
-                    display: block;
-                    max-height: 50%;
-                    max-width: 50%;
-                    margin: auto;
-                }
-            }
+        &:not(.zero):not(.one):not(.two):not(.three){
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
         }
 
-        .four-image {
-            display: flex;
-            flex-direction: column;
-
-            div {
-                display: flex;
-
-                img {
-                    display: block;
-                    max-height: 50%;
-                    max-width: 50%;
-                    margin: auto;
-                }
-            }
-        }
     }
 
     .post-interacted {

@@ -24,7 +24,7 @@
                 <!-- other' profile -->
                 <button v-if="!isProfileOfUser" class="btn-add" @click="changeFriendrequestStatus()">
                     <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446414/projects/Neckbook/svg%20images/add-friend_2_eomrvo.png'" />
+                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707231826/projects/Neckbook/svg%20images/add-friend_2_xkmuge.png'" />
                     <span v-if="confirmFriend()">friends</span>
                     <span v-if="!confirmFriend() && (typeOfRequest() === 'none' || (typeOfRequest() === 'denied'))">Add
                         friend</span>

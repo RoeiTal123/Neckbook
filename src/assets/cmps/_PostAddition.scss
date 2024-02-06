@@ -118,10 +118,28 @@
             margin: 0.5em;
 
             .photo-container {
+              position: relative;
+              height: 300px;
               width: 100%;
+              text-align: center;
+              .emote-container {
+                position: relative;
+                left: calc(100% - 39px);
+                top: calc(12px - 100%);
+                padding: 0;
+                height: 27px;
+                width: 27px;
+                .cancel-img {
+                  i {
+                    display: block;
+                    height: 1.25em;
+                    width: 1.25em;
+                  }
+                }
+              }
               img {
+                height: 100%;
                 width: 100%;
-                object-fit: cover;
               }
             }
 
@@ -163,53 +181,54 @@
             }
 
             .add-media-mini-container {
+              display: flex;
+              align-items: center;
+              height: fit-content;
+              width: fit-content;
+              padding: 0.5em;
+              border-radius: 0.5em;
+              gap: 0.5em;
+              background-color: #f7f8fa;
+              background-size: cover;
+              background-position: center;
+              position: absolute;
+              top: 0.75em;
+              left: 0.75em;
+
+              &:hover {
+                cursor: pointer;
+                background-color: #ebecf0;
+              }
+
+              div {
                 display: flex;
+                justify-content: center;
                 align-items: center;
-                height: fit-content;
-                width: fit-content;
-                padding: 0.5em;
-                border-radius: 0.5em;
-                gap: 0.5em;
-                background-color: #f7f8fa;
-                background-size: cover;
-                background-position: center;
-                position: absolute;
-                top: 0.75em;
-                left: 0.75em;
-  
-                &:hover {
-                  cursor: pointer;
-                  background-color: #ebecf0;
-                }
-  
-                div {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 2.5em;
-                  width: 2.5em;
-                  background-color: #e4e6eb;
-                  border-radius: 50%;
-                }
-  
-                :nth-child(2n) {
-                  font-family: "Helvetica-Bold";
-                }
-  
-                :nth-child(3n) {
-                  font-size: 12px;
-                  color: #bcbdc0;
-                }
+                height: 2.5em;
+                width: 2.5em;
+                background-color: #e4e6eb;
+                border-radius: 50%;
+              }
+
+              :nth-child(2n) {
+                font-family: "Helvetica-Bold";
+              }
+
+              :nth-child(3n) {
+                font-size: 12px;
+                color: #bcbdc0;
+              }
             }
 
-            .new-image-here{
-                width: 100%;
-                background-size: cover;
-                background-position: center;
+            .new-image-here {
+              width: 100%;
+              height: 225px;
+              background-size: cover;
+              background-position: center;
             }
 
-            .add-file-input{
-                display: none;
+            .add-file-input {
+              display: none;
             }
           }
         }

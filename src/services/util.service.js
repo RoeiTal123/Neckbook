@@ -17,7 +17,9 @@ export const utilService = {
   checkIfUrlInText,
   cutUrlFromText,
   indexsOfUrl,
-  isTxtOnlySpaces
+  isTxtOnlySpaces,
+  spellNumber,
+  removeCommonElements
 }
 
 export const yearlyMonths = [
@@ -223,21 +225,21 @@ function checkVideoType(fileInput) {
 }
 
 
-function checkIfUrlInText(text){
-  const tester='\^~{}[];@` '
-  if(text.includes('http://')||text.includes('https://')){
-    let secondTester=text.split('/')
-    secondTester=secondTester.splice(2,secondTester.length-2)
-    for (let route of secondTester){
-      for(let character of tester){
-        if(route.includes(character)){
+function checkIfUrlInText(text) {
+  const tester = '\^~{}[];@` '
+  if (text.includes('http://') || text.includes('https://')) {
+    let secondTester = text.split('/')
+    secondTester = secondTester.splice(2, secondTester.length - 2)
+    for (let route of secondTester) {
+      for (let character of tester) {
+        if (route.includes(character)) {
           console.log(`'${character}' is illegal!!!!`)
           return
         } else {
           console.log('pass')
         }
       }
-      if(route.includes('http')||route.includes('https')){
+      if (route.includes('http') || route.includes('https')) {
         console.log(`its illegal!!!!`)
         return
       }
@@ -248,35 +250,115 @@ function checkIfUrlInText(text){
   return false
 }
 
-function cutUrlFromText(text){
-  const startIndex=text.indexOf('http')
-  const helper=text.slice(startIndex,text.length-startIndex+1)
+function cutUrlFromText(text) {
+  const startIndex = text.indexOf('http')
+  const helper = text.slice(startIndex, text.length - startIndex + 1)
   // console.log(startIndex)
-  const endIndex=helper.indexOf(' ')
+  const endIndex = helper.indexOf(' ')
   // console.log(endIndex)
-  const croppedUrl=text.slice(startIndex,endIndex+startIndex)
+  const croppedUrl = text.slice(startIndex, endIndex + startIndex)
   console.log(croppedUrl)
   return croppedUrl
 }
 
-function indexsOfUrl(text){
-  const startIndex=text.indexOf('http')
-  const helper=text.slice(startIndex,text.length-startIndex+1)
+function indexsOfUrl(text) {
+  const startIndex = text.indexOf('http')
+  const helper = text.slice(startIndex, text.length - startIndex + 1)
   // console.log(startIndex)
-  const endIndex=helper.indexOf(' ')
+  const endIndex = helper.indexOf(' ')
   // console.log(endIndex)
-  const croppedUrl=text.slice(startIndex,endIndex+startIndex)
-  return {start:startIndex,end:endIndex}
+  const croppedUrl = text.slice(startIndex, endIndex + startIndex)
+  return { start: startIndex, end: endIndex }
 }
 
-function isTxtOnlySpaces(txt){
-  if(!txt){
+function isTxtOnlySpaces(txt) {
+  if (!txt) {
     return true
   }
-  for(let character of txt){
-    if(character !== ' '){
+  for (let character of txt) {
+    if (character !== ' ') {
       return false;
     }
   }
   return true
+}
+
+function spellNumber(n) {
+  const numberWords = {
+    0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four',
+    5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine',
+    10: 'ten', 11: 'eleven', 12: 'twelve', 13: 'thirteen',
+    14: 'fourteen', 15: 'fifteen', 16: 'sixteen', 17: 'seventeen',
+    18: 'eighteen', 19: 'nineteen', 20: 'twenty', 30: 'thirty',
+    40: 'forty', 50: 'fifty', 60: 'sixty', 70: 'seventy',
+    80: 'eighty', 90: 'ninety'
+  }
+
+  if (n in numberWords) {
+    return numberWords[n]
+  }
+
+  if (n < 100) {
+    return numberWords[Math.floor(n / 10) * 10] + '-' + numberWords[n % 10]
+  }
+
+  if (n < 1000) {
+    const hundreds = numberWords[Math.floor(n / 100)] + ' hundred'
+    const remainder = n % 100
+    if (remainder > 0) {
+      return hundreds + ' and ' + spellNumber(remainder)
+    } else {
+      return hundreds
+    }
+  }
+
+  return "Number out of range"
+}
+
+function removeCommonElements(arr1, arr2) {
+  // Count occurrences of elements in both arrays
+  const count1 = {}
+  const count2 = {}
+
+  // Count occurrences in arr1
+  for (const item of arr1) {
+    count1[item] = (count1[item] || 0) + 1
+  }
+
+  // Count occurrences in arr2
+  for (const item of arr2) {
+    count2[item] = (count2[item] || 0) + 1
+  }
+
+  // Iterate through arr1 in reverse order
+  for (let i = arr1.length - 1; i >= 0; i--) {
+    const item = arr1[i]
+    // Check if item exists in arr2
+    if (count2[item] !== undefined) {
+      // Calculate the minimum occurrences to remove
+      const minToRemove = Math.min(count1[item], count2[item])
+      // Remove minToRemove occurrences of item from both arrays
+      for (let j = 0; j < minToRemove; j++) {
+        arr1.splice(arr1.lastIndexOf(item), 1)
+        arr2.splice(arr2.lastIndexOf(item), 1)
+      }
+      // Update the counts
+      count1[item] -= minToRemove
+      count2[item] -= minToRemove
+      // If no more occurrences in arr1, remove it from the count
+      if (count1[item] === 0) {
+        delete count1[item]
+      }
+      // If no more occurrences in arr2, remove it from the count
+      if (count2[item] === 0) {
+        delete count2[item]
+      }
+    }
+  }
+  if (arr1.length > arr2) {
+    return arr1
+  } else {
+    return arr2
+  }
+  // return [arr1, arr2]
 }

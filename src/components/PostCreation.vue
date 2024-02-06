@@ -5,16 +5,27 @@
             <RouterLink :to="`${fullPath}/post`"><span class="hovered-area">Whats on your mind, {{ user.fullName }}?</span></RouterLink>
         </div>
         <div class="user-actions">
-            <div class="user-action">
-                <img
-                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png" />
-                <span>Photo/Video</span>
-            </div>
+            <RouterLink class="user-action" :to="`${fullPath}/post`">
+                <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707153072/projects/Neckbook/svg%20images/live-video_m89qre.png" />
+                <span>Live video</span>
+            </RouterLink>
+            <RouterLink class="user-action" :to="`${fullPath}/post`">
+                <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png" />
+                <span>Photo/video</span>
+            </RouterLink>
+            <RouterLink class="user-action" :to="`${fullPath}/post`">
+                <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096277/projects/Neckbook/svg%20images/smile_2_ytwacf.png" />
+                <span>Feeling/activity</span>
+            </RouterLink>
+            <!-- <div class="user-action">
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
     props: {
         user: {
@@ -25,7 +36,8 @@ export default {
             type: String,
             required: true
         }
-    }
+    },
+    components: { RouterLink }
 }
 </script>
 

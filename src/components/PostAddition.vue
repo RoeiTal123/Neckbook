@@ -34,16 +34,21 @@
                             :placeholder="`What's on your mind, ${getFirstName()}?`" />
                     </div>
                     <div v-if="addPicture" class="media-interactions">
-                        <div class="media-container">
-                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.imgUrls">
+                        <div class="media-container" id="media-container">
+                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.imgUrls" :id="photo">
                                 <img :src="photo" />
+                                <div class="emote-container" @click="cancelPhoto(photo)">
+                                    <span :class="`cancel-img cancel-img-${photo}`">
+                                        <SvgIcon :iconName="'close'" />
+                                    </span>
+                                </div>
                             </div>
                             <div v-if="oldPost && oldPost.videoUrl">
                                 <video width="100%" controls>
                                     <source :src="oldPost.videoUrl" type="video/mp4">
                                 </video>
                             </div>
-                            <div v-if="!oldPost || (oldPost && oldPost.imgUrls.length === 0 && !oldPost.videoUrl)"
+                            <div v-if="!oldPost || (oldPost && oldPost.imgUrls.length === 0 && !oldPost.videoUrl) || (deletedImgs.length === newImgs.length + this.oldPost.imgUrls.length)"
                                 class="add-media-container" id="add-media-container" @click="triggerHandlingFile()">
                                 <div>
                                     <img class="normal-emote"
@@ -52,7 +57,7 @@
                                 <span>Add Photos/Videos</span>
                                 <span>or drag and drop</span>
                             </div>
-                            <div v-if="(oldPost && oldPost.imgUrls.length >= 0 && !oldPost.videoUrl)"
+                            <div v-if="((oldPost && oldPost.imgUrls.length >= 0 && !oldPost.videoUrl) || (deletedImgs.length !== newImgs.length + this.oldPost.imgUrls.length))"
                                 class="add-media-mini-container" id="add-media-mini-container"
                                 @click="triggerHandlingFile()">
                                 <img class="normal-emote"
@@ -61,7 +66,6 @@
                             </div>
                             <input class="add-file-input" id="add-file-input" type="file" placeholder="bread"
                                 @change="handleFile()" />
-                            <div class="new-image-here" id="new-image-here" />
                         </div>
                     </div>
                 </div>
@@ -84,11 +88,11 @@
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706799599/projects/Neckbook/svg%20images/images_d7ag9l.png" />
 
                         <img class="medium-emote"
-                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096518/projects/Neckbook/svg%20images/mention_ltdjww.png" />
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707234137/projects/Neckbook/svg%20images/mention_wjdl1x.png" />
                         <img class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096277/projects/Neckbook/svg%20images/smile_2_ytwacf.png" />
                         <img class="medium-emote"
-                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096513/projects/Neckbook/svg%20images/gps_1_lqlzpm.png" />
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707234114/projects/Neckbook/svg%20images/gps_1_r6ahhf.png" />
 
                         <img v-if="!oldPost" class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
@@ -132,7 +136,8 @@ export default {
             background: 'none',
             paths: [],
             addPicture: false,
-            newImgs: []
+            newImgs: [],
+            deletedImgs: []
         }
     },
     watch: {
@@ -147,7 +152,7 @@ export default {
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
             if (this.paths[this.paths.length - 2] === 'post') {
-                console.log('existing post')
+                // console.log('existing post')
                 this.setPostData()
             }
             // console.log(this.paths)
@@ -159,7 +164,6 @@ export default {
             if (toRaw(this.oldPost.imgUrls).length !== 0) {
                 this.addPicture = true
             }
-            console.log('bread', this.oldPost)
         },
         getFirstName() {
             const fullname = this.user.fullName.split(" ")
@@ -184,15 +188,13 @@ export default {
         },
         handleFile() {
             var fileInput = document.getElementById('add-file-input')
-            // var displayedImage = document.getElementById('new-image-here');
 
-            // Check if any file is selected
             if (fileInput.files.length > 0) {
                 var file = fileInput.files[0]
-
                 var reader = new FileReader()
-
-                console.log(this.oldPost)
+                var newImgElement = document.createElement('img');
+                newImgElement.classList.add('new-image-here')
+                var mediaContainer = document.getElementById('media-container')
                 if ((this.oldPost) === null) {
                     if (toRaw(this.newImgs).length === 0) {
                         reader.onload = function (e) {
@@ -201,14 +203,20 @@ export default {
                     }
                     else {
                         reader.onload = function (e) {
-                            document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
-                            document.getElementById('new-image-here').style.height = '225px'
+                            newImgElement.src = reader.result
+
+                            newImgElement.alt = 'Description of the image'
+
+                            mediaContainer.appendChild(newImgElement)
                         }
                     }
                 } else {
                     reader.onload = function (e) {
-                        document.getElementById('new-image-here').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
-                        document.getElementById('new-image-here').style.height = '225px'
+                        newImgElement.src = reader.result
+
+                        newImgElement.alt = 'Description of the image'
+
+                        mediaContainer.appendChild(newImgElement)
                     }
                 }
                 // reader.onload = function (e) {
@@ -237,8 +245,13 @@ export default {
         },
         async uploadTheImage(inputElement) {
             const url = await uploadService.uploadImg(inputElement)
-            console.log(url.secure_url)
+            // console.log(url.secure_url)
             this.newImgs.push(`${url.secure_url}`)
+        },
+        cancelPhoto(imgUrl) {
+            // console.log(`delete image ${imgUrl}`)
+            document.getElementById(imgUrl).style.display = 'none'
+            this.deletedImgs.push(imgUrl)
         },
         createPost() {
             const txt = document.getElementById('post-txt').value
@@ -282,13 +295,16 @@ export default {
                 console.log('no empty')
                 return
             }
-            console.log(this.newImgs)
+            // console.log(this.newImgs)
             let allImgs = [...this.oldPost.imgUrls]
             if (toRaw(this.newImgs).length !== 0) {
                 allImgs = allImgs.concat(toRaw(this.newImgs))
             }
-            const updatedPost = { ...toRaw(this.oldPost), txt: txt, imgUrls: allImgs }
-            //, imgUrls: (newImgs.length !==0 ) ? [...imgUrls, ...newImgs] : imgUrls
+            const finalImgs = utilService.removeCommonElements(allImgs, toRaw(this.deletedImgs))
+            // console.log('all images : ',allImgs)
+            // console.log('cancelled imaged : ',toRaw(this.deletedImgs))
+            // console.log('final images : ',finalImgs)
+            const updatedPost = { ...toRaw(this.oldPost), txt: txt, imgUrls: finalImgs }
             try {
                 postService.save(updatedPost)
                 console.log('post saved')
@@ -303,6 +319,7 @@ export default {
         },
     },
     components: {
+        SvgIcon,
         SvgIcon
     },
     async created() {
