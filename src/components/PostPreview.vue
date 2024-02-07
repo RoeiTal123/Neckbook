@@ -24,24 +24,31 @@
         <div class="description">
             {{ post.txt }}
         </div>
-        <div v-if="!post.videoUrl" :class="`post-images ${imageCount()}`">
-            <div class="image-container first-image">
-                <img v-if="post.imgUrls[0]" :src="post.imgUrls[0]" />
+        <div v-if="post.mediaUrls" :class="`post-media ${mediaCount()}`">
+            <div v-if="post.mediaUrls[0]" class="media-container first-media">
+                <video v-if="mediaType(post.mediaUrls[0]) === 'video'" controls>
+                    <source :src="post.mediaUrls[0]" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[0]) === 'image'" :src="post.mediaUrls[0]" />
             </div>
-            <div class="image-container second-image">
-                <img v-if="post.imgUrls[1]" :src="post.imgUrls[1]" />
+            <div v-if="post.mediaUrls[1]" class="media-container second-media">
+                <video v-if="mediaType(post.mediaUrls[1]) === 'video'" controls>
+                    <source :src="post.mediaUrls[1]" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[1]) === 'image'" :src="post.mediaUrls[1]" />
             </div>
-            <div class="image-container third-image">   
-                <img v-if="post.imgUrls[2]" :src="post.imgUrls[2]" />
+            <div v-if="post.mediaUrls[2]" class="media-container third-media">
+                <video v-if="mediaType(post.mediaUrls[2]) === 'video'" controls>
+                    <source :src="post.mediaUrls[2]" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[2]) === 'image'" :src="post.mediaUrls[2]" />
             </div>
-            <div class="image-container fourth-image">
-                <img v-if="post.imgUrls[3]" :src="post.imgUrls[3]" />
+            <div v-if="post.mediaUrls[3]" class="media-container fourth-media">
+                <video v-if="mediaType(post.mediaUrls[3]) === 'video'" controls>
+                    <source :src="post.mediaUrls[3]" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[3]) === 'image'" :src="post.mediaUrls[3]" />
             </div>
-        </div>
-        <div v-else>
-            <video width="100%" controls>
-                <source :src="post.videoUrl" type="video/mp4">
-            </video>
         </div>
         <div class="post-interacted">
             <div>
@@ -59,11 +66,20 @@
                 </div>
             </div>
             <div class="viewers-interactions">
-                <RouterLink v-if="post.comments.length > 0" :to="`${getRoutes()}/post-preview/${post._id}`">
+                <RouterLink v-if="(post.comments.length > 0) && zoomLevel < 1"
+                    :to="`${getRoutes()}/post-preview/${post._id}`">
                     {{ post.comments.length }} {{ (post.comments.length === 1 ? 'comment' : 'comments') }}
                 </RouterLink>
-                <span v-if="post.sharedByUsers.length !== 0">{{ post.sharedByUsers.length }} {{ (post.sharedByUsers.length
-                    === 1 ? 'share' : 'shares') }}</span>
+                <RouterLink v-if="(post.comments.length > 0) && zoomLevel >= 1"
+                    :to="`${getRoutes()}/post-preview/${post._id}`">
+                    {{ post.comments.length }} <img class="small-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707299201/projects/Neckbook/svg%20images/comments_g8l9e0.png" />
+                </RouterLink>
+                <span v-if="(post.sharedByUsers.length !== 0) && zoomLevel < 1">{{ post.sharedByUsers.length }}
+                    {{ (post.sharedByUsers.length === 1 ? 'share' : 'shares') }}</span>
+                <span v-if="(post.sharedByUsers.length !== 0) && zoomLevel >= 1">{{ post.sharedByUsers.length }}
+                    <img class="small-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707299070/projects/Neckbook/svg%20images/forward_1_mgnxu6.png" /></span>
             </div>
         </div>
         <div class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
@@ -124,7 +140,8 @@ export default {
             user: {},
             paths: [],
             comments: [],
-            didLike: null
+            didLike: null,
+            zoomLevel: null
         }
     }, watch: {
         $route(to, from) {
@@ -174,6 +191,7 @@ export default {
         loadData() {
             this.updateRoutes()
             this.setUserData(this.post.ownerId).then(() => this.setComments())
+            this.updateZoomLevel()
         },
         likePost() {
             this.didLike = !this.didLike
@@ -184,15 +202,26 @@ export default {
             }
             postService.save(this.post)
         },
-        goToEditPost(){
-            if(toRaw(this.loggedinUser)._id !== toRaw(this.post).ownerId){
+        goToEditPost() {
+            if (toRaw(this.loggedinUser)._id !== toRaw(this.post).ownerId) {
                 alert('not your post')
             } else {
                 router.push(`${this.getRoutes()}/post/${toRaw(this.post)._id}`)
             }
         },
-        imageCount(){
-            return utilService.spellNumber(toRaw(this.post).imgUrls.length)
+        mediaCount() {
+            return utilService.spellNumber(toRaw(this.post).mediaUrls.length)
+        },
+        mediaType(mediaUrl){
+            const sepMedia=mediaUrl.split('/')
+            // console.log(sepMedia[4])
+            return sepMedia[4]
+        },
+        // videoCount() {
+        //     return utilService.spellNumber(toRaw(this.post).videoUrls.length)
+        // },
+        updateZoomLevel() {
+            this.zoomLevel = utilService.getZoomLevel()
         }
     },
     components: {
@@ -202,6 +231,10 @@ export default {
     },
     created() {
         this.loadData()
+        window.addEventListener('resize', this.updateZoomLevel)
+    },
+    unmounted() {
+        window.removeEventListener('resize', this.updateZoomLevel)
     }
 }
 </script>

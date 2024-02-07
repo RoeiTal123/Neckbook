@@ -70,23 +70,30 @@
         padding-block-start: 1em;
     }
 
-    .post-images {
+    .post-media {
         display: grid;
-        // grid-template-columns: 1fr 1fr;
-        // grid-template-rows: 1fr 1fr;
         max-width: 680px;
-        max-height: 750px;
+        max-height: 600px;
+        height: 100svh;
         overflow-y: hidden;
+        gap: 0.25em;
 
-        .image-container{
-            height: 100%;
-            width: 100%;
-            text-align: center;
+        .media-container{
+            display: flex;
+            align-items: center;
+            overflow: hidden;
 
             img{
                 height: 100%;
                 width: 100%;
                 overflow: hidden;
+            }
+
+            video{
+                height: 100%;
+                width: auto;
+                overflow: hidden;
+                object-fit: cover;
             }
         }
 
@@ -97,11 +104,19 @@
         &.one{
             grid-template-columns: 1fr;
             grid-template-rows: 1fr;
+
+            .media-container{
+                height: 600px;
+            }
         }
 
         &.two{
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr;
+
+            .media-container{
+                height: 600px;
+            }
         }
 
         &.three{
@@ -109,15 +124,19 @@
             'one two'
             'three three';
 
-            .first-image{
+            .media-container{
+                height: 300px;
+            }
+
+            .first-media{
                 grid-area: one;
             }
 
-            .second-image{
+            .second-media{
                 grid-area: two;
             }
 
-            .third-image{
+            .third-media{
                 grid-area: three;
             }
         }
@@ -125,6 +144,10 @@
         &:not(.zero):not(.one):not(.two):not(.three){
             grid-template-columns: 1fr 1fr;
             grid-template-rows: 1fr 1fr;
+
+            .media-container{
+                height: 300px;
+            }
         }
 
     }
@@ -164,6 +187,11 @@
         .viewers-interactions {
             display: flex;
             gap: 0.75em;
+            a{
+                display: flex;
+                align-items: center;
+                gap: 0.5em;
+            }
         }
     }
 

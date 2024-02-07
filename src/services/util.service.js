@@ -19,7 +19,8 @@ export const utilService = {
   indexsOfUrl,
   isTxtOnlySpaces,
   spellNumber,
-  removeCommonElements
+  removeCommonElements,
+  getZoomLevel
 }
 
 export const yearlyMonths = [
@@ -361,4 +362,19 @@ function removeCommonElements(arr1, arr2) {
     return arr2
   }
   // return [arr1, arr2]
+}
+
+function getZoomLevel() {
+  // Get the dimensions of the viewport
+  var viewportWidth = window.innerWidth
+  var viewportHeight = window.innerHeight
+
+  // Get the dimensions of the screen
+  var screenWidth = screen.width
+  var screenHeight = screen.height
+
+  // Calculate the zoom level
+  var zoomLevel = (screenWidth / viewportWidth + screenHeight / viewportHeight) / 2
+
+  return zoomLevel
 }

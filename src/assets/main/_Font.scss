@@ -1,8 +1,17 @@
+// @font-face {
+//     font-family: 'Helvetica';
+//     src: url('src/assets/fonts/Helvetica.ttf') format('truetype');
+// }
+// @font-face {
+//     font-family: 'Helvetica-Bold';
+//     src: url('src/assets/fonts/Helvetica-Bold.ttf') format('truetype');
+// }
+
 @font-face {
     font-family: 'Helvetica';
-    src: url('src/assets/fonts/Helvetica.ttf') format('truetype');
+    src: url('../fonts/Helvetica-2.otf');
 }
 @font-face {
     font-family: 'Helvetica-Bold';
-    src: url('src/assets/fonts/Helvetica-Bold.ttf') format('truetype');
+    src: url('../fonts/Helvetica-Bold-2.otf');
 }

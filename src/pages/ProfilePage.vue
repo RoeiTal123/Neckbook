@@ -142,7 +142,7 @@ export default {
         updatePhotos() {
             this.photos = []
             this.posts.forEach(post => {
-                this.photos.push(...post.imgUrls);
+                this.photos.push(...post.mediaUrls);
             })
         },
         async updateFriends() {

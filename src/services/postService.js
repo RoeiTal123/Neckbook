@@ -87,14 +87,13 @@ function _createPosts() {
         ownerId: "u001",
         postType: 'normal',
         postGroupId: null,
-        imgUrls: [
-          "https://cdn.britannica.com/54/93454-050-5AC49E5E/Spider-Man-Tobey-Maguire-2.jpg",
-          "https://i.insider.com/5d5d70df4afbf9310528d139?width=750&format=jpeg&auto=webp",
-          "https://assets-prd.ignimgs.com/2022/03/18/spidermannowayhomeexclusivefirst10minutesignblogroll-1647047297213-1647633871978.jpeg",
-          "https://www.gamespot.com/a/uploads/scale_medium/1582/15828986/3552444-spider%20train%202.jpg",
-          "https://www.gamespot.com/a/uploads/screen_kubrick/1582/15828986/3552441-hed.jpg"
+        mediaUrls: [
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/spiderman3_yfyuiq.webp",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/spiderman4_mbsmfk.webp",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320132/projects/Neckbook/website-images/spiderman1_l70zgu.jpg",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320285/projects/Neckbook/website-images/spiderman5_vvyewt.jpg",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320332/projects/Neckbook/website-images/spiderman6_dnb4t0.jpg"
         ],
-        videoUrl:null,
         likedByUsers: ['fake id'],
         sharedByUsers: [],
         comments:['c001','c002','c003'],
@@ -107,14 +106,13 @@ function _createPosts() {
         ownerId: "u002",
         postType: 'normal',
         postGroupId: null,
-        imgUrls: [
-          "https://img.freepik.com/premium-vector/cute-robot-mascot-logo-cartoon-character-illustration_8169-227.jpg",
-          "https://img.freepik.com/premium-vector/cute-robot-logo-vector-design-template_612390-492.jpg",
-          "https://img.freepik.com/free-vector/hand-drawn-data-logo-template_23-2149203374.jpg?size=626&ext=jpg&ga=GA1.1.1028445320.1691753202&semt=ais",
-          "https://img.freepik.com/free-vector/cute-bot-say-users-hello-chatbot-greets-online-consultation_80328-195.jpg?size=626&ext=jpg&ga=GA1.1.1028445320.1691753202&semt=ais",
-          "https://img.freepik.com/free-vector/cute-robot-holding-clipboard-cartoon-vector-icon-illustration-science-technology-icon-isolated_138676-5184.jpg?size=626&ext=jpg&ga=GA1.1.1028445320.1691753202&semt=ais"
+        mediaUrls: [
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/robot3_tqijup.avif",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/robot2_khqays.avif",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/robot4_e0vsln.avif",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320131/projects/Neckbook/website-images/robot1_bup7zn.avif",
+          "https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320130/projects/Neckbook/website-images/robot5_ntwepb.avif"
         ],
-        videoUrl:null,
         likedByUsers: [],
         sharedByUsers: ['fake id'],
         comments:[],
@@ -127,8 +125,8 @@ function _createPosts() {
         ownerId: "u003",
         postType: 'group',
         postGroupId: 'g001',
-        imgUrls: [],
-        videoUrl:'https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4',
+        mediaUrls:['https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4',
+        'https://res.cloudinary.com/dqk28z6rq/image/upload/v1703150515/projects/giggler_explore_wic27f.png'],
         likedByUsers: ['fake id'],
         sharedByUsers: ['fake id'],
         comments:[],

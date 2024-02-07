@@ -164,13 +164,13 @@ export default {
         updatePhotos() {
             this.photos = []
             this.posts.forEach(post => {
-                this.photos.push(...post.imgUrls);
+                this.photos.push(...post.mediaUrls);
             })
         },
         updateMedia() {
             this.media = []
             this.posts.forEach(post => {
-                this.media.push(...post.imgUrls)
+                this.media.push(...post.mediaUrls)
                 this.media.push(...post.videoUrl)
             })
         },

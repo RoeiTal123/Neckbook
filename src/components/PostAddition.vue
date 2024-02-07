@@ -35,9 +35,9 @@
                     </div>
                     <div v-if="addPicture" class="media-interactions">
                         <div class="media-container" id="media-container">
-                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.imgUrls" :id="photo">
+                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.mediaUrls" :id="photo">
                                 <img :src="photo" />
-                                <div class="emote-container" @click="cancelPhoto(photo)">
+                                <div class="emote-container" @click="cancelMedia(photo)">
                                     <span :class="`cancel-img cancel-img-${photo}`">
                                         <SvgIcon :iconName="'close'" />
                                     </span>
@@ -48,7 +48,7 @@
                                     <source :src="oldPost.videoUrl" type="video/mp4">
                                 </video>
                             </div>
-                            <div v-if="!oldPost || (oldPost && oldPost.imgUrls.length === 0 && !oldPost.videoUrl) || (deletedImgs.length === newImgs.length + this.oldPost.imgUrls.length)"
+                            <div v-if="!oldPost || (oldPost && oldPost.mediaUrls.length === 0 && !oldPost.videoUrl) || (deletedMedia.length === newMedia.length + this.oldPost.mediaUrls.length)"
                                 class="add-media-container" id="add-media-container" @click="triggerHandlingFile()">
                                 <div>
                                     <img class="normal-emote"
@@ -57,7 +57,7 @@
                                 <span>Add Photos/Videos</span>
                                 <span>or drag and drop</span>
                             </div>
-                            <div v-if="((oldPost && oldPost.imgUrls.length >= 0 && !oldPost.videoUrl) || (deletedImgs.length !== newImgs.length + this.oldPost.imgUrls.length))"
+                            <div v-if="((oldPost && oldPost.mediaUrls.length >= 0 && !oldPost.videoUrl) || (oldPost && deletedMedia.length !== newMedia.length + this.oldPost.mediaUrls.length))"
                                 class="add-media-mini-container" id="add-media-mini-container"
                                 @click="triggerHandlingFile()">
                                 <img class="normal-emote"
@@ -96,9 +96,9 @@
 
                         <img v-if="!oldPost" class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
-                        <img v-if="oldPost && oldPost.imgUrls.length === 0" class="medium-emote"
+                        <img v-if="oldPost && oldPost.mediaUrls.length === 0" class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706106224/projects/Neckbook/svg%20images/gif-symbol_r2lrkl.png" />
-                        <img v-if="oldPost && oldPost.imgUrls.length !== 0" class="medium-emote"
+                        <img v-if="oldPost && oldPost.mediaUrls.length !== 0" class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706797706/projects/Neckbook/svg%20images/gif-symbol_1_qkejga.png"
                             title="can add with images or videos" />
                     </div>
@@ -136,8 +136,8 @@ export default {
             background: 'none',
             paths: [],
             addPicture: false,
-            newImgs: [],
-            deletedImgs: []
+            newMedia: [],
+            deletedMedia: [],
         }
     },
     watch: {
@@ -161,7 +161,7 @@ export default {
             this.oldPost = await postService.getById(this.paths[this.paths.length - 1])
             // console.log('this post : ', this.oldPost)
             document.getElementById('post-txt').value = toRaw(this.oldPost).txt
-            if (toRaw(this.oldPost.imgUrls).length !== 0) {
+            if (toRaw(this.oldPost.mediaUrls).length !== 0) {
                 this.addPicture = true
             }
         },
@@ -191,23 +191,51 @@ export default {
 
             if (fileInput.files.length > 0) {
                 var file = fileInput.files[0]
+                var fileType = file.type
+
                 var reader = new FileReader()
                 var newImgElement = document.createElement('img');
-                newImgElement.classList.add('new-image-here')
+                var newVideoElement = document.createElement('video');
                 var mediaContainer = document.getElementById('media-container')
+                newImgElement.classList.add('new-image-here')
+                newVideoElement.classList.add('new-video-here')
+
                 if ((this.oldPost) === null) {
-                    if (toRaw(this.newImgs).length === 0) {
-                        reader.onload = function (e) {
-                            document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                    if (fileType.startsWith('video/')) {
+                        if (toRaw(this.newMedia).length === 0) {
+                            reader.onload = function (e) {
+                                // document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                                document.getElementById('add-media-container').src = URL.createObjectURL(file)
+                            }
                         }
-                    }
-                    else {
-                        reader.onload = function (e) {
-                            newImgElement.src = reader.result
+                        else {
+                            reader.onload = function (e) {
+                                newVideoElement.src = reader.result
 
-                            newImgElement.alt = 'Description of the image'
+                                newVideoElement.alt = 'Description of the image'
 
-                            mediaContainer.appendChild(newImgElement)
+                                newVideoElement.autoplay = true
+                                newVideoElement.controls = true
+                                newVideoElement.loop = true
+                                newVideoElement.muted = true
+
+                                mediaContainer.appendChild(newVideoElement)
+                            }
+                        }
+                    } else {
+                        if (toRaw(this.newMedia).length === 0) {
+                            reader.onload = function (e) {
+                                document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
+                            }
+                        }
+                        else {
+                            reader.onload = function (e) {
+                                newImgElement.src = reader.result
+
+                                newImgElement.alt = 'Description of the image'
+
+                                mediaContainer.appendChild(newImgElement)
+                            }
                         }
                     }
                 } else {
@@ -223,7 +251,7 @@ export default {
                 //     // Set the data URL as the source of the image
                 //     // displayedImage.src = e.target.result
                 //     if ((!this.oldPost)) {
-                //         if (!this.newImgs) {
+                //         if (!this.newMedia) {
                 //             document.getElementById('add-media-container').style.backgroundImage = `url('${URL.createObjectURL(file)}')`
                 //         }
                 //         else {
@@ -237,7 +265,12 @@ export default {
                 //     }
                 //     // console.log(`url('${URL.createObjectURL(file)}')`)
                 // }
-                this.uploadTheImage(fileInput)
+                console.log('fileinput',fileInput)
+                if (fileType.startsWith('video/')){
+                    this.uploadTheVideo(fileInput) 
+                } else if (fileType.startsWith('image/')){
+                    this.uploadTheImage(fileInput) 
+                }
 
                 // Read the file as a data URL
                 reader.readAsDataURL(file)
@@ -246,12 +279,17 @@ export default {
         async uploadTheImage(inputElement) {
             const url = await uploadService.uploadImg(inputElement)
             // console.log(url.secure_url)
-            this.newImgs.push(`${url.secure_url}`)
+            this.newMedia.push(`${url.secure_url}`)
         },
-        cancelPhoto(imgUrl) {
-            // console.log(`delete image ${imgUrl}`)
-            document.getElementById(imgUrl).style.display = 'none'
-            this.deletedImgs.push(imgUrl)
+        async uploadTheVideo(inputElement) {
+            const url = await uploadService.uploadVideo(inputElement)
+            // console.log(url.secure_url)
+            this.newMedia.push(`${url.secure_url}`)
+        },
+        cancelMedia(mediaUrl) {
+            // console.log(`delete image ${mediaUrl}`)
+            document.getElementById(mediaUrl).style.display = 'none'
+            this.deletedMedia.push(mediaUrl)
         },
         createPost() {
             const txt = document.getElementById('post-txt').value
@@ -270,8 +308,7 @@ export default {
                 ownerId: this.user._id,
                 postType: 'normal',
                 postGroupId: null,
-                imgUrls: [...this.newImgs],
-                videoUrl: null,
+                mediaUrls: [...this.newMedia],
                 likedByUsers: [],
                 sharedByUsers: [],
                 comments: [],
@@ -295,16 +332,16 @@ export default {
                 console.log('no empty')
                 return
             }
-            // console.log(this.newImgs)
-            let allImgs = [...this.oldPost.imgUrls]
-            if (toRaw(this.newImgs).length !== 0) {
-                allImgs = allImgs.concat(toRaw(this.newImgs))
+            // console.log(this.newMedia)
+            let allMedia = [...this.oldPost.mediaUrls,...this.newMedia]
+            if (toRaw(this.newMedia).length !== 0) {
+                allMedia = allMedia.concat(toRaw(this.newMedia))
             }
-            const finalImgs = utilService.removeCommonElements(allImgs, toRaw(this.deletedImgs))
-            // console.log('all images : ',allImgs)
-            // console.log('cancelled imaged : ',toRaw(this.deletedImgs))
-            // console.log('final images : ',finalImgs)
-            const updatedPost = { ...toRaw(this.oldPost), txt: txt, imgUrls: finalImgs }
+            const finalMedia = utilService.removeCommonElements([...allMedia], [...toRaw(this.deletedMedia)])
+            // console.log('all images : ',allMedia)
+            // console.log('cancelled imaged : ',toRaw(this.deletedMedia))
+            // console.log('final images : ',finalMedia)
+            const updatedPost = { ...toRaw(this.oldPost), txt: txt, mediaUrls: finalMedia }
             try {
                 postService.save(updatedPost)
                 console.log('post saved')
