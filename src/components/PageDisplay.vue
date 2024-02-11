@@ -1,14 +1,17 @@
 <template>
     <section v-if="paths[0]" class="page-display" id="page-display">
-        <div v-if="paths[0]==='profile' || paths[0]==='friends'">
+        <section v-if="paths[0] === 'profile' || paths[0] === 'friends'">
             <ProfilePage />
-        </div>
-        <div v-if="paths[0]==='marketplace'">
+        </section>
+        <section v-if="paths[0] === 'marketplace'">
             market
-        </div>
-        <div v-if="paths[0]==='groups'">
+        </section>
+        <section v-if="paths[0] === 'groups'">
             <GroupDisplay />
-        </div>
+        </section>
+        <section v-if="paths[0] === 'messenger'">
+            <ChatDisplay />
+        </section>
     </section>
 </template>
 
@@ -16,6 +19,7 @@
 
 import ProfilePage from '../pages/ProfilePage.vue';
 import GroupDisplay from './GroupDisplay.vue';
+import ChatDisplay from './ChatDisplay.vue';
 // import Marketplace from '../pages/Marketplace.vue';
 
 export default {
@@ -38,10 +42,10 @@ export default {
         }
     },
     components: {
-    ProfilePage,
-    GroupDisplay,
-    GroupDisplay
-},
+        ProfilePage,
+        GroupDisplay,
+        ChatDisplay
+    },
     created() {
         this.updateRoutes()
     }
@@ -52,16 +56,23 @@ export default {
 .page-display {
     flex: 1;
     background-color: #f0f2f5;
+
+    section {
+        height: 100%;
+    }
 }
-@media (max-width:600px){
-    .page-display{
+
+@media (max-width:600px) {
+    .page-display {
         flex: 0;
         width: 100%;
         position: absolute;
         left: 100%;
         transition: all 0.5s ease-in-out;
+
     }
-    .show{
+
+    .show {
         left: 0%;
     }
 }

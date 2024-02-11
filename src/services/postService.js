@@ -5,16 +5,17 @@ const STORAGE_KEY = 'post'
 
 loadData()
 
-async function loadData(){
-    // console.log(await storageService.query(STORAGE_KEY).length===undefined)
-    if(await storageService.query(STORAGE_KEY).length===undefined){
-      _createPosts()
-    }
+async function loadData() {
+  // console.log(await storageService.query(STORAGE_KEY).length===undefined)
+  if (await storageService.query(STORAGE_KEY).length === undefined) {
+    _createPosts()
+  }
 }
 
 export const postService = {
   query,
   getById,
+  getIdOfMediaBySrc,
   save,
   remove,
   getDefaultFilter,
@@ -45,14 +46,30 @@ function getById(postId) {
   return storageService.get(STORAGE_KEY, postId)
 }
 
+async function getIdOfMediaBySrc(mediaSrc) {
+  const allPosts = await query()
+  for (let post of allPosts) {
+    for (let media of post.mediaUrls) {
+      // console.log(media.src)
+      if(media.src){
+        if (media.src === mediaSrc) {
+          // console.log(media.id)
+          return await media.id
+        }
+      }
+    }
+  }
+  return 'no id'
+}
+
 async function remove(postId) {
   await storageService.remove(STORAGE_KEY, postId)
 }
 
 async function save(post) {
   let savedPost
-  const allPosts=await query()
-  if (postExists(allPosts,post)) {
+  const allPosts = await query()
+  if (postExists(allPosts, post)) {
     savedPost = await storageService.put(STORAGE_KEY, post)
   } else {
     // post.owner = userService.getLoggedinUser()
@@ -61,11 +78,11 @@ async function save(post) {
   return savedPost
 }
 
-function postExists(posts, post){
-  for(let existingPost of posts){
-      if(existingPost._id === post._id) {
-          return true
-      }
+function postExists(posts, post) {
+  for (let existingPost of posts) {
+    if (existingPost._id === post._id) {
+      return true
+    }
   }
   return false
 }
@@ -80,7 +97,7 @@ function _createPosts() {
   let posts = utilService.loadFromStorage(STORAGE_KEY)
   if (!posts || !posts.length) {
     posts = [
-        {
+      {
         _id: "p001",
         txt: "I am actually the real Spiderman...",
         background: 'none',
@@ -96,7 +113,7 @@ function _createPosts() {
         ],
         likedByUsers: ['fake id'],
         sharedByUsers: [],
-        comments:['c001','c002','c003'],
+        comments: ['c001', 'c002', 'c003'],
         createdAt: Date.now()
       },
       {
@@ -115,7 +132,7 @@ function _createPosts() {
         ],
         likedByUsers: [],
         sharedByUsers: ['fake id'],
-        comments:[],
+        comments: [],
         createdAt: Date.now()
       },
       {
@@ -125,11 +142,11 @@ function _createPosts() {
         ownerId: "u003",
         postType: 'group',
         postGroupId: 'g001',
-        mediaUrls:['https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4',
-        'https://res.cloudinary.com/dqk28z6rq/image/upload/v1703150515/projects/giggler_explore_wic27f.png'],
+        mediaUrls: ['https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4',
+          'https://res.cloudinary.com/dqk28z6rq/image/upload/v1703150515/projects/giggler_explore_wic27f.png'],
         likedByUsers: ['fake id'],
         sharedByUsers: ['fake id'],
-        comments:[],
+        comments: [],
         createdAt: Date.now()
       }
     ]

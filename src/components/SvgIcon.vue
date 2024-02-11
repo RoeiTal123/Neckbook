@@ -19,7 +19,7 @@ export default {
     methods: {
         setIcon() {
             if(this.active){
-                return svgService.getIcon(this.iconName+'selected')
+                return svgService.getIcon(this.iconName+'Selected')
             }else {
                 return svgService.getIcon(this.iconName)
             }

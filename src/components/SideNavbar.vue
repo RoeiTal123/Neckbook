@@ -23,16 +23,20 @@
                         <SvgIcon :iconName="'settings'" />
                     </div>
                 </div>
+                <!-- messenger -->
                 <div class="options">
                     <!-- friends -->
-                    <div class="main friend-option" v-if="(paths[0] !== 'groups')">
+                    <div class="main friend-option" v-if="(paths[0] === 'friends')">
                         <RouterLink :to="`/friends`" class="bread">
-                            <div><img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" /></div>
+                            <div><img
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" />
+                            </div>
                             <span>Home</span>
                         </RouterLink>
                     </div>
                     <!-- groups -->
-                    <div class="group-option group" v-for="group in groups" v-if="groups && !paths[1] && paths[0] === 'groups'" @click="() => toggleDisplay()">
+                    <div class="group-option group" v-for="group in groups"
+                        v-if="groups && !paths[1] && paths[0] === 'groups'" @click="() => toggleDisplay()">
                         <RouterLink :to="`/groups/${group._id}`">
                             <div><img :src="group.coverImgUrl" /></div>
                             <div>
@@ -44,14 +48,49 @@
                     <!-- friends -->
                     <div class="friend-option" v-if="(paths[0] === 'friends')">
                         <RouterLink :to="`/friends/requests`">
-                            <div><img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" /></div>
+                            <div><img
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" />
+                            </div>
                             <span>Friend requests</span>
                         </RouterLink>
                         <RouterLink :to="`/friends/all`">
-                            <div><img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" /></div>
+                            <div><img
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" />
+                            </div>
                             <span>All friends</span>
                         </RouterLink>
                     </div>
+                    <!-- messenger -->
+
+                </div>
+            </div>
+            <div class="header" v-if="(paths[0] === 'messenger')">
+                <span>Chats </span>
+                <section>
+                    <div>
+                        <SvgIcon :iconName="'options'" />
+                    </div>
+                    <div>
+                        <RouterLink :to="'/messenger/new'">
+                            <SvgIcon :iconName="'newChat'" />
+                        </RouterLink>
+                    </div>
+                </section>
+            </div>
+            <div class="options">
+                <div class="chat-option" v-for="chat in chats" v-if="chats && paths[0] === 'messenger'"
+                    @click="() => toggleDisplay()">
+                    <RouterLink :to="`/messenger/${chat._id}`">
+                        <img v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
+                        <img v-if="!chat.coverImgUrl"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707407122/projects/Neckbook/svg%20images/chat_jmmgsp.png" />
+                        <div>
+                            <span v-if="chat.name">{{ chat.name }}</span>
+                            <span v-if="!chat.name">Chatroom</span>
+                            <span><span>{{ chat.lastMessage.txt }}</span><span>{{ lastComment(chat.lastMessage.createdAt)
+                            }}</span></span>
+                        </div>
+                    </RouterLink>
                 </div>
             </div>
             <!-- groups -->
@@ -61,10 +100,12 @@
                     <span v-if="group.name !== ''">{{ group.name }}</span>
                     <span v-else>group name</span>
                     <span><img class="state" :src="getGroupStatus()" />
-                    {{ group.groupType }} group · {{ group.membersCount }} member{{ group.membersCount > 1 ? 's' : ''}}</span>
+                        {{ group.groupType }} group · {{ group.membersCount }} member{{ group.membersCount > 1 ? 's' :
+                            '' }}</span>
                 </div>
                 <button @click="changeVisibility()">
-                    <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718571/projects/Neckbook/svg%20images/exit_ak4pzg.png" />
+                    <img
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718571/projects/Neckbook/svg%20images/exit_ak4pzg.png" />
                 </button>
             </div>
             <!-- friends -->
@@ -72,7 +113,8 @@
                 <div class="options">
                     <div class="main friend-option">
                         <RouterLink :to="`/friends`" class="bread">
-                            <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704376597/projects/Neckbook/svg%20images/back_dta0ko.png" />
+                            <img
+                                src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704376597/projects/Neckbook/svg%20images/back_dta0ko.png" />
                             <section>
                                 <span>{{ paths[0] }}</span>
                                 <span>{{ paths[1] }}</span>
@@ -92,7 +134,8 @@
                             </div>
                         </RouterLink>
                     </div>
-                    <div v-if="friends && paths[1] === 'all'" v-for="friend in friends" class="friend" @click="() => toggleDisplay()">
+                    <div v-if="friends && paths[1] === 'all'" v-for="friend in friends" class="friend"
+                        @click="() => toggleDisplay()">
                         <RouterLink :to="`/friends/all/${friend._id}`">
                             <img :src="friend.avatar" />
                             <div class="friend-actions">
@@ -106,15 +149,23 @@
     </div>
     <!-- works in all pages -->
     <button class="btn-make-visible " id="make-visible" @click="changeVisibility()">
-                    <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718690/projects/Neckbook/svg%20images/logout_1_dbk2oe.png" />
+        <img
+            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718690/projects/Neckbook/svg%20images/logout_1_dbk2oe.png" />
     </button>
 </template>
 
 <script>
 
-import { groupService } from '../services/groupService';
-import { utilService } from '../services/util.service';
-import SvgIcon from './SvgIcon.vue';
+import { userService } from '../services/userService'
+import { groupService } from '../services/groupService'
+import { chatService } from '../services/chatService'
+import { messageService } from '../services/messageService'
+import { utilService } from '../services/util.service'
+
+import SvgIcon from './SvgIcon.vue'
+
+import { toRaw } from 'vue'
+import { RouterLink } from 'vue-router'
 
 export default {
     props: {
@@ -129,11 +180,13 @@ export default {
             loggedInUser: {},
             friends: [],
             groups: [],
-            group: {}
+            group: {},
+            chats: []
         }
     },
     components: {
-        SvgIcon
+        SvgIcon,
+        RouterLink
     }, watch: {
         $route(to, from) {
             this.loadData()
@@ -166,7 +219,7 @@ export default {
         async setGroups() {
             this.groups = []
             const groupsPromises = this.loggedInUser.groups.map(async (groupId) => {
-                const groupDetails = await groupService.getById(groupId);
+                const groupDetails = await groupService.getById(groupId)
                 const isAdmin = groupDetails.admins.includes(this.loggedInUser._id)
                 return {
                     _id: groupDetails._id,
@@ -176,9 +229,44 @@ export default {
                     groupType: groupDetails.groupType,
                     lastPostAt: groupDetails.lastPostAt,
                     isAdmin
-                };
-            });
+                }
+            })
             this.groups = await Promise.all(groupsPromises)
+        },
+        async setChats() {
+            this.chats = []
+            const chatsPromises = this.loggedInUser.chats.map(async (chatId) => {
+                const chatDetails = await chatService.getById(chatId)
+                const chatType = chatDetails.chatType
+                var idOfSecondUser = null
+                if (chatType === 'personal') {
+                    const indexOfUser = chatDetails.usersInChat.findIndex(userId => userId === toRaw(this.loggedInUser)._id)
+                    idOfSecondUser = (indexOfUser === 0) ? chatDetails.usersInChat[1] : chatDetails.usersInChat[0]
+                }
+                var coverOfChat
+                var nameOfChat
+                var lastMessage
+                if (chatDetails.coverImgUrl) coverOfChat = chatDetails.coverImgUrl
+                if (chatDetails.chatName) nameOfChat = chatDetails.chatName
+                if (idOfSecondUser !== null) {
+                    const secondUser = await userService.getById(idOfSecondUser)
+                    coverOfChat = secondUser.avatar
+                    nameOfChat = secondUser.fullName
+                }
+                const lastMessageId = chatDetails.messages[chatDetails.messages.length - 1]
+                lastMessage = await messageService.getById(lastMessageId)
+                const ownerOfLastMessage = await userService.getById(lastMessage.messagerId)
+
+                return {
+                    _id: chatDetails._id,
+                    coverImgUrl: coverOfChat,
+                    name: nameOfChat,
+                    chatType: chatDetails.chatType,
+                    lastMessage: { messagerName: ownerOfLastMessage.fullName, txt: lastMessage.txt, createdAt: lastMessage.createdAt }
+                }
+            })
+            this.chats = await Promise.all(chatsPromises)
+            // console.log(this.chats)
         },
         replaceImage() {
             var img = document.getElementById('group-cover')
@@ -210,11 +298,14 @@ export default {
                 document.getElementById('make-visible').classList.remove('visible')
             }
         },
-        toggleDisplay(){
+        toggleDisplay() {
             document.getElementById('page-display').classList.toggle('show')
         },
-        lastPost(date){
+        lastPost(date) {
             return utilService.timeAgoString(date)
+        },
+        lastComment(date) {
+            return utilService.timeString(date)
         },
         loadData() {
             this.updateRoutes()
@@ -225,6 +316,7 @@ export default {
                         this.updateGroup()
                     }
                 })
+                this.setChats()
             })
         }
     },

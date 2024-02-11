@@ -67,7 +67,12 @@ const router = createRouter({
     {
       path: '/messenger',
       name: 'messenger',
-      component: Messenger
+      component: Messenger,
+      children: [{
+        path: ':id',
+        name: 'chat-display',
+        component: PageDisplay
+      }]
     },
     {
       path: '/groups',

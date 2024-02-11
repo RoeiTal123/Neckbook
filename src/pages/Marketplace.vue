@@ -3,8 +3,8 @@
 
         <SideNavbar />
 
-        <div v-if="products.length!==0" class="product-list-container">
-            <ProductList :products="products"/>
+        <div v-if="products.length !== 0" class="product-list-container">
+            <ProductList :products="products" />
         </div>
         <!-- <PageDisplay /> -->
         <router-view></router-view>
@@ -21,15 +21,16 @@ export default {
     data() {
         return {
             paths: [],
-            products:[]
+            products: []
         }
     },
     components: {
-    SvgIcon,
-    SideNavbar,
-    PageDisplay,
-    ProductList
-}, watch: {
+        SvgIcon,
+        SideNavbar,
+        PageDisplay,
+        ProductList
+    }, 
+    watch: {
         $route(to, from) {
             // Your custom logic or function to be executed on each route change
             // console.log('Route is changing from', from.fullPath, 'to', to.fullPath);
@@ -37,7 +38,8 @@ export default {
             // Call your custom function or perform actions here
             this.updateRoutes();
         },
-    }, methods: {
+    }, 
+    methods: {
         updateRoutes() {
             this.paths = []
             const currentPath = this.$route.path;
@@ -45,11 +47,11 @@ export default {
             this.paths = this.paths.slice(1, this.paths.length)
             // console.log(this.paths)
         },
-        async retrieveProducts(){
-            this.products=[]
+        async retrieveProducts() {
+            this.products = []
             this.products = await productService.query()
         },
-        loadData(){
+        loadData() {
             this.updateRoutes()
             this.retrieveProducts()
         }
@@ -68,7 +70,7 @@ export default {
     background-color: #f0f2f5;
     position: relative;
 
-    .product-list-container{
+    .product-list-container {
         display: flex;
         flex: 1;
         padding: 2em;

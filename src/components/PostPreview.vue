@@ -25,25 +25,52 @@
             {{ post.txt }}
         </div>
         <div v-if="post.mediaUrls" :class="`post-media ${mediaCount()}`">
-            <div v-if="post.mediaUrls[0]" class="media-container first-media">
+            <div v-if="post.mediaUrls[0] && post.mediaUrls[0].src" class="media-container first-media">
+                <video v-if="mediaType(post.mediaUrls[0].src) === 'video'" controls>
+                    <source :src="post.mediaUrls[0].src" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[0].src) === 'image'" :src="post.mediaUrls[0].src" />
+            </div>
+            <div v-if="post.mediaUrls[0] && !post.mediaUrls[0].src" class="media-container first-media">
                 <video v-if="mediaType(post.mediaUrls[0]) === 'video'" controls>
                     <source :src="post.mediaUrls[0]" type="video/mp4">
                 </video>
                 <img v-if="mediaType(post.mediaUrls[0]) === 'image'" :src="post.mediaUrls[0]" />
             </div>
-            <div v-if="post.mediaUrls[1]" class="media-container second-media">
+
+            <div v-if="post.mediaUrls[1] && post.mediaUrls[1].src" class="media-container second-media">
+                <video v-if="mediaType(post.mediaUrls[1].src) === 'video'" controls>
+                    <source :src="post.mediaUrls[1].src" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[1].src) === 'image'" :src="post.mediaUrls[1].src" />
+            </div>
+            <div v-if="post.mediaUrls[1] && !post.mediaUrls[1].src" class="media-container second-media">
                 <video v-if="mediaType(post.mediaUrls[1]) === 'video'" controls>
                     <source :src="post.mediaUrls[1]" type="video/mp4">
                 </video>
                 <img v-if="mediaType(post.mediaUrls[1]) === 'image'" :src="post.mediaUrls[1]" />
             </div>
-            <div v-if="post.mediaUrls[2]" class="media-container third-media">
+
+            <div v-if="post.mediaUrls[2] && post.mediaUrls[2].src" class="media-container third-media">
+                <video v-if="mediaType(post.mediaUrls[2].src) === 'video'" controls>
+                    <source :src="post.mediaUrls[2].src" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[2].src) === 'image'" :src="post.mediaUrls[2].src" />
+            </div>
+            <div v-if="post.mediaUrls[2] && !post.mediaUrls[2].src" class="media-container third-media">
                 <video v-if="mediaType(post.mediaUrls[2]) === 'video'" controls>
                     <source :src="post.mediaUrls[2]" type="video/mp4">
                 </video>
                 <img v-if="mediaType(post.mediaUrls[2]) === 'image'" :src="post.mediaUrls[2]" />
             </div>
-            <div v-if="post.mediaUrls[3]" class="media-container fourth-media">
+
+            <div v-if="post.mediaUrls[3] && post.mediaUrls[3].src" class="media-container fourth-media">
+                <video v-if="mediaType(post.mediaUrls[3].src) === 'video'" controls>
+                    <source :src="post.mediaUrls[3].src" type="video/mp4">
+                </video>
+                <img v-if="mediaType(post.mediaUrls[3].src) === 'image'" :src="post.mediaUrls[3].src" />
+            </div>
+            <div v-if="post.mediaUrls[3] && !post.mediaUrls[3].src" class="media-container fourth-media">
                 <video v-if="mediaType(post.mediaUrls[3]) === 'video'" controls>
                     <source :src="post.mediaUrls[3]" type="video/mp4">
                 </video>

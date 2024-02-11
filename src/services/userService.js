@@ -8,7 +8,6 @@ loadData()
 async function loadData() {
     try {
         const allUsers = await storageService.query(STORAGE_KEY)
-
         if (!allUsers || allUsers.length === 0) {
             await _createUsers()
             const users = await storageService.query(STORAGE_KEY)
@@ -122,7 +121,7 @@ const users = [
         blockedGroups: [],
         posts: ['p001'],
         groups: ['g001'],
-        chats: [],
+        chats: ['ch001','ch002'],
         friendRequests: [{ _id: 'u002', type: 'accepted', createdAt: Date.now() - 600000 },{ _id: 'u003', type: 'received', createdAt: Date.now() - 600000 }],
         friends: ['u002'],
         isAdmin: true,
@@ -141,7 +140,7 @@ const users = [
         blockedGroups: [],
         posts: ['p002'],
         groups: [],
-        chats: [],
+        chats: ['ch002'],
         friendRequests: [{ _id: 'u001', type: 'accepted', createdAt: Date.now() - 600000 }],
         friends: ['u001', 'u003'],
         isAdmin: false,
@@ -160,7 +159,7 @@ const users = [
         blockedGroups: [],
         posts: ['p003'],
         groups: ['g001'],
-        chats: [],
+        chats: ['ch001','ch002'],
         friendRequests: [{ _id: 'u001', type: 'sent', createdAt: Date.now() - 600000 }],
         friends: [],
         isAdmin: true,

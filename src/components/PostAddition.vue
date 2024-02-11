@@ -35,24 +35,29 @@
                     </div>
                     <div v-if="addPicture" class="media-interactions">
                         <div class="media-container" id="media-container">
-                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.mediaUrls" :id="photo">
-                                <img :src="photo" />
+                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.mediaUrls" :id="(photo.src ? photo.src : photo)">
+                                <img v-if="mediaType(photo) === 'image' && photo.src" :src="photo.src" />
+                                <img v-if="mediaType(photo) === 'image' && !photo.src" :src="photo" />
+
+                                <video v-if="mediaType(photo) === 'video' && photo.src" width="100%" controls>
+                                    <source :src="photo.src" type="video/mp4">
+                                </video>
+                                <video v-if="mediaType(photo) === 'video' && !photo.src" width="100%" controls>
+                                    <source :src="photo" type="video/mp4">
+                                </video>
+
                                 <div class="emote-container" @click="cancelMedia(photo)">
                                     <span :class="`cancel-img cancel-img-${photo}`">
                                         <SvgIcon :iconName="'close'" />
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="oldPost && oldPost.videoUrl">
-                                <video width="100%" controls>
-                                    <source :src="oldPost.videoUrl" type="video/mp4">
-                                </video>
-                            </div>
+                            
+
                             <div v-if="!oldPost || (oldPost && oldPost.mediaUrls.length === 0 && !oldPost.videoUrl) || (deletedMedia.length === newMedia.length + this.oldPost.mediaUrls.length)"
                                 class="add-media-container" id="add-media-container" @click="triggerHandlingFile()">
                                 <div>
-                                    <img class="normal-emote"
-                                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
+                                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
                                 </div>
                                 <span>Add Photos/Videos</span>
                                 <span>or drag and drop</span>
@@ -138,6 +143,7 @@ export default {
             addPicture: false,
             newMedia: [],
             deletedMedia: [],
+            idsOfDeletedMedia: []
         }
     },
     watch: {
@@ -265,11 +271,11 @@ export default {
                 //     }
                 //     // console.log(`url('${URL.createObjectURL(file)}')`)
                 // }
-                console.log('fileinput',fileInput)
-                if (fileType.startsWith('video/')){
-                    this.uploadTheVideo(fileInput) 
-                } else if (fileType.startsWith('image/')){
-                    this.uploadTheImage(fileInput) 
+                console.log('fileinput', fileInput)
+                if (fileType.startsWith('video/')) {
+                    this.uploadTheVideo(fileInput)
+                } else if (fileType.startsWith('image/')) {
+                    this.uploadTheImage(fileInput)
                 }
 
                 // Read the file as a data URL
@@ -278,18 +284,49 @@ export default {
         },
         async uploadTheImage(inputElement) {
             const url = await uploadService.uploadImg(inputElement)
-            // console.log(url.secure_url)
-            this.newMedia.push(`${url.secure_url}`)
+            const id = url.public_id
+            const publicId = id.split('/').pop()
+            this.newMedia.push({ src: `${url.secure_url}`, id: publicId })
         },
         async uploadTheVideo(inputElement) {
             const url = await uploadService.uploadVideo(inputElement)
-            // console.log(url.secure_url)
-            this.newMedia.push(`${url.secure_url}`)
+            const id = url.public_id
+            const publicId = id.split('/').pop()
+            this.newMedia.push({ src: `${url.secure_url}`, id: publicId })
         },
-        cancelMedia(mediaUrl) {
-            // console.log(`delete image ${mediaUrl}`)
-            document.getElementById(mediaUrl).style.display = 'none'
-            this.deletedMedia.push(mediaUrl)
+        async cancelMedia(mediaUrl) {
+            let finalUrl
+            if(mediaUrl.src){
+                finalUrl = mediaUrl.src
+            } else {
+                finalUrl = mediaUrl
+            }
+            console.log(`delete image ${finalUrl}`)
+            document.getElementById(finalUrl).style.display = 'none'
+            this.deletedMedia.push(finalUrl)
+            // if (this.mediaType(finalUrl) === 'video') {
+            //     const idOfMedia = await postService.getIdOfMediaBySrc(finalUrl)
+            //     // console.log(idOfMedia)
+            //     if (idOfMedia !== 'no id') {
+            //         uploadService.deleteVideo(idOfMedia)
+            //     }
+            // } else if (this.mediaType(finalUrl) === 'image') {
+            //     const idOfMedia = await postService.getIdOfMediaBySrc(finalUrl)
+            //     // console.log(idOfMedia)
+            //     if (idOfMedia !== 'no id') {
+            //         uploadService.deleteImg(idOfMedia)
+            //     }
+            // }
+        },
+        mediaType(mediaUrl) {
+            var sepMedia 
+            if(mediaUrl.src){
+                sepMedia = mediaUrl.src.split('/')
+            } else {
+                sepMedia = mediaUrl.split('/')
+            }
+            // console.log(sepMedia[4])
+            return sepMedia[4]
         },
         createPost() {
             const txt = document.getElementById('post-txt').value
@@ -333,7 +370,10 @@ export default {
                 return
             }
             // console.log(this.newMedia)
-            let allMedia = [...this.oldPost.mediaUrls,...this.newMedia]
+            let allMedia = [...this.oldPost.mediaUrls]
+            for (let media of toRaw(this.newMedia)) {
+                allMedia.push(media.src)
+            }
             if (toRaw(this.newMedia).length !== 0) {
                 allMedia = allMedia.concat(toRaw(this.newMedia))
             }
