@@ -56,7 +56,7 @@ export default {
 .page-display {
     flex: 1;
     background-color: #f0f2f5;
-    height: calc(100svh - 56px);
+    min-height: calc(100svh - 56px);
 
     section {
         height: 100%;

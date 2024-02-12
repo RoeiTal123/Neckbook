@@ -1,6 +1,7 @@
 .chat-display {
   display: flex;
   height: 100%;
+  max-height: calc(100svh - 56px);
   flex: 1;
   background-color: #ffffff;
   .chat-room {
