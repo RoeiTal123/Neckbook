@@ -42,15 +42,7 @@
                 <SvgIcon :iconName="'useChatEmote'" />
             </div>
         </section>
-        <section v-if="chat" class="chat-info">
-            <div class="info-header">
-                <img v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
-                <img v-if="!chat.coverImgUrl" :src="getOtherUser().avatar" />
-                <span v-if="chat.name">{{ chat.name }}</span>
-                <span v-if="!chat.name">{{ getOtherUser().fullName }}</span>
-                <div class="options"></div>
-            </div>
-        </section>
+        <ChatInfo :loggedInUser="loggedInUser" :chat="chat" :messages="messages" :users="users"/>
     </section>
 </template>
 
@@ -63,8 +55,9 @@ import { utilService } from '../services/util.service'
 
 import SvgIcon from './SvgIcon.vue'
 
+import ChatInfo from './ChatInfo.vue'
+
 import { toRaw } from 'vue'
-import { RouterLink } from 'vue-router'
 
 export default {
     data() {
@@ -111,10 +104,8 @@ export default {
             for (let userId of toRaw(this.chat).usersInChat) {
                 const user = await userService.getById(userId)
                 this.users.push({ ...user })
-                console.log(this.users)
                 if (this.users.length === toRaw(this.chat).usersInChat.length) this.allUsersLoaded = true
             }
-            // console.log(this.loggedInUser)
         },
         getUser(userId) {
             for (let user of this.users) {
@@ -159,7 +150,8 @@ export default {
         }
     },
     components: {
-        SvgIcon
+        SvgIcon,
+        ChatInfo
     },
     created() {
         this.loadData()
@@ -168,21 +160,4 @@ export default {
 </script>
 
 <style lang="scss">
-.chat-display {
-    .chat-info {
-        .info-header{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-block: 1em;
-            gap: 0.75em;
-            img{
-                height: 5em;
-                width: 5em;
-                object-fit: cover;
-                border-radius: 50%;
-            }
-        }
-    }
-}
 </style>
