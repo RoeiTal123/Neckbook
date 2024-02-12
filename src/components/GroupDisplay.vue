@@ -171,7 +171,6 @@ export default {
             this.media = []
             this.posts.forEach(post => {
                 this.media.push(...post.mediaUrls)
-                this.media.push(...post.videoUrl)
             })
         },
         async updateMembers() {

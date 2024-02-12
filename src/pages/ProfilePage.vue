@@ -49,17 +49,17 @@
 
                     </div>
 
-                    <div class="user-photos info">
+                    <div class="user-media info">
                         <div class="head">
-                            <span class="title">Photos</span>
-                            <button>See all photos</button>
+                            <span class="title">media</span>
+                            <button>See all media</button>
                         </div>
-                        <div v-if="photos" class="photos-container">
-                            <div v-for="photo in photos.slice(0, 9)">
+                        <div v-if="media" class="media-container">
+                            <div v-for="photo in media.slice(0, 9)">
                                 <img :src="photo" />
                             </div>
                         </div>
-                        <span v-else>no photos?</span>
+                        <span v-else>no media?</span>
                     </div>
 
                     <div class="user-friends info">
@@ -83,8 +83,8 @@
             </div>
         </div> -->
 
-        <div v-if="user && posts && photos && friends">
-            <SubpageDisplay :pageType="'user'" :photos="photos" :friends="friends" :posts="posts" :user="user" />
+        <div v-if="user && posts && media && friends">
+            <SubpageDisplay :pageType="'user'" :media="media" :friends="friends" :posts="posts" :user="user" />
         </div>
     </section>
 </template>
@@ -103,7 +103,7 @@ export default {
             paths: [],
             user: null,
             posts: null,
-            photos: null,
+            media: null,
             friends: null,
             loggedinUser: null,
             isProfileOfUser: null
@@ -139,10 +139,10 @@ export default {
             const userId = this.paths[this.paths.length - 1];
             this.posts = await postService.query({ userId: userId })
         },
-        updatePhotos() {
-            this.photos = []
+        updateMedia() {
+            this.media = []
             this.posts.forEach(post => {
-                this.photos.push(...post.mediaUrls);
+                this.media.push(...post.mediaUrls);
             })
         },
         async updateFriends() {
@@ -169,7 +169,7 @@ export default {
                     this.setProfileState()
                     this.updatePosts().then(() =>
                         this.updateFriends().then(() =>
-                            this.updatePhotos()
+                            this.updateMedia()
                         )
                     )
                 })

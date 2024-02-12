@@ -20,13 +20,14 @@
             </div>
             <div class="messages" v-if="messages && chat && allUsersLoaded">
                 <div :class="(message.messagerId === loggedInUser._id) ? 'message yours' : 'message'"
-                    v-for="message in messages">
+                    v-for="message in messages"  :onmouseover="() =>displayActions(message._id)" :onmouseout="() =>hideActions(message._id)">
                     <img v-if="(message.messagerId !== loggedInUser._id)" :src="getUser(message.messagerId).avatar" />
-                    <div>
+                    <div class="message-details">
                         <span class="user-name" v-if="(message.messagerId !== loggedInUser._id)">{{
                             getUser(message.messagerId).fullName }}</span>
                         <span class="message-txt">{{ message.txt }}</span>
                     </div>
+                    <div class="message-actions" :id="`message-actions ${message._id}`">actions here</div>
                 </div>
                 <!-- {{ messages }} -->
             </div>
@@ -140,6 +141,14 @@ export default {
             document.getElementById('vanish1').classList.add('focused')
             document.getElementById('vanish2').classList.add('focused')
             document.getElementById('vanish3').classList.add('focused')
+        },
+        displayActions(messageId){
+            document.getElementById(`message-actions ${messageId}`).style.opacity=1
+            console.log('actions appear!')
+        },
+        hideActions(messageId){
+            document.getElementById(`message-actions ${messageId}`).style.opacity=0
+            console.log('actions vanish!')
         },
         loadData() {
             this.updateRoutes()

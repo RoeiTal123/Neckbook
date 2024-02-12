@@ -97,15 +97,22 @@
 
                     <div class="sub-page-photos info">
                         <div class="head">
-                            <span class="title">Photos</span>
-                            <button>See all photos</button>
+                            <span class="title">Media</span>
+                            <button>See all media</button>
                         </div>
-                        <div v-if="photos" class="photos-container">
-                            <div v-for="photo in photos.slice(0, 9)">
-                                <img :src="photo" />
+                        <div v-if="media" class="photos-container">
+                            <div v-for="file in media.slice(0, 9)">
+                                <video v-if="mediaType(file) === 'video' && file.src" width="100%" controls>
+                                    <source :src="file.src" type="video/mp4">
+                                </video>
+                                <video v-if="mediaType(file) === 'video' && !file.src" width="100%" controls>
+                                    <source :src="file" type="video/mp4">
+                                </video>
+                                <img v-if="mediaType(file) === 'image' && file.src" :src="file.src" />
+                                <img v-if="mediaType(file) === 'image' && !file.src" :src="file" />
                             </div>
                         </div>
-                        <span v-else>no photos?</span>
+                        <span v-else>no media?</span>
                     </div>
 
                     <div class="sub-page-friends info">
@@ -195,7 +202,7 @@ export default {
             type: String,
             required: true
         },
-        photos: { //both
+        media: { //both
             type: Array,
             required: false
         },
@@ -294,8 +301,15 @@ export default {
             // console.log(toRaw(this.loggedinUser).friendRequests)
             this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
         },
+        mediaType(mediaUrl){
+            const sepMedia=mediaUrl.split('/')
+            // console.log(mediaUrl)
+            console.log(sepMedia[4])
+            return sepMedia[4]
+        },
         loadData() {
             this.setProfileState()
+            console.log(this.media)
         },
         confirmFriend() {
             return toRaw(this.loggedinUser).friends.includes(toRaw(this.user)._id)
