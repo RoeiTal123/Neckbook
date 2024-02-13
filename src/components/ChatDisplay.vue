@@ -27,7 +27,12 @@
                             getUser(message.messagerId).fullName }}</span>
                         <span class="message-txt">{{ message.txt }}</span>
                     </div>
-                    <div class="message-actions" :id="`message-actions ${message._id}`">actions here</div>
+                    <div class="message-actions" :id="`message-actions ${message._id}`">
+                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/share_1_nf1wzo.png"/>
+                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825960/projects/Neckbook/svg%20images/smile-emoticon_npaxgy.png"/>
+                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825962/projects/Neckbook/svg%20images/redo_vrhqia.png"/>
+                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/dots_gb73kb.png"/>
+                    </div>
                 </div>
                 <!-- {{ messages }} -->
             </div>

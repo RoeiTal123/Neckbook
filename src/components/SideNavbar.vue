@@ -77,9 +77,13 @@
                     </div>
                 </section>
             </div>
+            <div class="search">
+                <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707840798/projects/Neckbook/svg%20images/search_hcfvqm.png"/>
+                <input type="text" placeholder="Search Messenger"/>
+            </div>
             <div class="options">
                 <div class="chat-option" v-for="chat in chats" v-if="chats && paths[0] === 'messenger'"
-                    @click="() => toggleDisplay()">
+                    @click="() => toggleDisplay()" :class="(paths[paths.length-1] === chat._id) ? 'selected' : ''">
                     <RouterLink :to="`/messenger/${chat._id}`">
                         <img v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
                         <img v-if="!chat.coverImgUrl"
@@ -87,7 +91,7 @@
                         <div>
                             <span v-if="chat.name">{{ chat.name }}</span>
                             <span v-if="!chat.name">Chatroom</span>
-                            <span><span>{{ chat.lastMessage.txt }}</span><span>{{ lastComment(chat.lastMessage.createdAt)
+                            <span><span>{{`${chat.lastMessage.messagerName}: ${chat.lastMessage.txt}` }}</span><span>{{ lastComment(chat.lastMessage.createdAt)
                             }}</span></span>
                         </div>
                     </RouterLink>
