@@ -2,13 +2,12 @@
 
 .main-page-user-options {
     position: sticky;
-    top: 4.75em;
+    top: 3.5em;
     flex-grow: 1;
-    height: fit-content;
     max-width: 22.5em;
     min-width: 18.125em;
     padding: 0 0.5em;
-    margin-block-start: 1em;
+    padding-block-start: 1em;
     height: calc(100svh - 56px);
 
     .option-list {

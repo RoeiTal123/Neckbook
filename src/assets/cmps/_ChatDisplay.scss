@@ -75,7 +75,7 @@
 
           .message-txt {
             color: black;
-            background-color: #f0f0f0;
+            background-color: $clrPrimary5;
             padding: 0.5em;
             border-radius: 1em;
             overflow: hidden;
@@ -88,7 +88,7 @@
             direction: rtl;
 
             .message-txt{
-                background-color: #0084ff;
+                background-color: $clr0;
                 color: $clrPrimary1;
             }
         }

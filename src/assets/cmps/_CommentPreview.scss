@@ -31,7 +31,7 @@
             }
 
             a {
-                color: #0866FF;
+                color: $clr1;
 
                 &:hover {
                     text-decoration: underline;
@@ -50,7 +50,7 @@
             }
 
             .liked {
-                color: #0866FF;
+                color: $clr1;
             }
         }
 

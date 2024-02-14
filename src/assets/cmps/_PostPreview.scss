@@ -160,7 +160,7 @@
         align-items: center;
         margin: 0 1em;
         height: 3em;
-        color: #65676B;
+        color: $clrPrimary14;
         border-block-end: 0.75px solid $clrPrimary10;
         
         .like-count {
@@ -202,7 +202,7 @@
         align-items: center;
         height: 2.75em;
         margin: 0.375em 1em;
-        color: #65676B;
+        color: $clrPrimary14;
         
         &.display{
             border-block-end: 0.75px solid $clrPrimary10;

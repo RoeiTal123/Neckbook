@@ -55,7 +55,7 @@
             flex: 1;
 
             :nth-child(2n) {
-              color: #808185;
+              color: $clrPrimary135;
               font-size: 14px;
               margin-block-start: 0.25em;
             }
@@ -74,7 +74,7 @@
         }
 
         &.selected {
-          background-color: #ebf5ff;
+          background-color: $clrPrimary6;
         }
       }
     }

@@ -24,7 +24,7 @@
             width: 2.5em;
             height: 2.5em;
             border-radius: 50%;
-            background-color: #65676B;
+            background-color: $clrPrimary14;
         }
 
         .post-details {
@@ -36,13 +36,13 @@
             .username{
                 width: 1.5em;
                 height: 1em;
-                background-color: #65676B;
+                background-color: $clrPrimary14;
             }
 
             .date{
                 width: 1.5em;
                 height: 1em;
-                background-color: #65676B;
+                background-color: $clrPrimary14;
             }
         }
 
@@ -69,14 +69,14 @@
         width: 3em;
         padding: 1em;
         padding-block-start: 1em;
-        background-color: #65676B;
+        background-color: $clrPrimary14;
     }
 
     .post-images {
         max-width: 100%;
         max-height: 750px;
         overflow-y: hidden;
-        background-color: #65676B;
+        background-color: $clrPrimary14;
     }
 
     .post-interacted {
@@ -86,19 +86,19 @@
         margin: 0 1em;
         height: 3em;
         border-block-end: 0.75px solid $clrPrimary10;
-        color: #65676B;
+        color: $clrPrimary14;
 
         .like-count {
             display: flex;
             align-items: center;
             width: 3em;
-            background-color: #65676B;
+            background-color: $clrPrimary14;
             gap: -0.25em;
         }
 
         .viewers-interactions {
             width: 3em;
-            background-color: #65676B;
+            background-color: $clrPrimary14;
         }
     }
 
@@ -108,7 +108,7 @@
         height: 2.75em;
         width: 100%;
         padding: 0 1em;
-        color: #65676B;
+        color: $clrPrimary14;
 
         .interaction{
             display: flex;

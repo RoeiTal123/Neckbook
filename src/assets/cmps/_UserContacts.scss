@@ -2,13 +2,12 @@
 
 .main-page-user-contacts {
     position: sticky;
-    top: 4.75em;
+    top: 3.5em;
     flex-grow: 1;
-    height: fit-content;
     max-width: 22.5em;
     min-width: 18.125em;
     padding: 0 0.5em;
-    margin-block-start: 1em;
+    padding-block-start: 1em;
     height: calc(100svh - 56px);
 
     .header {
@@ -19,7 +18,7 @@
         padding-block-end: 0.75em;
 
         .title {
-            color: #65676B;
+            color: $clrPrimary14;
             font-family: 'Helvetica-Bold';
         }
 
