@@ -1,3 +1,5 @@
+@import '../../main/Variables';
+
 .side-navbar {
   .user-options {
     .other-header {
@@ -38,7 +40,7 @@
         padding: 0;
         border: 0;
         border-radius: 50%;
-        background-color: #e4e6eb;
+        background-color: $clrPrimary7;
         img{
           width: 20px;
           height: 20px;
@@ -46,7 +48,7 @@
 
         &:hover {
           cursor: pointer;
-          background-color: #dadce1;
+          background-color: $clrPrimary9;
         }
       }
 
@@ -63,7 +65,7 @@
         a {
           display: flex;
           text-decoration: none;
-          color: #65676b;
+          color: $clrPrimary14;
           width: 100%;
           padding: 0.25em;
           border-radius: 0.5em;
@@ -82,7 +84,7 @@
           }
 
           &:hover{
-            background-color: #f0f2f5;
+            background-color: $clrPrimary5;
           }
         }
       }
@@ -114,6 +116,6 @@
 
   &:hover {
     cursor: pointer;
-    background-color: #dadce1;
+    background-color: $clrPrimary9;
   }
 }

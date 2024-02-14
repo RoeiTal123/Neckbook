@@ -1,3 +1,5 @@
+@import '../main/Variables';
+
 .main-page-user-options {
     position: sticky;
     top: 4.75em;
@@ -25,14 +27,14 @@
                 height: 3.25em;
                 width: 100%;
                 padding-inline-start: 0.5em;
-                color: #050505;
+                color: $clrSecondary3;
 
                 .profile {
                     border-radius: 50%;
                 }
             }
             &:hover {
-                background-color: #e1e3e6;
+                background-color: $clrPrimary8;
             }
         }
 

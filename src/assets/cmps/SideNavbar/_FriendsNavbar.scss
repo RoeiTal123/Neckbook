@@ -1,3 +1,5 @@
+@import '../../main/Variables';
+
 .side-navbar {
   position: sticky;
   top: 3.5em;
@@ -5,7 +7,7 @@
   flex-direction: column;
   height: fit-content;
   width: 22.5em;
-  background-color: #ffffff;
+  background-color: $clrPrimary1;
   padding: 1em;
   height: calc(100svh - 56px);
 
@@ -22,7 +24,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #e4e6eb;
+        background-color: $clrPrimary7;
         border-radius: 50%;
         height: 2.25em;
         width: 2.25em;
@@ -34,7 +36,7 @@
 
         &:hover {
           cursor: pointer;
-          background-color: #dadce1;
+          background-color: $clrPrimary9;
         }
       }
 
@@ -53,7 +55,7 @@
         &.main {
           a {
             div {
-              background-color: #0866ff;
+              background-color: $clr1;
             }
           }
         }
@@ -63,7 +65,7 @@
           align-items: center;
           gap: 0.75em;
           text-decoration: none;
-          color: #000000;
+          color: $clrSecondary1;
           padding-block: 0.5em;
 
           div {
@@ -72,7 +74,7 @@
             justify-content: center;
             height: 2.25em;
             width: 2.25em;
-            background-color: #000000;
+            background-color: $clrSecondary1;
             border-radius: 50%;
 
           }
@@ -103,8 +105,8 @@
         a {
           display: flex;
           width: 100%;
-          color: #000000;
-          background-color: #ffffff;
+          color: $clrSecondary1;
+          background-color: $clrPrimary1;
           border-radius: 0.375em;
           padding: 0.5em 0;
           text-decoration: none;
@@ -140,20 +142,20 @@
               }
 
               .btn-confirm {
-                color: #ffffff;
-                background-color: #0866ff;
+                color: $clrPrimary1;
+                background-color: $clr1;
 
                 &:hover {
-                  background-color: #005df4;
+                  background-color: $clr2;
                 }
               }
 
               .btn-delete {
-                color: #000000;
-                background-color: #e4e6eb;
+                color: $clrSecondary1;
+                background-color: $clrPrimary7;
 
                 &:hover {
-                  background-color: #dadce1;
+                  background-color: $clrPrimary9;
                 }
               }
             }
@@ -165,8 +167,8 @@
         a {
           display: flex;
           width: 100%;
-          color: #000000;
-          background-color: #ffffff;
+          color: $clrSecondary1;
+          background-color: $clrPrimary1;
           border-radius: 0.375em;
           padding: 0.5em 0;
           text-decoration: none;

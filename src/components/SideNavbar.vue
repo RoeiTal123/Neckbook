@@ -77,9 +77,9 @@
                     </div>
                 </section>
             </div>
-            <div class="search">
+            <div class="search" v-if="paths[0]!=='friends'">
                 <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707840798/projects/Neckbook/svg%20images/search_hcfvqm.png"/>
-                <input type="text" placeholder="Search Messenger"/>
+                <input type="text" :placeholder="`Search ${paths[0]}`"/>
             </div>
             <div class="options">
                 <div class="chat-option" v-for="chat in chats" v-if="chats && paths[0] === 'messenger'"

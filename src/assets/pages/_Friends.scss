@@ -1,14 +1,16 @@
+@import '../main/Variables';
+
 .friends-page {
   display: flex;
   flex: 1;
   width: 100%;
-  background-color: #f0f2f5;
+  background-color: $clrPrimary5;
   position: relative;
 
   .sticky {
     display: flex;
     justify-content: space-between;
-    background-color: #ffffff;
+    background-color: $clrPrimary1;
     flex-grow: 1;
     position: sticky;
     top: 0;
@@ -20,7 +22,7 @@
     padding: 1.25em;
     flex: 1;
     height: 100%;
-    background-color: #f0f2f5;
+    background-color: $clrPrimary5;
 
     .friend-requests {
       display: flex;
@@ -28,7 +30,7 @@
       width: 100%;
       height: fit-content;
       padding-block-end: 1.5em;
-      border-block-end: 1px solid #ced0d4;
+      border-block-end: 1px solid $clrPrimary10;
 
       .header {
         display: flex;
@@ -43,7 +45,7 @@
         }
 
         button {
-          color: #0866ff;
+          color: $clr1;
           background-color: transparent;
           border: 0;
           padding: 0;
@@ -59,7 +61,7 @@
 
         .friend-request {
           width: 100%;
-          background-color: #ffffff;
+          background-color: $clrPrimary1;
           border-radius: 0.375em;
 
           img {
@@ -94,20 +96,20 @@
               }
 
               .btn-confirm {
-                color: #ffffff;
-                background-color: #0866ff;
+                color: $clrPrimary1;
+                background-color: $clr1;
 
                 &:hover {
-                  background-color: #005df4;
+                  background-color: $clr2;
                 }
               }
 
               .btn-delete {
-                color: #000000;
-                background-color: #e4e6eb;
+                color: $clrSecondary1;
+                background-color: $clrPrimary7;
 
                 &:hover {
-                  background-color: #dadce1;
+                  background-color: $clrPrimary9;
                 }
               }
             }

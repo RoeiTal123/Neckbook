@@ -149,11 +149,11 @@ export default {
         },
         displayActions(messageId){
             document.getElementById(`message-actions ${messageId}`).style.opacity=1
-            console.log('actions appear!')
+            // console.log('actions appear!')
         },
         hideActions(messageId){
             document.getElementById(`message-actions ${messageId}`).style.opacity=0
-            console.log('actions vanish!')
+            // console.log('actions vanish!')
         },
         loadData() {
             this.updateRoutes()

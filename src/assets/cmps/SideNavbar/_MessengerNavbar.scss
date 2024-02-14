@@ -1,3 +1,5 @@
+@import '../../main/Variables';
+
 .side-navbar {
   .user-options {
     .header {
@@ -15,14 +17,14 @@
       display: flex;
       align-items: center;
       border-radius: 1em;
-      background-color: #f0f2f5;
+      background-color: $clrPrimary5;
       padding: 0.5em;
       gap: 0.5em;
       margin-block-end: 1.25em;
       input{
         border: 0;
         border-radius: 1em;
-        background-color: #f0f2f5;
+        background-color: $clrPrimary5;
         outline: none;
       }
     }
@@ -68,7 +70,7 @@
 
         &:hover {
           cursor: pointer;
-          background-color: #f1f1f1;
+          background-color: $clrPrimary4;
         }
 
         &.selected {

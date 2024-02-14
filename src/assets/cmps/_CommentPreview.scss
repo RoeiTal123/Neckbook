@@ -1,3 +1,5 @@
+@import '../main/Variables';
+
 .comment-preview {
     display: flex;
     gap: 0.375em;
@@ -21,7 +23,7 @@
             gap: 0.5em;
             width: fit-content;
             padding: 0.5em;
-            background-color: #f0f2f5;
+            background-color: $clrPrimary5;
             border-radius: 1em;
 
             span {
@@ -73,7 +75,7 @@
                     padding: 0.75em;
                     border: 0;
                     border-radius: 1em;
-                    background-color: #f0f2f5;
+                    background-color: $clrPrimary5;
 
                     input {
                         background-color: transparent;

@@ -1,3 +1,5 @@
+@import '../main/Variables';
+
 .group-page {
   display: flex;
   flex-direction: column;
@@ -34,7 +36,7 @@
       padding-block-start: 2em;
       padding-block-end: 1em;
       padding-inline: 16px;
-      background-color: #ffffff;
+      background-color: $clrPrimary1;
 
       .state {
         width: 12px;
@@ -53,7 +55,7 @@
         }
 
         :nth-child(even) {
-          color: #65676b;
+          color: $clrPrimary14;
         }
       }
 
@@ -84,20 +86,20 @@
           padding: 12px;
           border: 0;
           border-radius: 0.375em;
-          color: #000000;
-          background-color: #e4e6eb;
+          color: $clrSecondary1;
+          background-color: $clrPrimary7;
 
           &:hover {
-            background-color: #dadce1;
+            background-color: $clrPrimary9;
           }
         }
 
         .btn-invite {
-          color: #ffffff;
-          background-color: #de5b00;
+          color: $clrPrimary1;
+          background-color: $clr3;
 
           &:hover {
-            background-color: #c55200;
+            background-color: $clr4;
           }
         }
       }
@@ -105,7 +107,7 @@
 
     .group-details {
       display: flex;
-      background-color: #f5e9e4;
+      background-color: $clrPrimary3;
       padding-block-start: 1em;
       padding-inline: 0.5em;
       gap: 1em;
@@ -115,7 +117,7 @@
         .info {
           display: flex;
           flex-direction: column;
-          background-color: white;
+          background-color: $clrPrimary1;
           border-radius: 0.5em;
           margin-block-end: 1em;
           padding: 1em;
@@ -132,15 +134,15 @@
               height: fit-content;
               padding: 0;
               border: 0;
-              color: #0866ff;
-              background-color: #ffffff;
+              color: $clr1;
+              background-color: $clrPrimary1;
             }
           }
 
           .group-privacy{
             display: flex;
             margin-block: 0.75em;
-            color: #050505;
+            color: $clrSecondary3;
 
             .state{
               height: 1em;
@@ -191,11 +193,11 @@
             border: 0;
             border-radius: 0.375em;
             text-align: center;
-            color: #000000;
-            background-color: #e4e6eb;
+            color: $clrSecondary1;
+            background-color: $clrPrimary7;
 
             &:hover {
-              background-color: #dadce1;
+              background-color: $clrPrimary9;
             }
           }
         }

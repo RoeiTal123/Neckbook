@@ -1,3 +1,5 @@
+@import '../main/Variables';
+
 .product-display {
     position: absolute;
     display: flex;
@@ -9,7 +11,7 @@
     .product-images-display {
         height: 100%;
         flex: 1;
-        background-color: #131211;
+        background-color: $clrSecondary4;
 
         .image-container {
             height: 100%;
@@ -43,11 +45,11 @@
             }
 
             .price {
-                color: #1d1f23;
+                color: $clrSecondary5;
             }
 
             .time {
-                color: #1d1f23;
+                color: $clrSecondary5;
                 font-size: 13px;
             }
 
@@ -64,8 +66,8 @@
                     padding: 9px 16px;
                     border: 0;
                     border-radius: 8px;
-                    color: #1d1f23;
-                    background-color: #e4e6eb;
+                    color: $clrSecondary5;
+                    background-color: $clrPrimary7;
                 }
 
                 .message {
@@ -86,7 +88,7 @@
             svg {
                 height: 16px;
                 width: 16px;
-                fill: #1d1f23;
+                fill: $clrSecondary5;
             }
         }
 
@@ -95,8 +97,8 @@
             flex-direction: column;
             padding-block: 1.25em;
             gap: 1em;
-            border-block-start: 1px solid #ced0d4;
-            border-block-end: 1px solid #ced0d4;
+            border-block-start: 1px solid $clrPrimary10;
+            border-block-end: 1px solid $clrPrimary10;
 
             span {
                 font-family: "Helvetica-Bold";
@@ -109,7 +111,7 @@
             flex-direction: column;
             gap: 1em;
             padding-block: 1em;
-            border-block-end: 1px solid #ced0d4;
+            border-block-end: 1px solid $clrPrimary10;
 
             div {
                 display: flex;
@@ -130,7 +132,7 @@
                 }
 
                 span {
-                    color: #1d1f23;
+                    color: $clrSecondary5;
                 }
 
             }
@@ -153,18 +155,18 @@
             }
 
             .send-message {
-                background-color: #f0f2f5;
+                background-color: $clrPrimary5;
                 padding: 8px;
-                border: 1px solid #ced0d4;
+                border: 1px solid $clrPrimary10;
                 border-radius: 8px;
 
                 ::placeholder {
-                    color: #65676b;
+                    color: $clrPrimary14;
                     font-family: "Helvetica-Bold";
                 }
 
                 &:focus{
-                    border: 1px solid #0866ff;
+                    border: 1px solid $clr1;
                     outline: none;
                 }
 
@@ -180,7 +182,7 @@
                 margin-block-start: 4px;
                 border: 0;
                 border-radius: 8px;
-                background-color: #e4e6eb;
+                background-color: $clrPrimary7;
                 color: #bdc2c9;
             }
         }

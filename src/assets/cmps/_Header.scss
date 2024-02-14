@@ -1,8 +1,10 @@
+@import '../main/Variables';
+
 .app-header {
   position: sticky;
   top: 0;
   box-shadow: 0 1px 0px rgba(236, 236, 236, 0.5);
-  background: #ffffff;
+  background: $clrPrimary1;
   width: 100%;
   z-index: 100;
 
@@ -38,7 +40,7 @@
     .full-search {
       display: flex;
       align-items: center;
-      background-color: #f0f2f5;
+      background-color: $clrPrimary5;
       border-radius: 3.125em;
       height: 2.5em;
       max-width: 15em;
@@ -54,12 +56,12 @@
         height: 2.5em;
         flex: 1;
         border-radius: 3.125em;
-        background-color: #f0f2f5;
+        background-color: $clrPrimary5;
         border: 0;
         max-width: 212px;
         padding: 8px;
         ::placeholder {
-          color: #a4a6aa;
+          color: $clrPrimary13;
         }
       }
     }
@@ -80,11 +82,11 @@
       flex: 1;
       height: 100%;
       &:not(.active-link):hover {
-        background-color: #f0f2f5;
+        background-color: $clrPrimary5;
         border-radius: 0.5em;
       }
       &.active-link {
-        box-shadow: 0 3px #0866ff;
+        box-shadow: 0 3px $clr1;
       }
     }
   }

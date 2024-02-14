@@ -1,9 +1,11 @@
+@import '../main/Variables';
+
 .post-skeleton{
     display: flex;
     flex-direction: column;
     height: fit-content;
     width: 100%;
-    background-color: #ffffff;
+    background-color: $clrPrimary1;
     margin-block-end: 1em;
     border-radius: 0.5em;
 
@@ -55,7 +57,7 @@
 
             svg {
                 &:hover {
-                    background-color: #0000000a;
+                    background-color: $clrSecondary2;
                     border-radius: 0.5em;
                 }
             }
@@ -83,7 +85,7 @@
         align-items: center;
         margin: 0 1em;
         height: 3em;
-        border-block-end: 0.75px solid #ced0d4;
+        border-block-end: 0.75px solid $clrPrimary10;
         color: #65676B;
 
         .like-count {
