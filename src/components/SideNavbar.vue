@@ -1,5 +1,5 @@
 <template>
-    <div class="side-navbar" id="side-navbar">
+    <div class="side-navbar" id="side-navbar" :class="displayingProfile ? 'profile' : ''">
         <div class="user-options">
             <div v-if="!paths[1]">
                 <!-- friends -->
@@ -49,13 +49,13 @@
                     <div class="friend-option" v-if="(paths[0] === 'friends')">
                         <RouterLink :to="`/friends/requests`">
                             <div><img
-                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" />
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708276949/projects/Neckbook/svg%20images/add-friend_3_xj4jl3.png" />
                             </div>
                             <span>Friend requests</span>
                         </RouterLink>
                         <RouterLink :to="`/friends/all`">
                             <div><img
-                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704188459/projects/Neckbook/svg%20images/friend_rythav.png" />
+                                    src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708276949/projects/Neckbook/svg%20images/add-friend_3_xj4jl3.png" />
                             </div>
                             <span>All friends</span>
                         </RouterLink>
@@ -185,7 +185,8 @@ export default {
             friends: [],
             groups: [],
             group: {},
-            chats: []
+            chats: [],
+            displayingProfile: false
         }
     },
     components: {
@@ -304,6 +305,10 @@ export default {
         },
         toggleDisplay() {
             document.getElementById('page-display').classList.toggle('show')
+        },
+        toggleDisplayProfile() {
+            this.displayingProfile = true
+            // document.getElementById('page-display').classList.toggle('show')
         },
         lastPost(date) {
             return utilService.timeAgoString(date)

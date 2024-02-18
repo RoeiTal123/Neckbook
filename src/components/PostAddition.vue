@@ -5,10 +5,17 @@
             <span class="header">
                 <div>
                     <div class="x-left" @click="goBack()">
-                        <SvgIcon :iconName="'close'" />
+                        <img class="normal-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707996834/projects/Neckbook/svg%20images/arrow_ncg7po.png" />
                     </div>
+
+                    <span>
+                        Create post
+                    </span>
                 </div>
-                <span>Create post</span>
+                <span>
+                    Create post
+                </span>
                 <div>
                     <div class="x-right" @click="goBack()">
                         <SvgIcon :iconName="'close'" />
@@ -35,7 +42,8 @@
                     </div>
                     <div v-if="addPicture" class="media-interactions">
                         <div class="media-container" id="media-container">
-                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.mediaUrls" :id="(photo.src ? photo.src : photo)">
+                            <div v-if="oldPost" class="photo-container" v-for="photo in oldPost.mediaUrls"
+                                :id="(photo.src ? photo.src : photo)">
                                 <img v-if="mediaType(photo) === 'image' && photo.src" :src="photo.src" />
                                 <img v-if="mediaType(photo) === 'image' && !photo.src" :src="photo" />
 
@@ -52,12 +60,13 @@
                                     </span>
                                 </div>
                             </div>
-                            
+
 
                             <div v-if="!oldPost || (oldPost && oldPost.mediaUrls.length === 0 && !oldPost.videoUrl) || (deletedMedia.length === newMedia.length + this.oldPost.mediaUrls.length)"
                                 class="add-media-container" id="add-media-container" @click="triggerHandlingFile()">
                                 <div>
-                                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
+                                    <img class="normal-emote"
+                                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707039880/projects/Neckbook/svg%20images/image-gallery_zzrdx7.png" />
                                 </div>
                                 <span>Add Photos/Videos</span>
                                 <span>or drag and drop</span>
@@ -176,6 +185,7 @@ export default {
             return fullname[0]
         },
         checkText() {
+            const txtBox = document.getElementById('post-txt')
             const txt = document.getElementById('post-txt').value
             if (txt !== '') {
                 document.getElementById('btn-add-post').classList.add('allowed')
@@ -184,6 +194,10 @@ export default {
                 document.getElementById('btn-add-post').classList.remove('allowed')
                 document.getElementById('btn-add-post-header').classList.remove('allowed')
             }
+        },
+        updateFontSize(newSize){
+            console.log(newSize)
+            this.currentFontSize = newSize
         },
         togglePicture() {
             this.addPicture = !this.addPicture
@@ -296,7 +310,7 @@ export default {
         },
         async cancelMedia(mediaUrl) {
             let finalUrl
-            if(mediaUrl.src){
+            if (mediaUrl.src) {
                 finalUrl = mediaUrl.src
             } else {
                 finalUrl = mediaUrl
@@ -319,8 +333,8 @@ export default {
             // }
         },
         mediaType(mediaUrl) {
-            var sepMedia 
-            if(mediaUrl.src){
+            var sepMedia
+            if (mediaUrl.src) {
                 sepMedia = mediaUrl.src.split('/')
             } else {
                 sepMedia = mediaUrl.split('/')

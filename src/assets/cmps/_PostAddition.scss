@@ -1,4 +1,4 @@
-@import '../main/Variables';
+@import "../main/Variables";
 
 .post-addition {
   display: flex;
@@ -43,6 +43,10 @@
         height: 3.75em;
         width: 3.75em;
 
+        span{
+          display: none;
+        }
+
         &.x-right {
           align-items: center;
           justify-content: center;
@@ -57,6 +61,10 @@
             justify-content: center;
             background-color: $clrPrimary9;
           }
+        }
+
+        span{
+          width: fit-content;
         }
 
         i {
@@ -99,8 +107,6 @@
         flex-direction: column;
         max-height: 20em;
         min-height: 120px;
-        overflow-y: auto;
-        overflow-x: hidden;
         margin-block-start: 16px;
 
         .post-txt {
@@ -109,6 +115,7 @@
           font-size: 24px;
           outline: none;
           resize: none;
+          padding: 0;
         }
 
         .media-interactions {
@@ -313,8 +320,22 @@
 @media (max-width: 600px) {
   .post-addition {
     .addition-model {
+      height: 100%;
       max-width: 100%;
+      max-height: 100%;
+      border-radius: 0;
       .header {
+        span{
+          display: none;
+        }
+        div{
+          width: fit-content;
+          padding: 0.75em;
+          gap: 0.75em;
+          span{
+            display: block;
+          }
+        }
         .btn-add-post-header {
           display: block;
           background-color: $clrPrimary7;
@@ -346,7 +367,7 @@
           height: 2.25em;
           width: 2.25em;
           border-radius: 50%;
-          background-color: $clrPrimary7;
+          // background-color: $clrPrimary7;
 
           &:hover {
             display: flex;
@@ -360,6 +381,10 @@
       .post {
         height: 100%;
 
+        .user-input{
+          max-height: 100%;
+          flex: 1;
+        }
         .post-add-container {
           flex: 1;
 

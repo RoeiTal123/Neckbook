@@ -17,7 +17,7 @@
   }
 
   .friends {
-    display: flex;
+    // display: flex;
     flex-direction: column;
     padding: 1.25em;
     flex: 1;
@@ -117,5 +117,18 @@
         }
       }
     }
+  }
+}
+
+
+@media (min-width: 600px){
+  .friends{
+    display: flex;
+  }
+}
+
+@media (max-width: 600px){
+  .friends{
+    display: none;
   }
 }
