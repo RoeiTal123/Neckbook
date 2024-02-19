@@ -15,7 +15,7 @@
                     <SvgIcon :iconName="'startCall'" />
                     <SvgIcon :iconName="'startVideo'" />
                     <div @click="() => toggleInfo()">
-                        <SvgIcon :iconName="'chatInfo'" />
+                        <SvgIcon :iconName="'chatInfo'"  />
                     </div>
                 </div>
             </div>
@@ -80,7 +80,8 @@ export default {
             paths: [],
             allUsersLoaded: false,
             lastMessage: null,
-            showInfo: true
+            showInfo: true,
+            svgsColor: null
         }
     },
     watch: {
@@ -101,6 +102,7 @@ export default {
         },
         async setChat() {
             this.chat = await chatService.getById(this.paths[this.paths.length - 1])
+            this.svgsColor = toRaw(this.chat).themeColor
         },
         async loadMessages() {
             this.messages = []

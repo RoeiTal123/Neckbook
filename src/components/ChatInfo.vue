@@ -23,7 +23,7 @@
                 <div class="option">
                     <div>
                         <img class="normal-emote"
-                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727171/projects/Neckbook/svg%20images/search_t8h26l.png" />
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708325400/projects/Neckbook/svg%20images/magnifying-glass_bsqygy.png" />
                     </div>
                     <span>Search</span>
                 </div>
@@ -50,12 +50,12 @@
                     <SvgIcon :iconName="'checkMedia'" />
                     <span>Change photo</span>
                 </div>
-                <div>
+                <div @click="()=>changeTheme()">
                     <SvgIcon :iconName="'themePicker'" />
                     <span>Change theme</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1705507993/projects/Neckbook/svg%20images/like_x972xa.png"/>
+                    <SvgIcon :iconName="'useChatEmote'" />
                     <span>Change emote</span>
                 </div>
                 <div>
@@ -63,7 +63,7 @@
                     <span>Edit nicknames</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727171/projects/Neckbook/svg%20images/search_t8h26l.png"/>
+                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708325400/projects/Neckbook/svg%20images/magnifying-glass_bsqygy.png"/>
                     <span>Search in conversation</span>
                 </div>
             </div>
@@ -182,6 +182,24 @@ export default {
         toggleSwitch(setting) {
             this[setting] = !this[setting]
         },
+        changeTheme(){
+            console.log('change theme now!')
+            // document.querySelector('.theme-color').style.stroke="purple"
+            // document.querySelector('.theme-color').style.fill="purple"
+            const allSvgsWithColors=document.querySelectorAll('.theme-color')
+            for (let svg of allSvgsWithColors){
+                svg.style.fill="purple"
+                svg.style.stroke="purple"
+            }
+            const allSvgsWithFills=document.querySelectorAll('.theme-fill')
+            for (let svg of allSvgsWithFills){
+                svg.style.fill="purple"
+            }
+            const allSvgsWithStrokes=document.querySelectorAll('.theme-stroke')
+            for (let svg of allSvgsWithStrokes){
+                svg.style.stroke="purple"
+            }
+        },
         loadData() {
 
         }
@@ -197,6 +215,20 @@ export default {
 
 <style lang="scss">
 .chat-display {
+
+    .theme-color{
+        fill: red;
+        stroke: red;
+    }
+
+    .theme-fill{
+        fill: red;
+    }
+
+    .theme-stroke{
+        stroke: red;
+    }
+
     .chat-info {
         height: 100%;
         width: 33%;

@@ -84,6 +84,7 @@ function _createChats() {
         messages: ['m001','m002'],
         mediaUrls: [],
         fileUrls: [],
+        themeColor:'0084ff',
         createdAt: Date.now()
       },
       {
@@ -96,6 +97,7 @@ function _createChats() {
       chatName: null,
       mediaUrls: [],
       fileUrls: [],
+      themeColor:'0084ff',
       createdAt: Date.now()
     },
     ]

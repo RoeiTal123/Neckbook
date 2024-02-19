@@ -1,5 +1,5 @@
 <template>
-    <i v-html=setIcon()></i>
+    <i v-html=setIcon() :class="svgClass ? svgClass : ''"></i>
 </template>
 
 <script>
@@ -13,6 +13,10 @@ export default {
         },
         active: {
             type: Boolean,
+            required: false
+        },
+        svgClass:{
+            type: String,
             required: false
         }
     },

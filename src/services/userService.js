@@ -12,15 +12,13 @@ async function loadData() {
             await _createUsers()
             const users = await storageService.query(STORAGE_KEY)
 
-            if (users && users.length > 0) {
-                setLoggedinUser(users[0])
-            }
+            // if (users && users.length > 0) {
+            // }
         }
     } catch (error) {
         console.error('Error loading data:', error)
     }
 }
-
 
 export const userService = {
     login,
@@ -62,7 +60,7 @@ async function update(userId) {
 async function save(user) {
     let savedUser
     const allUsers = await getUsers()
-    if (userExists(allUsers,user)) {
+    if (userExists(allUsers, user)) {
         // console.log('old user')
         savedUser = await storageService.put(STORAGE_KEY, user)
     } else {
@@ -72,9 +70,9 @@ async function save(user) {
     return savedUser
 }
 
-function userExists(users, user){
-    for(let existingUser of users){
-        if(existingUser._id === user._id) {
+function userExists(users, user) {
+    for (let existingUser of users) {
+        if (existingUser._id === user._id) {
             return true
         }
     }
@@ -121,8 +119,8 @@ const users = [
         blockedGroups: [],
         posts: ['p001'],
         groups: ['g001'],
-        chats: ['ch001','ch002'],
-        friendRequests: [{ _id: 'u002', type: 'accepted', createdAt: Date.now() - 600000 },{ _id: 'u003', type: 'received', createdAt: Date.now() - 600000 }],
+        chats: ['ch001', 'ch002'],
+        friendRequests: [{ _id: 'u002', type: 'accepted', createdAt: Date.now() - 600000 }, { _id: 'u003', type: 'received', createdAt: Date.now() - 600000 }],
         friends: ['u002'],
         isAdmin: true,
         createdAt: Date.now()
@@ -159,7 +157,7 @@ const users = [
         blockedGroups: [],
         posts: ['p003'],
         groups: ['g001'],
-        chats: ['ch001','ch002'],
+        chats: ['ch001', 'ch002'],
         friendRequests: [{ _id: 'u001', type: 'sent', createdAt: Date.now() - 600000 }],
         friends: [],
         isAdmin: true,
@@ -174,3 +172,7 @@ async function _createUsers() {
 // _createUsers()
 
 // setLoggedinUser(users[0])
+
+
+// var usersFromStorage = await storageService.query(STORAGE_KEY)
+// setLoggedinUser(usersFromStorage[0])
