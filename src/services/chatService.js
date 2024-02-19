@@ -57,7 +57,8 @@ async function remove(chatId) {
 
 async function save(chat) {
   let savedChat
-  if (chat._id) {
+  const allChats = await query()
+  if (chatExists(allChats,chat)) {
     savedChat = await storageService.put(STORAGE_KEY, chat)
   } else {
     // chat.owner = userService.getLoggedinUser()
@@ -65,6 +66,16 @@ async function save(chat) {
   }
   return savedChat
 }
+
+function chatExists(chats, chat){
+  for(let existingChat of chats){
+      if(existingChat._id === chat._id) {
+          return true
+      }
+  }
+  return false
+}
+
 
 function getDefaultFilter() {
   return {

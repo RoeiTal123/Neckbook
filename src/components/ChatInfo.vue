@@ -1,5 +1,6 @@
 <template>
     <section v-if="chat && showInfo" class="chat-info">
+        {{ loadData() }}
         <div class="info-header">
             <img class="chat-info-img" v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
             <img class="chat-info-img" v-if="!chat.coverImgUrl" :src="getOtherUser().avatar" />
@@ -34,24 +35,28 @@
                     :src="(isInfo ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
             <div v-if="isInfo" class="info-sub-section">
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707739508/projects/Neckbook/svg%20images/thumbtacks_nvqghn.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707739508/projects/Neckbook/svg%20images/thumbtacks_nvqghn.png" />
                     <span>View pinned messages</span>
                 </div>
             </div>
 
-            <span class="info-switch" @click="() => toggleSwitch('isCustomize')"><span>Customize chat</span><img class="small-emote"
+            <span class="info-switch" @click="() => toggleSwitch('isCustomize')"><span>Customize chat</span><img
+                    class="small-emote"
                     :src="(isCustomize ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
             <div v-if="isCustomize" class="info-sub-section">
                 <div v-if="chat.chatType === 'group'">
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png" />
                     <span>Change chat name</span>
                 </div>
                 <div v-if="chat.chatType === 'group'">
                     <SvgIcon :iconName="'checkMedia'" />
                     <span>Change photo</span>
                 </div>
-                <div @click="()=>changeTheme()">
+                <div @click="() => openPicker()">
                     <SvgIcon :iconName="'themePicker'" />
+                    <input type="color" id="theme-chooser" @input="() => changeTheme()" />
                     <span>Change theme</span>
                 </div>
                 <div>
@@ -59,22 +64,26 @@
                     <span>Change emote</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727318/projects/Neckbook/svg%20images/text-font_nw6hht.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727318/projects/Neckbook/svg%20images/text-font_nw6hht.png" />
                     <span>Edit nicknames</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708325400/projects/Neckbook/svg%20images/magnifying-glass_bsqygy.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708325400/projects/Neckbook/svg%20images/magnifying-glass_bsqygy.png" />
                     <span>Search in conversation</span>
                 </div>
             </div>
 
-            <span v-if="chat.chatType === 'group'" class="info-switch" @click="() => toggleSwitch('isMembers')"><span>Chat members</span><img class="small-emote"
+            <span v-if="chat.chatType === 'group'" class="info-switch" @click="() => toggleSwitch('isMembers')"><span>Chat
+                    members</span><img class="small-emote"
                     :src="(isMembers ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
             <div v-if="isMembers" class="info-sub-section">
                 members
             </div>
 
-            <span class="info-switch" @click="() => toggleSwitch('isMedia')"><span>Media, files and links</span><img class="small-emote"
+            <span class="info-switch" @click="() => toggleSwitch('isMedia')"><span>Media, files and links</span><img
+                    class="small-emote"
                     :src="(isMedia ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
             <div v-if="isMedia" class="info-sub-section">
                 <div>
@@ -82,29 +91,35 @@
                     <span>Media</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727613/projects/Neckbook/svg%20images/document_utvijj.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727613/projects/Neckbook/svg%20images/document_utvijj.png" />
                     <span>Files</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727395/projects/Neckbook/svg%20images/link_gssicl.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707727395/projects/Neckbook/svg%20images/link_gssicl.png" />
                     <span>Links</span>
                 </div>
             </div>
 
-            <span class="info-switch" @click="() => toggleSwitch('isPrivacy')"><span>Privacy & support</span><img class="small-emote"
+            <span class="info-switch" @click="() => toggleSwitch('isPrivacy')"><span>Privacy & support</span><img
+                    class="small-emote"
                     :src="(isPrivacy ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
             <div v-if="isPrivacy" class="info-sub-section">
-                
+
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707740178/projects/Neckbook/svg%20images/no_notifications_fyqhnl.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707740178/projects/Neckbook/svg%20images/no_notifications_fyqhnl.png" />
                     <span>Mute notifications</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707743939/projects/Neckbook/svg%20images/warning_umzkd6.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707743939/projects/Neckbook/svg%20images/warning_umzkd6.png" />
                     <span>Report</span>
                 </div>
                 <div>
-                    <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718690/projects/Neckbook/svg%20images/logout_1_dbk2oe.png"/>
+                    <img class="normal-emote"
+                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704718690/projects/Neckbook/svg%20images/logout_1_dbk2oe.png" />
                     <span>Leave group</span>
                 </div>
             </div>
@@ -130,7 +145,9 @@ export default {
             isCustomize: false,
             isMedia: false,
             isPrivacy: false,
-            isMembers: false
+            isMembers: false,
+            colorTimeoutId: null,
+            lastColorChangeAt: 0
         }
     },
     props: {
@@ -182,57 +199,82 @@ export default {
         toggleSwitch(setting) {
             this[setting] = !this[setting]
         },
-        changeTheme(){
-            console.log('change theme now!')
-            // document.querySelector('.theme-color').style.stroke="purple"
-            // document.querySelector('.theme-color').style.fill="purple"
-            const allSvgsWithColors=document.querySelectorAll('.theme-color')
-            for (let svg of allSvgsWithColors){
-                svg.style.fill="purple"
-                svg.style.stroke="purple"
+        openPicker() {
+            document.getElementById('theme-chooser').click()
+        },
+        changeTheme() {
+            const colorPicker = document.getElementById('theme-chooser')
+            this.setTheme(colorPicker.value)
+        },
+        setTheme(color) {
+            const currentTime = Date.now()
+            if ((currentTime - toRaw(this.lastColorChangeAt)) >= 1000) {
+                console.log('color changed!')
+                const allSvgsWithColors = document.querySelectorAll('.theme-color')
+                for (let svg of allSvgsWithColors) {
+                    svg.style.fill = color
+                    svg.style.stroke = color
+                }
+                const allSvgsWithFills = document.querySelectorAll('.theme-fill')
+                for (let svg of allSvgsWithFills) {
+                    svg.style.fill = color
+                }
+                const allSvgsWithStrokes = document.querySelectorAll('.theme-stroke')
+                for (let svg of allSvgsWithStrokes) {
+                    svg.style.stroke = color
+                }
+                const allMessages = document.querySelectorAll('.message-txt')
+                for (let message of allMessages) {
+                    if (message.classList[1] === 'yours') {
+                        message.style.backgroundColor = color                   }
+                }
+                chatService.save({ ...this.chat, themeColor: color })
             }
-            const allSvgsWithFills=document.querySelectorAll('.theme-fill')
-            for (let svg of allSvgsWithFills){
-                svg.style.fill="purple"
+            this.lastColorChangeAt = currentTime
+        },
+        setStartingTheme() {
+            const allSvgsWithColors = document.querySelectorAll('.theme-color')
+            for (let svg of allSvgsWithColors) {
+                svg.style.fill = toRaw(this.chat).themeColor
+                svg.style.stroke = toRaw(this.chat).themeColor
             }
-            const allSvgsWithStrokes=document.querySelectorAll('.theme-stroke')
-            for (let svg of allSvgsWithStrokes){
-                svg.style.stroke="purple"
+            const allSvgsWithFills = document.querySelectorAll('.theme-fill')
+            for (let svg of allSvgsWithFills) {
+                svg.style.fill = toRaw(this.chat).themeColor
             }
+            const allSvgsWithStrokes = document.querySelectorAll('.theme-stroke')
+            for (let svg of allSvgsWithStrokes) {
+                svg.style.stroke = toRaw(this.chat).themeColor
+            }
+            const allMessages = document.querySelectorAll('.message-txt')
+            for (let message of allMessages) {
+                if (message.classList[1] === 'yours') {
+                    message.style.backgroundColor = toRaw(this.chat).themeColor
+                }
+            }
+            // document.getElementById('theme-chooser').value = toRaw(this.chat).themeColor
         },
         loadData() {
-
+            this.setStartingTheme()
         }
     },
     components: {
         SvgIcon
     },
     created() {
-        this.loadData()
+        // this.loadData()
+        this.lastColorChangeAt = Date.now()
     }
 }
 </script>
 
 <style lang="scss">
 .chat-display {
-
-    .theme-color{
-        fill: red;
-        stroke: red;
-    }
-
-    .theme-fill{
-        fill: red;
-    }
-
-    .theme-stroke{
-        stroke: red;
-    }
-
     .chat-info {
         height: 100%;
         width: 33%;
         overflow-y: auto;
+
         .info-header {
             display: flex;
             flex-direction: column;
@@ -278,7 +320,7 @@ export default {
             display: flex;
             flex-direction: column;
             padding-inline: 0.5em;
-            
+
             .info-switch {
                 display: flex;
                 justify-content: space-between;
@@ -288,37 +330,42 @@ export default {
                 border-radius: 0.5em;
                 transition: all 0.5s 0s ease-in-out;
 
-                &:hover{
+                &:hover {
                     cursor: pointer;
                     background-color: #f1f1f1;
                 }
             }
 
-            .info-sub-section{
+            .info-sub-section {
                 display: flex;
                 flex-direction: column;
                 // gap: 0.75em;
-                
-                div{
+
+                div {
                     display: flex;
                     align-items: center;
                     padding-block: 0.75em;
                     padding-inline: 0.5em;
-                    gap: 0.75em;    
+                    gap: 0.75em;
                     border-radius: 0.5em;
                     transition: all 0.5s 0s ease-in-out;
 
-                    i{
+                    i {
                         height: 1.25em;
                         width: 1.25em;
                     }
 
-                    &:hover{
+                    &:hover {
                         cursor: pointer;
                         background-color: #f1f1f1;
+                    }
+
+                    input {
+                        display: none;
                     }
                 }
             }
         }
     }
-}</style>
+}
+</style>

@@ -27,7 +27,7 @@
                     <div class="message-details">
                         <span class="user-name" v-if="(message.messagerId !== loggedInUser._id)">{{
                             getUser(message.messagerId).fullName }}</span>
-                        <span class="message-txt">{{ message.txt }}</span>
+                        <span class="message-txt" :class="(message.messagerId === loggedInUser._id) ? 'yours' : ''">{{ message.txt }}</span>
                     </div>
                     <div class="message-actions" :id="`message-actions ${message._id}`">
                         <!-- <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/share_1_nf1wzo.png"/> -->
