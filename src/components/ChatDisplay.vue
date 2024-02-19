@@ -14,13 +14,15 @@
                 <div class="header-actions">
                     <SvgIcon :iconName="'startCall'" />
                     <SvgIcon :iconName="'startVideo'" />
-                    <img class="normal-emote"
-                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707637111/projects/Neckbook/svg%20images/info_udllxu.png" />
+                    <div @click="() => toggleInfo()">
+                        <SvgIcon :iconName="'chatInfo'" />
+                    </div>
                 </div>
             </div>
             <div class="messages" v-if="messages && chat && allUsersLoaded">
                 <div :class="(message.messagerId === loggedInUser._id) ? 'message yours' : 'message'"
-                    v-for="message in messages"  :onmouseover="() =>displayActions(message._id)" :onmouseout="() =>hideActions(message._id)">
+                    v-for="message in messages" :onmouseover="() => displayActions(message._id)"
+                    :onmouseout="() => hideActions(message._id)">
                     <img v-if="(message.messagerId !== loggedInUser._id)" :src="getUser(message.messagerId).avatar" />
                     <div class="message-details">
                         <span class="user-name" v-if="(message.messagerId !== loggedInUser._id)">{{
@@ -28,10 +30,13 @@
                         <span class="message-txt">{{ message.txt }}</span>
                     </div>
                     <div class="message-actions" :id="`message-actions ${message._id}`">
-                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/share_1_nf1wzo.png"/>
-                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825960/projects/Neckbook/svg%20images/smile-emoticon_npaxgy.png"/>
-                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825962/projects/Neckbook/svg%20images/redo_vrhqia.png"/>
-                        <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/dots_gb73kb.png"/>
+                        <!-- <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/share_1_nf1wzo.png"/> -->
+                        <img class="small-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825960/projects/Neckbook/svg%20images/smile-emoticon_npaxgy.png" />
+                        <img class="small-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825962/projects/Neckbook/svg%20images/redo_vrhqia.png" />
+                        <img class="small-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/dots_gb73kb.png" />
                     </div>
                 </div>
                 <!-- {{ messages }} -->
@@ -48,7 +53,7 @@
                 <SvgIcon :iconName="'useChatEmote'" />
             </div>
         </section>
-        <ChatInfo :loggedInUser="loggedInUser" :chat="chat" :messages="messages" :users="users"/>
+        <ChatInfo :showInfo="showInfo" :loggedInUser="loggedInUser" :chat="chat" :messages="messages" :users="users" />
     </section>
 </template>
 
@@ -74,7 +79,8 @@ export default {
             users: [],
             paths: [],
             allUsersLoaded: false,
-            lastMessage: null
+            lastMessage: null,
+            showInfo: true
         }
     },
     watch: {
@@ -147,13 +153,16 @@ export default {
             document.getElementById('vanish2').classList.add('focused')
             document.getElementById('vanish3').classList.add('focused')
         },
-        displayActions(messageId){
-            document.getElementById(`message-actions ${messageId}`).style.opacity=1
+        displayActions(messageId) {
+            document.getElementById(`message-actions ${messageId}`).style.opacity = 1
             // console.log('actions appear!')
         },
-        hideActions(messageId){
-            document.getElementById(`message-actions ${messageId}`).style.opacity=0
+        hideActions(messageId) {
+            document.getElementById(`message-actions ${messageId}`).style.opacity = 0
             // console.log('actions vanish!')
+        },
+        toggleInfo() {
+            this.showInfo = !this.showInfo
         },
         loadData() {
             this.updateRoutes()
@@ -173,5 +182,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

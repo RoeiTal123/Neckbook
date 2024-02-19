@@ -1,5 +1,5 @@
 <template>
-    <section v-if="chat" class="chat-info">
+    <section v-if="chat && showInfo" class="chat-info">
         <div class="info-header">
             <img class="chat-info-img" v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
             <img class="chat-info-img" v-if="!chat.coverImgUrl" :src="getOtherUser().avatar" />
@@ -149,6 +149,10 @@ export default {
         users: {
             type: Array,
             required: false
+        },
+        showInfo: {
+            type: Boolean,
+            required: false
         }
     },
     // watch: {
@@ -194,8 +198,9 @@ export default {
 <style lang="scss">
 .chat-display {
     .chat-info {
+        height: 100%;
+        width: 33%;
         overflow-y: auto;
-        max-width: 100%;
         .info-header {
             display: flex;
             flex-direction: column;
