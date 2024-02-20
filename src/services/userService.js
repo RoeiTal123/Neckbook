@@ -28,6 +28,7 @@ export const userService = {
     saveLocalUser: setLoggedinUser,
     getUsers,
     getById,
+    getByName,
     remove,
     update,
     save
@@ -41,6 +42,22 @@ function getUsers() {
 async function getById(userId) {
     const user = await storageService.get(STORAGE_KEY, userId)
     return user
+}
+
+async function getByName(fullName) {
+    const allUsers = await getUsers()
+    const allUsersFound = []
+    for (let existingUser of allUsers){
+        const existingFullName=existingUser.fullName.toLowerCase()
+        // if(existingUser.username === userName){
+        //     return existingUser
+        // }
+        if(existingFullName.includes(fullName.toLowerCase())){
+            allUsersFound.push({userId:existingUser._id,avatar:existingUser.avatar,fullName:existingUser.fullName})
+        }
+    }
+    // const user = await storageService.get(STORAGE_KEY, userId)
+    return allUsersFound
 }
 
 function remove(userId) {

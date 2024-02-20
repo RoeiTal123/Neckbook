@@ -1,7 +1,7 @@
 <template>
     <section class="chat-display">
-        <section v-if="chat" class="chat-room">
-            <div class="header">
+        <section class="chat-room" :class="paths[1]==='new'? 'empty' : ''">
+            <div v-if="chat" class="header">
                 <div class="chat-title">
                     <img v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
                     <img v-if="!chat.coverImgUrl" :src="getOtherUser().avatar" />
@@ -16,6 +16,28 @@
                     <SvgIcon :iconName="'startVideo'" />
                     <div @click="() => toggleInfo()">
                         <SvgIcon :iconName="'chatInfo'" />
+                    </div>
+                </div>
+            </div>
+            <div v-if="!chat" class="header empty">
+                <span @click="()=>toggleChatInput(false)">
+                    To:
+                </span>
+                <div v-if="selectedUsers.length !== 0" class="selected-users">
+                    <div class="selected-user" v-for="user in selectedUsers">
+                        <span>{{ user.fullName }}</span>
+                        <img @click="() => cancelFromSelection(user._id)" class="tiny-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708442485/projects/Neckbook/svg%20images/cancel-user_x9khs1.png"/>
+                    </div>
+                </div>
+                <input type="text" id="username-input" @click="()=>toggleChatInput(true)" @input="() => searchForUser()"/>
+            </div>
+            <div v-if="displayModel && !chat" class="displayed-users-model">
+                <div v-if="displayedUsers !== null" class="displayed-users">
+                    <div v-for="user in displayedUsers" @click="() => selectForAddition(user)">
+                        <div class="displayed-user" v-if="!checkIfAlreadySelected(user.userId) && user.userId !== loggedInUser._id">
+                            <img :src="user.avatar"/>
+                            <span>{{ user.fullName }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -42,13 +64,14 @@
                 </div>
                 <!-- {{ messages }} -->
             </div>
-            <div class="input-section">
+            <div v-if="chat" class="input-section">
                 <SvgIcon :iconName="'createPoll'" />
                 <SvgIcon :id="'vanish1'" :iconName="'addMedia'" />
                 <SvgIcon :id="'vanish2'" :iconName="'addSticker'" />
                 <SvgIcon :id="'vanish3'" :iconName="'addGif'" />
                 <div class="user-input">
-                    <input @keyup.enter="addMessage" id="chat-message" type="text" placeholder="Aa" :onInput="() => focusInput()" />
+                    <input @keyup.enter="addMessage" id="chat-message" type="text" placeholder="Aa"
+                        :onInput="() => focusInput()" />
                     <SvgIcon :iconName="'addEmote'" />
                 </div>
                 <SvgIcon :iconName="'useChatEmote'" />
@@ -82,7 +105,10 @@ export default {
             allUsersLoaded: false,
             lastMessage: null,
             showInfo: true,
-            svgsColor: null
+            svgsColor: null,
+            displayModel: false,
+            displayedUsers: null,
+            selectedUsers: []
         }
     },
     watch: {
@@ -102,6 +128,7 @@ export default {
             // console.log(this.paths)
         },
         async setChat() {
+            this.chat = null
             this.chat = await chatService.getById(this.paths[this.paths.length - 1])
             this.svgsColor = toRaw(this.chat).themeColor
         },
@@ -113,9 +140,12 @@ export default {
             }
             this.lastMessage = { ...this.messages[this.messages.length - 1] }
         },
+        async loadLoggedinUser() {
+            this.loggedInUser = await userService.getLoggedinUser()
+        },
         async loadUsersInChat() {
             this.users = []
-            this.loggedInUser = await userService.getLoggedinUser()
+            this.loadLoggedinUser()
             for (let userId of toRaw(this.chat).usersInChat) {
                 const user = await userService.getById(userId)
                 this.users.push({ ...user })
@@ -167,12 +197,58 @@ export default {
         toggleInfo() {
             this.showInfo = !this.showInfo
         },
-        addMessage(event){
+        toggleChatInput(value){
+            this.displayModel = value
+        },
+        async searchForUser(){
+            const username = document.getElementById('username-input').value
+            if (username === '') {
+                // console.log('type something')
+                this.displayedUsers=[]
+                return 
+            }
+            if (utilService.isTxtOnlySpaces(username)) {
+                // console.log('no empty')
+                this.displayedUsers=[]
+                return 
+            }
+            // console.log(`searching for user: ${username}`)
+            // console.log('----------------------------')
+            const foundUsers = await userService.getByName(username)
+            if (foundUsers.length === 0){
+                // console.log ('no user found')
+            } else {
+                // console.log(`users found : `)
+                // console.log(foundUsers)
+                this.displayedUsers=foundUsers
+            }
+        },
+        selectForAddition(user){
+            // console.log(user)
+            // console.log(this.selectedUsers)
+            document.getElementById('username-input').value = ''
+            for(let selectedUser of this.selectedUsers){
+                if(user.userId === selectedUser._id) return
+            }
+            this.selectedUsers.push({_id:user.userId,fullName:user.fullName})
+            this.displayedUsers=[]
+            // console.log(this.selectedUsers)
+        },
+        checkIfAlreadySelected(selectedId){
+            for(let selectedUser of this.selectedUsers){
+                if(selectedId === selectedUser._id) return true
+            }
+            return false
+        },
+        cancelFromSelection(userId){
+            this.selectedUsers=this.selectedUsers.filter(user=>user._id !== userId)
+            console.log(this.selectedUsers) 
+        },
+        addMessage(event) {
             event.preventDefault()
             this.updateChat()
         },
         createMessage(msg) {
-            // console.log(msg)
             if (msg === '') {
                 console.log('type something')
                 return false
@@ -197,38 +273,41 @@ export default {
         updateChat() {
             const txt = document.getElementById('chat-message').value
             document.getElementById('chat-message').value = ''
-            console.log('txt',txt)
             const newestMessage = this.createMessage(txt)
-            if(!newestMessage){
+            if (!newestMessage) {
                 console.log('cant save unlawfull messages')
                 return
             }
-            let allMessages= [...toRaw(this.chat).messages]
+            let allMessages = [...toRaw(this.chat).messages]
             allMessages.push(newestMessage._id)
-            console.log(allMessages)
-            const updatedChat = { ...toRaw(this.chat), messages:allMessages }
+            const updatedChat = { ...toRaw(this.chat), messages: allMessages }
             try {
                 messageService.save(newestMessage)
                 console.log('message saved')
-                try{
+                try {
                     chatService.save(updatedChat)
                     console.log('chat saved')
-                } catch (err){
-                    console.log('cant save chat : ',err)
+                } catch (err) {
+                    console.log('cant save chat : ', err)
                 }
             } catch (err) {
-                console.log('cant save message : ',err)
+                console.log('cant save message : ', err)
             }
-            console.log(this.chat)
-            this.chat={...this.updateChat}
-            console.log(this.chat)
+            // console.log(this.chat)
+            this.chat = { ...this.updateChat }
+            // console.log(this.chat)
         },
         loadData() {
             this.updateRoutes()
-            this.setChat().then(() => {
-                this.loadMessages()
-                this.loadUsersInChat()
-            })
+            if (toRaw(this.paths[1]) !== 'new') {
+                this.setChat().then(() => {
+                    this.loadMessages()
+                    this.loadUsersInChat()
+                })
+            } else {
+                this.chat = null
+                this.loadLoggedinUser()
+            }
         }
     },
     components: {

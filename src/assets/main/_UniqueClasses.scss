@@ -1,5 +1,14 @@
 @import '../main/Variables';
 
+.tiny-emote {
+  width: 0.5625em;
+  height: 0.5625em;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .small-emote {
   width: 1em;
   height: 1em;
