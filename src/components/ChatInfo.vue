@@ -44,7 +44,7 @@
             <span class="info-switch" @click="() => toggleSwitch('isCustomize')"><span>Customize chat</span><img
                     class="small-emote"
                     :src="(isCustomize ? 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730088/projects/Neckbook/svg%20images/arrow-up_iv53el.png' : 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707730080/projects/Neckbook/svg%20images/arrow-down_p9aaix.png')" /></span>
-            <div v-if="isCustomize" class="info-sub-section">
+            <div  class="info-sub-section" :class="!isCustomize ? 'hidden' : ''">
                 <div v-if="chat.chatType === 'group'">
                     <img class="normal-emote"
                         src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png" />
@@ -340,6 +340,10 @@ export default {
                 display: flex;
                 flex-direction: column;
                 // gap: 0.75em;
+
+                &.hidden{
+                    display: none;
+                }
 
                 div {
                     display: flex;

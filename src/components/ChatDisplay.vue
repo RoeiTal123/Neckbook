@@ -15,7 +15,7 @@
                     <SvgIcon :iconName="'startCall'" />
                     <SvgIcon :iconName="'startVideo'" />
                     <div @click="() => toggleInfo()">
-                        <SvgIcon :iconName="'chatInfo'"  />
+                        <SvgIcon :iconName="'chatInfo'" />
                     </div>
                 </div>
             </div>
@@ -27,7 +27,8 @@
                     <div class="message-details">
                         <span class="user-name" v-if="(message.messagerId !== loggedInUser._id)">{{
                             getUser(message.messagerId).fullName }}</span>
-                        <span class="message-txt" :class="(message.messagerId === loggedInUser._id) ? 'yours' : ''">{{ message.txt }}</span>
+                        <span class="message-txt" :class="(message.messagerId === loggedInUser._id) ? 'yours' : ''">{{
+                            message.txt }}</span>
                     </div>
                     <div class="message-actions" :id="`message-actions ${message._id}`">
                         <!-- <img class="small-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707825959/projects/Neckbook/svg%20images/share_1_nf1wzo.png"/> -->
@@ -47,7 +48,7 @@
                 <SvgIcon :id="'vanish2'" :iconName="'addSticker'" />
                 <SvgIcon :id="'vanish3'" :iconName="'addGif'" />
                 <div class="user-input">
-                    <input id="chat-message" type="text" placeholder="Aa" :onInput="() => focusInput()" />
+                    <input @keyup.enter="addMessage" id="chat-message" type="text" placeholder="Aa" :onInput="() => focusInput()" />
                     <SvgIcon :iconName="'addEmote'" />
                 </div>
                 <SvgIcon :iconName="'useChatEmote'" />
@@ -165,6 +166,62 @@ export default {
         },
         toggleInfo() {
             this.showInfo = !this.showInfo
+        },
+        addMessage(event){
+            event.preventDefault()
+            this.updateChat()
+        },
+        createMessage(msg) {
+            // console.log(msg)
+            if (msg === '') {
+                console.log('type something')
+                return false
+            }
+            if (utilService.isTxtOnlySpaces(msg)) {
+                console.log('no empty')
+                return false
+            }
+            const newMessage = {
+                _id: utilService.makeId(),
+                chatroomId: toRaw(this.chat)._id,
+                messagerId: toRaw(this.loggedInUser)._id,
+                txt: msg,
+                likedByUsers: [],
+                mediaUrls: [],
+                fileUrls: [],
+                createdAt: Date.now()
+            }
+            messageService.save(newMessage)
+            return newMessage
+        },
+        updateChat() {
+            const txt = document.getElementById('chat-message').value
+            document.getElementById('chat-message').value = ''
+            console.log('txt',txt)
+            const newestMessage = this.createMessage(txt)
+            if(!newestMessage){
+                console.log('cant save unlawfull messages')
+                return
+            }
+            let allMessages= [...toRaw(this.chat).messages]
+            allMessages.push(newestMessage._id)
+            console.log(allMessages)
+            const updatedChat = { ...toRaw(this.chat), messages:allMessages }
+            try {
+                messageService.save(newestMessage)
+                console.log('message saved')
+                try{
+                    chatService.save(updatedChat)
+                    console.log('chat saved')
+                } catch (err){
+                    console.log('cant save chat : ',err)
+                }
+            } catch (err) {
+                console.log('cant save message : ',err)
+            }
+            console.log(this.chat)
+            this.chat={...this.updateChat}
+            console.log(this.chat)
         },
         loadData() {
             this.updateRoutes()

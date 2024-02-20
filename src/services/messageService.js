@@ -51,13 +51,23 @@ async function remove(messageId) {
 
 async function save(message) {
   let savedMessage
-  if (message._id) {
+  const allMessages=await query()
+  if (messageExists(allMessages,message)) {
     savedMessage = await storageService.put(STORAGE_KEY, message)
   } else {
     // message.owner = userService.getLoggedinUser()
     savedMessage = await storageService.post(STORAGE_KEY, message)
   }
   return savedMessage
+}
+
+function messageExists(messages, message){
+  for(let existingMessage of messages){
+      if(existingMessage._id === message._id) {
+          return true
+      }
+  }
+  return false
 }
 
 function getDefaultFilter() {
