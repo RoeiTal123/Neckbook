@@ -1,6 +1,6 @@
 <template>
     <section class="chat-display">
-        <section class="chat-room" :class="paths[1]==='new'? 'empty' : ''">
+        <section class="chat-room" :class="paths[1] === 'new' ? 'empty' : ''">
             <div v-if="chat" class="header">
                 <div class="chat-title">
                     <img v-if="chat.coverImgUrl" :src="chat.coverImgUrl" />
@@ -20,22 +20,25 @@
                 </div>
             </div>
             <div v-if="!chat" class="header empty">
-                <span @click="()=>toggleChatInput(false)">
+                <span @click="() => toggleChatInput(false)">
                     To:
                 </span>
                 <div v-if="selectedUsers.length !== 0" class="selected-users">
                     <div class="selected-user" v-for="user in selectedUsers">
                         <span>{{ user.fullName }}</span>
-                        <img @click="() => cancelFromSelection(user._id)" class="tiny-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708442485/projects/Neckbook/svg%20images/cancel-user_x9khs1.png"/>
+                        <img @click="() => cancelFromSelection(user._id)" class="tiny-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708442485/projects/Neckbook/svg%20images/cancel-user_x9khs1.png" />
                     </div>
                 </div>
-                <input type="text" id="username-input" @click="()=>toggleChatInput(true)" @input="() => searchForUser()"/>
+                <input type="text" id="username-input" @click="() => toggleChatInput(true)"
+                    @input="() => searchForUser()" @keyup.enter="addChat"/>
             </div>
             <div v-if="displayModel && !chat" class="displayed-users-model">
                 <div v-if="displayedUsers !== null" class="displayed-users">
                     <div v-for="user in displayedUsers" @click="() => selectForAddition(user)">
-                        <div class="displayed-user" v-if="!checkIfAlreadySelected(user.userId) && user.userId !== loggedInUser._id">
-                            <img :src="user.avatar"/>
+                        <div class="displayed-user"
+                            v-if="!checkIfAlreadySelected(user.userId) && user.userId !== loggedInUser._id">
+                            <img :src="user.avatar" />
                             <span>{{ user.fullName }}</span>
                         </div>
                     </div>
@@ -197,52 +200,52 @@ export default {
         toggleInfo() {
             this.showInfo = !this.showInfo
         },
-        toggleChatInput(value){
+        toggleChatInput(value) {
             this.displayModel = value
         },
-        async searchForUser(){
+        async searchForUser() {
             const username = document.getElementById('username-input').value
             if (username === '') {
                 // console.log('type something')
-                this.displayedUsers=[]
-                return 
+                this.displayedUsers = []
+                return
             }
             if (utilService.isTxtOnlySpaces(username)) {
                 // console.log('no empty')
-                this.displayedUsers=[]
-                return 
+                this.displayedUsers = []
+                return
             }
             // console.log(`searching for user: ${username}`)
             // console.log('----------------------------')
             const foundUsers = await userService.getByName(username)
-            if (foundUsers.length === 0){
+            if (foundUsers.length === 0) {
                 // console.log ('no user found')
             } else {
                 // console.log(`users found : `)
                 // console.log(foundUsers)
-                this.displayedUsers=foundUsers
+                this.displayedUsers = foundUsers
             }
         },
-        selectForAddition(user){
+        selectForAddition(user) {
             // console.log(user)
             // console.log(this.selectedUsers)
             document.getElementById('username-input').value = ''
-            for(let selectedUser of this.selectedUsers){
-                if(user.userId === selectedUser._id) return
+            for (let selectedUser of this.selectedUsers) {
+                if (user.userId === selectedUser._id) return
             }
-            this.selectedUsers.push({_id:user.userId,fullName:user.fullName})
-            this.displayedUsers=[]
+            this.selectedUsers.push({ _id: user.userId, fullName: user.fullName })
+            this.displayedUsers = []
             // console.log(this.selectedUsers)
         },
-        checkIfAlreadySelected(selectedId){
-            for(let selectedUser of this.selectedUsers){
-                if(selectedId === selectedUser._id) return true
+        checkIfAlreadySelected(selectedId) {
+            for (let selectedUser of this.selectedUsers) {
+                if (selectedId === selectedUser._id) return true
             }
             return false
         },
-        cancelFromSelection(userId){
-            this.selectedUsers=this.selectedUsers.filter(user=>user._id !== userId)
-            console.log(this.selectedUsers) 
+        cancelFromSelection(userId) {
+            this.selectedUsers = this.selectedUsers.filter(user => user._id !== userId)
+            // console.log(this.selectedUsers) 
         },
         addMessage(event) {
             event.preventDefault()
@@ -269,6 +272,64 @@ export default {
             }
             messageService.save(newMessage)
             return newMessage
+        },
+        addChat(event) {
+            event.preventDefault()
+            this.createChat()
+        },
+        async createChat() {
+            let usersOfNewChat = [this.loggedInUser._id]
+            const mainId = this.loggedInUser._id
+            let nicknames = [{ [mainId]: 'default' }]
+            let chatType='personal'
+            for (let user of this.selectedUsers) {
+                const userId = user._id
+                usersOfNewChat.push(userId)
+                nicknames.push({ [userId]: 'default' })
+            }
+            if (usersOfNewChat.length <= 1) {
+                console.log('cant make chat')
+                return
+            }
+            if(usersOfNewChat.length > 2){
+                chatType='group'
+            }
+            const newChat = {
+                _id: utilService.makeId(),
+                chatType: chatType,
+                usersInChat: usersOfNewChat,
+                nicknames: nicknames,
+                coverImgUrl: null,
+                chatName: null,
+                messages: [],
+                mediaUrls: [],
+                fileUrls: [],
+                themeColor: '0084ff',
+                createdAt: Date.now()
+            }
+            try{
+                chatService.save({...newChat})
+                console.log(`new chat ${newChat._id} was created`)
+                try{
+                    for(let userId of usersOfNewChat){
+                        let user= await userService.getById(userId)
+                        user={...user,chats:[...user.chats,newChat._id]}
+                        userService.save(user)
+                        console.log(`saved user ${userId}`)
+                    }
+                    const updatedUser = {...this.loggedInUser,chats:[...this.loggedInUser.chats,newChat._id]}
+                    try{
+                        userService.saveLocalUser(updatedUser)
+                        
+                    } catch (err) {
+                        console.log(`couldn't save logged in user`)
+                    }
+                } catch (err) {
+                    console.log(`couldn't save user`)
+                }
+            } catch (err) {
+                console.log('cant create a new chat : ',err)
+            }
         },
         updateChat() {
             const txt = document.getElementById('chat-message').value

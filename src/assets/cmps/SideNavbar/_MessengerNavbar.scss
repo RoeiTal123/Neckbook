@@ -1,4 +1,4 @@
-@import '../../main/Variables';
+@import "../../main/Variables";
 
 .side-navbar {
   .user-options {
@@ -21,7 +21,7 @@
       padding: 0.5em;
       gap: 0.5em;
       margin-block-end: 1.25em;
-      input{
+      input {
         border: 0;
         border-radius: 1em;
         background-color: $clrPrimary5;
@@ -64,6 +64,16 @@
               display: flex;
               align-items: center;
               justify-content: space-between;
+              max-width: 225px;
+              max-height: 1.5em;
+
+              &.auto-message {
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-wrap: break-word;
+                white-space: nowrap;
+              }
             }
           }
         }

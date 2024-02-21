@@ -1,5 +1,5 @@
 <template>
-    <nav class="app-header">
+    <nav v-if="paths[0]" class="app-header">
         <div class="main-header">
             <div class="header-left">
                 <RouterLink to="/main">

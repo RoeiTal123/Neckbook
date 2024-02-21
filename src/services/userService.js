@@ -11,14 +11,13 @@ async function loadData() {
         if (!allUsers || allUsers.length === 0) {
             await _createUsers()
             const users = await storageService.query(STORAGE_KEY)
-
             // if (users && users.length > 0) {
-            // }
+                // }
+            }
+        } catch (error) {
+            console.error('Error loading data:', error)
         }
-    } catch (error) {
-        console.error('Error loading data:', error)
     }
-}
 
 export const userService = {
     login,
@@ -127,6 +126,7 @@ const users = [
         _id: 'u001',
         fullName: 'Peter Parker',
         username: 'peter123',
+        email:'peter123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320754/projects/Neckbook/user-images/spider-profile_m5ms6l.jpg',
         cover: '',
@@ -146,6 +146,7 @@ const users = [
         _id: 'u002',
         fullName: 'Jane Doe',
         username: 'jane123',
+        email:'jane123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320799/projects/Neckbook/user-images/robot-profile_dugrii.avif',
         cover: '',
@@ -165,6 +166,7 @@ const users = [
         _id: 'u003',
         fullName: 'Roei Tal',
         username: 'roei123',
+        email:'roei123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704104110/projects/Neckbook/user-images/me_nqkfek.jpg',
         cover: '',
@@ -190,6 +192,7 @@ async function _createUsers() {
 
 // setLoggedinUser(users[0])
 
+setLoggedinUser(users[0])
 
 // var usersFromStorage = await storageService.query(STORAGE_KEY)
 // setLoggedinUser(usersFromStorage[0])

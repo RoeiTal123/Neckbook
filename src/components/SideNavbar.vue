@@ -91,8 +91,13 @@
                         <div>
                             <span v-if="chat.name">{{ chat.name }}</span>
                             <span v-if="!chat.name">Chatroom</span>
-                            <span><span>{{`${chat.lastMessage.messagerName}: ${chat.lastMessage.txt}` }}</span><span>{{ lastComment(chat.lastMessage.createdAt)
-                            }}</span></span>
+                            <span v-if="chat.lastMessage">
+                                <span>{{`${chat.lastMessage.messagerName}: ${chat.lastMessage.txt}` }}</span>
+                                <span>{{ lastComment(chat.lastMessage.createdAt)}}</span>
+                            </span>
+                            <span v-if="!chat.lastMessage">
+                                <span class="auto-message">{{"You can now message and call each other and see info like Active Status and when you've read messages."}}</span>
+                            </span>
                         </div>
                     </RouterLink>
                 </div>
@@ -259,16 +264,27 @@ export default {
                     nameOfChat = secondUser.fullName
                 }
                 const lastMessageId = chatDetails.messages[chatDetails.messages.length - 1]
-                lastMessage = await messageService.getById(lastMessageId)
-                const ownerOfLastMessage = await userService.getById(lastMessage.messagerId)
-
-                return {
-                    _id: chatDetails._id,
-                    coverImgUrl: coverOfChat,
-                    name: nameOfChat,
-                    chatType: chatDetails.chatType,
-                    lastMessage: { messagerName: ownerOfLastMessage.fullName, txt: lastMessage.txt, createdAt: lastMessage.createdAt }
+                let ownerOfLastMessage
+                if(lastMessageId){
+                    lastMessage = await messageService.getById(lastMessageId)
+                    ownerOfLastMessage = await userService.getById(lastMessage.messagerId)
+                    return {
+                        _id: chatDetails._id,
+                        coverImgUrl: coverOfChat,
+                        name: nameOfChat,
+                        chatType: chatDetails.chatType,
+                        lastMessage: { messagerName: ownerOfLastMessage.fullName, txt: lastMessage.txt, createdAt: lastMessage.createdAt }
+                    }
+                } else {      
+                    return {
+                        _id: chatDetails._id,
+                        coverImgUrl: coverOfChat,
+                        name: nameOfChat,
+                        chatType: chatDetails.chatType,
+                        lastMessage: null
+                    }
                 }
+
             })
             this.chats = await Promise.all(chatsPromises)
             // console.log(this.chats)
