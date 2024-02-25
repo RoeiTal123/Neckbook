@@ -93,14 +93,11 @@
                 <div class="document-addition">
                     <span>Add to your post</span>
                     <div class="additions">
-                        <img v-if="!oldPost" class="medium-emote"
+                        <img class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png"
                             @click="togglePicture()" />
-                        <img v-if="oldPost && oldPost.videoUrl === null" class="medium-emote"
-                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703946502/projects/Neckbook/svg%20images/Ivw7nhRtXyo_et9veu.png"
-                            @click="togglePicture()" />
-                        <img v-if="oldPost && oldPost.videoUrl !== null" class="medium-emote"
-                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706799599/projects/Neckbook/svg%20images/images_d7ag9l.png" />
+                        <!-- <img v-if="oldPost && oldPost.mediaUrls !== null" class="medium-emote"
+                            src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706799599/projects/Neckbook/svg%20images/images_d7ag9l.png" /> -->
 
                         <img class="medium-emote"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707234137/projects/Neckbook/svg%20images/mention_wjdl1x.png" />

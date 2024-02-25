@@ -331,6 +331,7 @@ export default {
             } catch (err) {
                 console.log('cant create a new chat : ',err)
             }
+            this.$router.push(`/messenger/${newChat._id}`)
         },
         updateChat() {
             const txt = document.getElementById('chat-message').value

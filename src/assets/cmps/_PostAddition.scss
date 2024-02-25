@@ -125,6 +125,8 @@
           .media-container {
             position: relative;
             margin: 0.5em;
+            max-height: 240px;
+            overflow-y: auto;
 
             .photo-container {
               position: relative;

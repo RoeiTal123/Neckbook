@@ -23,7 +23,7 @@
                     <SvgIcon :iconName="'menu'" :active="paths[0] === 'menu'" />
                 </div>
 
-                <div class="link" :class="(paths[0] === 'messenger') ? 'active-link hovered-area' : 'hovered-area'">
+                <div v-if="paths[0] !== 'messenger'" class="link" :class="(paths[0] === 'messenger') ? 'active-link hovered-area' : 'hovered-area'">
                     <RouterLink class="hovered-area" :to="'/messenger'">
                         <SvgIcon :iconName="'messenger'" :active="paths[0] === 'messenger'" />
                     </RouterLink>
@@ -31,12 +31,6 @@
                 <div class="link" :class="(paths[0] === 'notification') ? 'active-link hovered-area' : 'hovered-area'">
                     <SvgIcon :iconName="'notification'" :active="paths[0] === 'notification'" />
                 </div>
-
-                <!-- <div v-for="link in links2" :key="link" class="link" :class="{ 'active-link': paths[0] === link }">
-                    <RouterLink class="hovered-area" :to="`/${link}`">
-                        <SvgIcon :iconName="link" :active="paths[0] === link" />
-                    </RouterLink>
-                </div> -->
 
                 <RouterLink v-if="user" :to="`/profile/${user._id}`">
                     <img v-if="user.avatar" :src="user.avatar" />
@@ -88,7 +82,6 @@ export default {
     data() {
         return {
             links: ['main', 'friends', 'videos', 'marketplace', 'groups'],
-            links2: ['menu', 'messenger', 'notification'],
             user: {},
             page: 'home',
             paths: [],
