@@ -1,8 +1,12 @@
 <template>
     <section class="main-page-user-options">
         <div class="option-list">
-            <RouterLink :to="`/profile/${user._id}`">
-                <div class="option"><img class="profile large-emote" :src="user.avatar"/><span>{{ user.fullName }}</span></div>
+            <RouterLink v-if="user" :to="`/profile/${user._id}`">
+                <div class="option">
+                    <img v-if="user.avatar" class="profile large-emote" :src="user.avatar"/>
+                    <img v-else class="profile large-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
+                    <span>{{ user.fullName }}</span>
+                </div>
             </RouterLink>
             <RouterLink to="/friends">
                 <div class="option"><img class="large-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704015441/projects/Neckbook/svg%20images/e_dewf5s.png" /><span>Find friends</span></div>

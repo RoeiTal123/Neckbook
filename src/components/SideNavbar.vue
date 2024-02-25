@@ -132,7 +132,8 @@
                     </div>
                     <div v-if="requests && (paths[1] === 'requests')" v-for="request in requests" class="request">
                         <RouterLink :to="`/friends/requests/${request._id}`">
-                            <img :src="request.avatar" />
+                            <img v-if="request.avatar" :src="request.avatar" />
+                            <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png" />
                             <div class="request-actions">
                                 <span>{{ request.fullName }}</span>
 
@@ -146,7 +147,8 @@
                     <div v-if="friends && paths[1] === 'all'" v-for="friend in friends" class="friend"
                         @click="() => toggleDisplay()">
                         <RouterLink :to="`/friends/all/${friend._id}`">
-                            <img :src="friend.avatar" />
+                            <img v-if="friend.avatar" :src="friend.avatar" />
+                            <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                             <div class="friend-actions">
                                 <span>{{ friend.fullName }}</span>
                             </div>

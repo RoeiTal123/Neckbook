@@ -1,6 +1,7 @@
 <template>
     <section class="comment-preview">
-        <img :src="user.avatar" />
+        <img v-if="user.avatar" :src="user.avatar" />
+        <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
         <div class="comment-details">
             <div class="user-output">
                 <span>{{ user.fullName }}</span>
@@ -18,7 +19,8 @@
                 <!-- <input v-if="selectedReply" type="text" :id="`reply ${comment._id}`" placeholder="write a public response" /> -->
 
                 <div v-if="selectedReply" class="reply-addition">
-                    <img :src="loggedinUser.avatar" />
+                    <img v-if="loggedinUser.avatar" :src="loggedinUser.avatar" />
+                    <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png" />
                     <div class="reply">
                         <input type="text" :id="`reply ${comment._id}`" placeholder="Write a public reply..." />
                         <div class="reply-actions">
@@ -84,7 +86,9 @@ export default {
             this.user = user
         },
         setLiked() {
-            this.isLiked = this.comment.likedByUsers.includes(this.loggedinUser._id)
+            if(this.loggedinUser){
+                this.isLiked = this.comment.likedByUsers.includes(this.loggedinUser._id)
+            }
         },
         timeAgoString() {
             return utilService.timeString(this.comment.createdAt)

@@ -3,7 +3,7 @@
         <SideNavbar />
         <div v-if="!paths[1]" class="container">
             <div class="group-post-list">
-               <PostList :posts="posts"/>
+                <PostList :posts="posts" />
             </div>
         </div>
         <router-view></router-view>
@@ -37,33 +37,35 @@ export default {
             const currentPath = this.$route.path;
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
-            if(this.paths[0]!=='groups'){
-                this.render=true
+            if (this.paths[0] !== 'groups') {
+                this.render = true
             }
             // console.log(this.paths)
         },
-        async updateUser(){
+        async updateUser() {
             this.user = await userService.getLoggedinUser()
         },
-        async retrievePosts(){
-            this.posts=[]
-            for (const groupId of this.user.groups) {
-                const group = await groupService.getById(groupId);
-                for (const postId of group.posts) {
-                const post = await postService.getById(postId);
-                this.posts.push({...post});
+        async retrievePosts() {
+            this.posts = []
+            if(this.user){
+                for (const groupId of this.user.groups) {
+                    const group = await groupService.getById(groupId);
+                    for (const postId of group.posts) {
+                        const post = await postService.getById(postId);
+                        this.posts.push({ ...post });
+                    }
                 }
             }
         }
     },
     components: {
-    SideNavbar,
-    PageDisplay,
-    PostList
-},
-    async created(){
+        SideNavbar,
+        PageDisplay,
+        PostList
+    },
+    async created() {
         this.updateRoutes()
-        this.updateUser().then(()=>this.retrievePosts())
+        this.updateUser().then(() => this.retrievePosts())
     }
 }
 </script>
@@ -75,12 +77,13 @@ export default {
     width: 100%;
     background-color: #ffffff;
 
-    .container{
+    .container {
         display: flex;
         flex: 1;
         justify-content: center;
         background-color: #f0f2f5;
-        .group-post-list{
+
+        .group-post-list {
             max-width: 680px;
             margin-block-start: 1em;
         }

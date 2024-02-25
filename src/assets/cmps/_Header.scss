@@ -1,4 +1,4 @@
-@import '../main/Variables';
+@import "../main/Variables";
 
 .app-header {
   position: sticky;
@@ -13,6 +13,70 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+
+    .login-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      padding: 1em;
+
+      .logo {
+        font-size: 30px;
+        font-family: "Helvetica-Bold";
+        color: #0866ff;
+        cursor: default;
+      }
+
+      .login-header-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5em;
+
+        input {
+          width: 100%;
+          font-size: 16px;
+          padding: 0.5em;
+          border: 1px solid #dddfe2;
+          border-radius: 0.5em;
+          outline-color: #0866ff;
+          font-family: "Helvetica-Bold";
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          width: fit-content;
+          padding: 0.5em;
+          border: none;
+          border-radius: 0.5em;
+          background-color: #0866ff;
+          color: #ffffff;
+          font-family: "Helvetica-Bold";
+          white-space: nowrap;
+  
+          &:hover {
+            cursor: pointer;
+            background-color: #005df4;
+          }
+        }
+
+        :nth-child(4n) {
+          font-size: 16px;
+          width: fit-content;
+          text-align: center;
+          color: #0866ff;
+          white-space: nowrap;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
 
   img {

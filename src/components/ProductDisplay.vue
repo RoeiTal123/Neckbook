@@ -31,7 +31,11 @@
                 </div>
                 <div v-if="seller" class="seller-information">
                     <div class="title"><span>Seller information</span></div>
-                    <div><img :src="seller.avatar" /><span>{{ seller.fullName }}</span></div>
+                    <div>
+                        <img v-if="seller.avatar" :src="seller.avatar" />
+                        <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
+                        <span>{{ seller.fullName }}</span>
+                    </div>
                     <div><img class="logo"
                             src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1703779937/projects/Neckbook/Neckbook-logo_iil57x.png" />
                         <span>Joined Neckbook in {{ getFullYear(seller.createdAt) }}</span>

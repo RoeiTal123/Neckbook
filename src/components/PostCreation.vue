@@ -1,7 +1,8 @@
 <template>
     <div v-if="user" class="post-creation">
         <div class="interactable">
-            <img :src="user.avatar" />
+            <img v-if="user.avatar" :src="user.avatar" />
+            <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png" />
             <RouterLink :to="`${fullPath}/post`"><span class="hovered-area">Whats on your mind, {{ user.fullName }}?</span></RouterLink>
         </div>
         <div class="user-actions">

@@ -123,7 +123,8 @@
                         <div v-if="friends" class="friends-container">
                             <RouterLink :to="`/profile/${friend._id}`" v-for="friend in friends.slice(0, 9)"
                                 class="friend-container">
-                                <img :src="friend.avatar" />
+                                <img v-if="friend.avatar" :src="friend.avatar" />
+                                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                                 <span>{{ friend.fullName }}</span>
                             </RouterLink>
                         </div>
@@ -298,18 +299,16 @@ export default {
         async setProfileState() {
             this.isProfileOfUser = null
             this.loggedinUser = await userService.getLoggedinUser()
-            // console.log(toRaw(this.loggedinUser).friendRequests)
-            this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+            if(this.loggedinUser){
+                this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+            }
         },
         mediaType(mediaUrl){
             const sepMedia=mediaUrl.split('/')
-            // console.log(mediaUrl)
-            console.log(sepMedia[4])
             return sepMedia[4]
         },
         loadData() {
             this.setProfileState()
-            console.log(this.media)
         },
         confirmFriend() {
             return toRaw(this.loggedinUser).friends.includes(toRaw(this.user)._id)

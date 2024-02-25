@@ -9,7 +9,8 @@
         </div>
         <div class="contact-list">
             <div v-for="contact in contacts" class="contact">
-                <img :src="contact.avatar" />
+                <img v-if="contact.avatar" :src="contact.avatar" />
+                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                 <span>{{ contact.fullName }}</span>
             </div>
         </div>
@@ -30,9 +31,11 @@ export default {
     },
     methods: {
         async updateFriends() {
-            for (const id of this.user.friends) {
-                const contact = await userService.getById(id)
-                this.contacts.push(contact)
+            if(this.user){
+                for (const id of this.user.friends) {
+                    const contact = await userService.getById(id)
+                    this.contacts.push(contact)
+                }
             }
         }
     },

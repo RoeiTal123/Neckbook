@@ -11,7 +11,8 @@
                     <div class="friend-request-list">
                         <div v-for="request in requests" class="friend-request">
                             <div v-if="request !== undefined && request.request._id !== user._id">
-                                <img :src="request.avatar" />
+                                <img v-if="request.avatar" :src="request.avatar" />
+                                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                                 <div class="request-actions">
                                     <span>{{ request.fullName }}</span>
 
@@ -31,9 +32,12 @@
 </template>
 
 <script>
-import { toRaw } from 'vue';
-import SideNavbar from '../components/SideNavbar.vue';
 import { userService } from '../services/userService';
+
+import SideNavbar from '../components/SideNavbar.vue';
+
+import { toRaw } from 'vue';
+import router from '../router';
 
 export default {
     data() {
@@ -79,6 +83,9 @@ export default {
         },
         async getUser(id) {
             return await userService.getById(id)
+        },
+        goBack() {
+            router.go(-1)
         }
     },
     components: {
@@ -86,8 +93,12 @@ export default {
     },
     async created() {
         this.user = await userService.getLoggedinUser()
-        this.setRequests()
-        this.updateRoutes()
+        if(this.user){
+            this.setRequests()
+            this.updateRoutes()
+        } else {
+            this.goBack()
+        }
     }
 }
 </script>

@@ -2,9 +2,10 @@
     <div class="post-preview" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
         <div class="post-header">
             <RouterLink :to="`/profile/${user._id}`">
-                <img :src="user.avatar" />
+                <img v-if="user.avatar" :src="user.avatar" />
+                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                 <div class="post-details">
-                    <span>{{ user.username }}</span>
+                    <span>{{ user.fullName }}</span>
                     <span>{{ getPostDate() }}</span>
                 </div>
             </RouterLink>
@@ -109,7 +110,7 @@
                         src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707299070/projects/Neckbook/svg%20images/forward_1_mgnxu6.png" /></span>
             </div>
         </div>
-        <div class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
+        <div v-if="loggedinUser" class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
             <div v-if="!didLike" class="interaction" @click="likePost()">
                 <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1705508387/projects/Neckbook/svg%20images/like_1_dhqvyk.png"
                     class="like" />
@@ -183,10 +184,12 @@ export default {
         async setUserData(id) {
             this.loggedinUser = await userService.getLoggedinUser()
             this.user = await userService.getById(id)
-            if (this.post.likedByUsers.includes(this.loggedinUser._id)) {
-                this.didLike = true
-            } else {
-                this.didLike = false
+            if(this.loggedinUser){
+                if (this.post.likedByUsers.includes(this.loggedinUser._id)) {
+                    this.didLike = true
+                } else {
+                    this.didLike = false
+                }
             }
         },
         getPostDate() {

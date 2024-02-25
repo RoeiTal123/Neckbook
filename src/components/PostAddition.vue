@@ -25,7 +25,8 @@
             </span>
             <div class="post">
                 <div v-if="user" class="user-showcase">
-                    <img :src="user.avatar" />
+                    <img v-if="user.avatar" :src="user.avatar" />
+                    <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                     <div class="inner">
                         <span>{{ user.fullName }}</span>
                         <select id="post-viewers">
@@ -406,7 +407,7 @@ export default {
         },
         goBack() {
             router.go(-1)
-            document.getElementById('body').style.overflow = 'scroll'
+            document.getElementById('body').style.overflow = 'auto'
         },
     },
     components: {
@@ -415,7 +416,7 @@ export default {
     },
     async created() {
         // console.log('im here')
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0)
         document.getElementById('body').style.overflow = 'hidden'
         this.user = await userService.getLoggedinUser()
         this.updateRoutes()

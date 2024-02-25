@@ -19,8 +19,9 @@
             <div class="post-container">
                 <PostPreview :post="post" />
             </div>
-            <div class="comment-addition">
-                <img :src="loggedinUser.avatar" />
+            <div v-if="loggedinUser" class="comment-addition">
+                <img v-if="loggedinUser.avatar" :src="loggedinUser.avatar" />
+                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                 <div class="comment">
                     <input type="text" id="comment" placeholder="Write a public comment..." />
                     <div class="comment-actions">
@@ -66,10 +67,12 @@ export default {
         },
         async setPostData() {
             this.post = await postService.getById(this.paths[this.paths.length - 1])
-            if (this.post.likedByUsers.includes(userService.getLoggedinUser()._id)) {
-                this.didLike = true
-            } else {
-                this.didLike = false
+            if(userService.getLoggedinUser()){
+                if (this.post.likedByUsers.includes(userService.getLoggedinUser()._id)) {
+                    this.didLike = true
+                } else {
+                    this.didLike = false
+                }
             }
             // console.log('this post : ', this.post)
         },
@@ -88,6 +91,9 @@ export default {
         loadData() {
             this.updateRoutes()
             this.setPostData().then(() => this.setUserData().then(() => this.setComments()))
+            if(!userService.getLoggedinUser()){
+                this.goBack()
+            }
         },
         addComment() {
             const txt = document.getElementById('comment').value
@@ -121,7 +127,7 @@ export default {
         },
         goBack() {
             router.go(-1)
-            document.getElementById('body').style.overflow = 'scroll'
+            document.getElementById('body').style.overflow = 'auto'
         }
     },
     components: {

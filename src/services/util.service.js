@@ -20,7 +20,8 @@ export const utilService = {
   isTxtOnlySpaces,
   spellNumber,
   removeCommonElements,
-  getZoomLevel
+  getZoomLevel,
+  isPhoneNumberOrEmail
 }
 
 export const yearlyMonths = [
@@ -377,4 +378,19 @@ function getZoomLevel() {
   var zoomLevel = (screenWidth / viewportWidth + screenHeight / viewportHeight) / 2
 
   return zoomLevel
+}
+
+function isPhoneNumberOrEmail(input) {
+  const phoneNumberPattern = /^\d{10}$/
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+  if (phoneNumberPattern.test(input)) {
+      return "Phone Number"
+  }
+
+  if (emailPattern.test(input)) {
+      return "Email"
+  }
+
+  return "Unknown"
 }

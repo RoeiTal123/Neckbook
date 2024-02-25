@@ -1,21 +1,17 @@
 <template>
-    <!-- <RouterLink to="/main">
-        - to main page -
-    </RouterLink> -->
-    <div  class="login-page">
-        <div class="left-side">
-            <span>Neckbook</span>
-            <span>Connect with friends and the world around you on Neckbook.</span>
-        </div>
-        <div class="login-side">
+    <div v-if="!isSignup" class="blur">
+        <div class="login-model">
+            <div class="hovered-area" @click="()=>toggleLogModel()">
+                <img class="normal-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708593106/projects/Neckbook/svg%20images/close_leuqbv.png"/>
+            </div>
             <div class="login-box">
+                <span>See more on Neckbook</span>
                 <input type="text" id="email-or-phone-input" placeholder="Email or phone number" />
                 <input type="text" id="password-input" placeholder="Password" />
                 <button class="login-btn" @click="() => logIn()">Log In</button>
-                <span>Forgot password?</span>
+                <span class="forgot">Forgot password?</span>
                 <button class="signup-btn" @click="() => toggleSignup()">Create new account</button>
             </div>
-            <span><span class="link">Create a page</span> for a celebrity, brand or business</span>
         </div>
     </div>
     <div v-if="isSignup">
@@ -28,11 +24,17 @@ import { userService } from '../services/userService'
 import { utilService } from '../services/util.service'
 
 import SignupModel from '../components/SignupModel.vue';
-import router from '../router';
 
 export default {
+    props:{
+        toggleLogModel: {
+            type: Function,
+            required: true
+        }
+    },
     data() {
         return {
+            isVisible: true,
             isSignup: false
         }
     },
@@ -53,7 +55,8 @@ export default {
                 return
             }
             console.log(`welcome ${user.fullName} to Neckbook :)`)
-            this.$router.push('/main')
+            this.isSignup = !this.isSignup
+            // this.$router.push('/main')
         },
         loadData() {
             // console.log('loading data')
@@ -64,43 +67,35 @@ export default {
     components: {
         SignupModel
     },
-    mounted(){
+    mounted() {
         this.loadData()
     }
 }
 </script>
 
 <style lang="scss">
-.login-page {
+.blur {
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1;
-    gap: 7.5em;
 
-    .left-side {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-        max-width: 25em;
-
-        :first-child {
-            font-size: 64px;
-            font-family: "Helvetica-Bold";
-            color: #0866ff;
-            cursor: default;
-        }
-
-        :nth-child(2n) {
-            font-size: 26px;
-        }
-    }
-
-    .login-side {
+    .login-model {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1.75em;
+        border-radius: 0.8em;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
+
+        .hovered-area{
+            padding: 0.5em;
+            border-radius: 50%;
+            align-self: end;
+            margin-block-start: 0.75em;
+            margin-inline-end: 0.75em;
+        }
 
         .login-box {
             display: flex;
@@ -111,7 +106,6 @@ export default {
             height: 20em;
             width: 20em;
             border-radius: 0.8em;
-            box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
             font-size: 20px;
 
             input {
@@ -155,7 +149,7 @@ export default {
                 }
             }
 
-            :nth-child(4n) {
+            .forgot {
                 font-size: 16px;
                 width: 100%;
                 text-align: center;
@@ -166,14 +160,6 @@ export default {
                 &:hover {
                     cursor: pointer;
                 }
-            }
-        }
-
-        .link {
-            font-family: "Helvetica-Bold";
-
-            &:hover {
-                cursor: pointer;
             }
         }
     }

@@ -97,9 +97,16 @@ function userExists(users, user) {
 
 async function login(userCred) {
     const users = await storageService.query(STORAGE_KEY)
-    const user = users.find((user) => user.username === userCred.username)
+    let user
+    if(userCred.email){
+        user = users.find((user) => (user.email === userCred.email) && (user.password === userCred.password))
+    } else {
+        user = users.find((user) => (user.phone === userCred.phone) && (user.password === userCred.password))
+    }
     if (user) {
         return setLoggedinUser(user)
+    } else {
+        console.log('user doesnt exist L + Ratio')
     }
 }
 
@@ -125,12 +132,12 @@ const users = [
     {
         _id: 'u001',
         fullName: 'Peter Parker',
-        username: 'peter123',
         email:'peter123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320754/projects/Neckbook/user-images/spider-profile_m5ms6l.jpg',
         cover: '',
         mood: '',
+        gender: 'male',
         intro: { bio: 'a worker for the daily beaugle', details: 'im a photographer' },
         blockedUsers: [],
         blockedGroups: [],
@@ -139,18 +146,19 @@ const users = [
         chats: ['ch001', 'ch002'],
         friendRequests: [{ _id: 'u002', type: 'accepted', createdAt: Date.now() - 600000 }, { _id: 'u003', type: 'received', createdAt: Date.now() - 600000 }],
         friends: ['u002'],
+        birthday:'1/1/2001',
         isAdmin: true,
         createdAt: Date.now()
     },
     {
         _id: 'u002',
         fullName: 'Jane Doe',
-        username: 'jane123',
         email:'jane123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707320799/projects/Neckbook/user-images/robot-profile_dugrii.avif',
         cover: '',
         mood: '',
+        gender: 'female',
         intro: { bio: 'a online logo designer', details: 'i design digital logos' },
         blockedUsers: [],
         blockedGroups: [],
@@ -159,18 +167,19 @@ const users = [
         chats: ['ch002'],
         friendRequests: [{ _id: 'u001', type: 'accepted', createdAt: Date.now() - 600000 }],
         friends: ['u001', 'u003'],
+        birthday:'1/1/2001',
         isAdmin: false,
         createdAt: Date.now()
     },
     {
         _id: 'u003',
         fullName: 'Roei Tal',
-        username: 'roei123',
         email:'roei123@gmail.com',
         password: '123',
         avatar: 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704104110/projects/Neckbook/user-images/me_nqkfek.jpg',
         cover: '',
         mood: '',
+        gender: 'male',
         intro: { bio: '', details: '' },
         blockedUsers: [],
         blockedGroups: [],
@@ -179,6 +188,7 @@ const users = [
         chats: ['ch001', 'ch002'],
         friendRequests: [{ _id: 'u001', type: 'sent', createdAt: Date.now() - 600000 }],
         friends: [],
+        birthday:'1/1/2001',
         isAdmin: true,
         createdAt: Date.now()
     },
@@ -192,7 +202,7 @@ async function _createUsers() {
 
 // setLoggedinUser(users[0])
 
-setLoggedinUser(users[0])
+// setLoggedinUser(users[0])
 
 // var usersFromStorage = await storageService.query(STORAGE_KEY)
 // setLoggedinUser(usersFromStorage[0])

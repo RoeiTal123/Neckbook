@@ -1,11 +1,13 @@
 <template>
     <section v-if="user" class="profile-page" :class="paths[2] ? 'display' : ''">
         <div class="header">
-            <img id="cover" class="cover" :src="user.cover" @error="replaceImage()" />
+            <img v-if="user.cover" id="cover" class="cover" :src="user.cover" />
+            <img v-else id="cover" class="cover" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg"/>
         </div>
         <div class="actions">
             <div class="avatar">
-                <img class="avatar-image" :src="user.avatar" @error="replaceImage()" />
+                <img v-if="user.avatar" class="avatar-image" :src="user.avatar" />
+                <img v-else class="avatar-image" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
                 <button v-if="isProfileOfUser">
                     <img class="camera" :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704279211/projects/Neckbook/svg%20images/camera_xe8roi.png'" />
                 </button>
@@ -131,12 +133,23 @@ export default {
         },
         async updateUser() {
             this.user = null
-            const userId = this.paths[this.paths.length - 1];
+            let userId 
+            if(this.paths[0] !== 'profile'){
+                userId = this.paths[2]
+            } else {
+                userId = this.paths[1]
+            }
+            console.log(userId)
             this.user = await userService.getById(userId)
         },
         async updatePosts() {
             this.posts = []
-            const userId = this.paths[this.paths.length - 1];
+            let userId 
+            if(this.paths[0] !== 'profile'){
+                userId = this.paths[2]
+            } else {
+                userId = this.paths[1]
+            }
             this.posts = await postService.query({ userId: userId })
         },
         updateMedia() {
@@ -155,7 +168,9 @@ export default {
         async setProfileState() {
             this.isProfileOfUser = null
             this.loggedinUser = await userService.getLoggedinUser()
-            this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+            if(this.loggedinUser){
+                this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
+            }
         },
         replaceImage() {
             var img = document.getElementById('cover');

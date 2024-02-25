@@ -223,7 +223,7 @@ export default {
         },
         goBack() {
             router.go(-1)
-            document.getElementById('body').style.overflow = 'scroll'
+            document.getElementById('body').style.overflow = 'auto'
         },
         loadData() {
             this.updateRoutes()

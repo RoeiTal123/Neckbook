@@ -38,7 +38,8 @@
                     <div v-for="user in displayedUsers" @click="() => selectForAddition(user)">
                         <div class="displayed-user"
                             v-if="!checkIfAlreadySelected(user.userId) && user.userId !== loggedInUser._id">
-                            <img :src="user.avatar" />
+                            <img v-if="user.avatar" :src="user.avatar" />
+                            <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png" />
                             <span>{{ user.fullName }}</span>
                         </div>
                     </div>
