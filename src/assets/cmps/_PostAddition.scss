@@ -109,6 +109,10 @@
         min-height: 120px;
         margin-block-start: 16px;
 
+        .post-add-container{
+          background-color: transparent;
+        }
+
         .post-txt {
           width: 100%;
           border: 0;
@@ -116,6 +120,7 @@
           outline: none;
           resize: none;
           padding: 0;
+          background-color: transparent;
         }
 
         .media-interactions {
@@ -258,6 +263,36 @@
         height: 2.5em;
         align-items: center;
         margin-block-start: 1.25em;
+
+        .post-colors{
+          display: flex;
+          align-items: center;
+          gap: 0.5em;
+
+          img{
+            height: 2em;
+            width: 2em;
+          }
+
+          .colors-container{
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+
+            .color-selector{
+              height: 2em;
+              width: 2em;
+              border-radius: 0.5em;
+              opacity: 1;
+              &:hover{
+                cursor: pointer;
+              }
+              &.selected{
+                border: 3px solid #e7e7e7;
+              }
+            }
+          }
+        }
       }
 
       .document-addition {

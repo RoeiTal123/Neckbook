@@ -1,5 +1,5 @@
 <template>
-    <div class="post-preview" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
+    <div :id="`post-preview-${post._id}`" class="post-preview" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
         <div class="post-header">
             <RouterLink :to="`/profile/${user._id}`">
                 <img v-if="user.avatar" :src="user.avatar" />
@@ -78,7 +78,7 @@
                 <img v-if="mediaType(post.mediaUrls[3]) === 'image'" :src="post.mediaUrls[3]" />
             </div>
         </div>
-        <div class="post-interacted">
+        <div :id="`post-interacted-${post._id}`" class="post-interacted">
             <div>
                 <div v-if="post.likedByUsers.length > 0" class="like-count">
                     <SvgIcon :iconName="'like'" />
@@ -110,7 +110,7 @@
                         src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1707299070/projects/Neckbook/svg%20images/forward_1_mgnxu6.png" /></span>
             </div>
         </div>
-        <div v-if="loggedinUser" class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
+        <div v-if="loggedinUser" :id="`post-interactions-${post._id}`" class="post-interactions" :class="paths[paths.length - 1] === post._id ? 'display' : ''">
             <div v-if="!didLike" class="interaction" @click="likePost()">
                 <img src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1705508387/projects/Neckbook/svg%20images/like_1_dhqvyk.png"
                     class="like" />
@@ -215,12 +215,22 @@ export default {
             }
             // console.log('this comments : ',this.comments)
         },
-        setBackground() {
-            if (this.post.background === 'none') return
+        setBackground() {    
+            if(this.post.backgroundColor === '#f0f2f5'){
+                document.getElementById(`post-preview-${this.post._id}`).style.backgroundColor='white'
+            } else {
+                document.getElementById(`post-preview-${this.post._id}`).style.backgroundColor=this.post.backgroundColor
+                document.getElementById(`post-preview-${this.post._id}`).style.color='white'
+                document.getElementById(`post-interacted-${this.post._id}`).style.color='white'
+                document.getElementById(`post-interactions-${this.post._id}`).style.color='white'
+            }
         },
         loadData() {
             this.updateRoutes()
-            this.setUserData(this.post.ownerId).then(() => this.setComments())
+            this.setUserData(this.post.ownerId).then(() => {
+                this.setBackground()
+                this.setComments()}
+            )
             this.updateZoomLevel()
         },
         likePost() {

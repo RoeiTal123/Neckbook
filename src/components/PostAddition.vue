@@ -85,10 +85,13 @@
                     </div>
                 </div>
                 <div class="post-effects">
-                    <img class="large-emote"
-                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096982/projects/Neckbook/svg%20images/font_1_yybwyi.png" />
-                    <img class="medium-emote"
-                        src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096264/projects/Neckbook/svg%20images/smile_w5wim2.png" />
+                    <div class="post-colors">
+                        <img @click="() => togglePostColors()" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096982/projects/Neckbook/svg%20images/font_1_yybwyi.png" />
+                        <div v-if="isColorMenu" class="colors-container">
+                            <div v-for="color in colors" @click="() => selectColor(color)" :style="`background-color:${color};`" class="color-selector" :class="color===selectedColor ? 'selected' : ''"></div>
+                        </div>
+                    </div>
+                    <img class="medium-emote" src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1706096264/projects/Neckbook/svg%20images/smile_w5wim2.png" />
                 </div>
                 <div class="document-addition">
                     <span>Add to your post</span>
@@ -145,12 +148,14 @@ export default {
             user: null,
             newPost: {},
             oldPost: null,
-            background: 'none',
             paths: [],
             addPicture: false,
             newMedia: [],
             deletedMedia: [],
-            idsOfDeletedMedia: []
+            idsOfDeletedMedia: [],
+            isColorMenu: false,
+            colors:['#f0f2f5','#c600ff','#e2013b','#111111','#df075a','#743ddf','#fb803c','#4a4f5d','#3b1d51'],
+            selectedColor: 'white'
         }
     },
     watch: {
@@ -196,6 +201,12 @@ export default {
         updateFontSize(newSize){
             console.log(newSize)
             this.currentFontSize = newSize
+        },
+        togglePostColors(){
+            this.isColorMenu = !this.isColorMenu
+        },
+        selectColor(color){
+            this.selectedColor=color
         },
         togglePicture() {
             this.addPicture = !this.addPicture
@@ -353,7 +364,7 @@ export default {
             const newPost = {
                 _id: utilService.makeId(),
                 txt,
-                background: this.background,
+                backgroundColor: this.selectedColor,
                 ownerId: this.user._id,
                 postType: 'normal',
                 postGroupId: null,
@@ -393,7 +404,7 @@ export default {
             // console.log('all images : ',allMedia)
             // console.log('cancelled imaged : ',toRaw(this.deletedMedia))
             // console.log('final images : ',finalMedia)
-            const updatedPost = { ...toRaw(this.oldPost), txt: txt, mediaUrls: finalMedia }
+            const updatedPost = { ...toRaw(this.oldPost), txt: txt, mediaUrls: finalMedia, backgroundColor: this.selectedColor }
             try {
                 postService.save(updatedPost)
                 console.log('post saved')
