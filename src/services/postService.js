@@ -100,7 +100,7 @@ function _createPosts() {
       {
         _id: "p001",
         txt: "I am actually the real Spiderman...",
-        background: 'none',
+        backgroundColor: 'white',
         ownerId: "u001",
         postType: 'normal',
         postGroupId: null,
@@ -119,7 +119,7 @@ function _createPosts() {
       {
         _id: "p002",
         txt: "I will design your robot logo in 24 hours or less...",
-        background: 'none',
+        backgroundColor: 'white',
         ownerId: "u002",
         postType: 'normal',
         postGroupId: null,
@@ -138,7 +138,7 @@ function _createPosts() {
       {
         _id: "p003",
         txt: "i made this cool project",
-        background: 'none',
+        backgroundColor: 'white',
         ownerId: "u003",
         postType: 'group',
         postGroupId: 'g001',

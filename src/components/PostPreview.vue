@@ -216,9 +216,10 @@ export default {
             // console.log('this comments : ',this.comments)
         },
         setBackground() {    
-            if(this.post.backgroundColor === '#f0f2f5'){
+            if(this.post.backgroundColor === '#f0f2f5' || this.post.backgroundColor === 'white'){
                 document.getElementById(`post-preview-${this.post._id}`).style.backgroundColor='white'
-            } else {
+            } else if (this.post.backgroundColor !== '#f0f2f5'){
+                console.log('test')
                 document.getElementById(`post-preview-${this.post._id}`).style.backgroundColor=this.post.backgroundColor
                 document.getElementById(`post-preview-${this.post._id}`).style.color='white'
                 document.getElementById(`post-interacted-${this.post._id}`).style.color='white'
