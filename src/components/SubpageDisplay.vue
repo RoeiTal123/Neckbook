@@ -8,37 +8,30 @@
             <div class="change" v-if="pageType === 'user' && isProfileOfUser !== null">
                 <!-- own profile -->
                 <button v-if="isProfileOfUser" class="btn-add">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
                     <span>Add to story</span>
                 </button>
                 <button v-if="isProfileOfUser">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290940/projects/Neckbook/svg%20images/pencil_ozev60.png'" />
                     <span>Edit profile</span>
                 </button>
                 <button v-if="isProfileOfUser">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704290751/projects/Neckbook/svg%20images/arrow_up_pmi42u.png'" />
                 </button>
                 <!-- other' profile -->
                 <button v-if="!isProfileOfUser" class="btn-add" @click="changeFriendrequestStatus()">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707231826/projects/Neckbook/svg%20images/add-friend_2_xkmuge.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1707231826/projects/Neckbook/svg%20images/add-friend_2_xkmuge.png'" />
                     <span v-if="confirmFriend()">friends</span>
-                    <span v-if="!confirmFriend() && (typeOfRequest() === 'none' || (typeOfRequest() === 'denied'))">Add
-                        friend</span>
+                    <span v-if="!confirmFriend() && (typeOfRequest() === 'none' || (typeOfRequest() === 'denied'))">Add friend</span>
                     <span v-if="!confirmFriend() && typeOfRequest() === 'received'">Accept friend</span>
                     <span v-if="!confirmFriend() && typeOfRequest() === 'sent'">Request sent</span>
                 </button>
                 <button v-if="!isProfileOfUser">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704900790/projects/Neckbook/svg%20images/messenger_qu7sun.png'" />
                     <span>Message</span>
                 </button>
                 <button v-if="!isProfileOfUser">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446065/projects/Neckbook/svg%20images/avatar_hs3gdb.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1706446065/projects/Neckbook/svg%20images/avatar_hs3gdb.png'" />
                     <span>View profile</span>
                 </button>
             </div>
@@ -46,14 +39,15 @@
         <div v-if="pageType === 'group'" class="group-header">
             <div class="details">
                 <span>{{ group.name }}</span>
-                <span><img class="state" :src="getGroupStatus()" />{{
-                    group.groupType }} group · <span v-if="members.length">{{ members.length }} member{{ members.length > 1
-        ? 's' : '' }}</span></span>
+                <span>
+                    <img class="state" :src="getGroupStatus()" />
+                    {{ group.groupType }} group · 
+                    <span v-if="members.length">{{ members.length }} member{{ members.length > 1 ? 's' : '' }}</span>
+                </span>
             </div>
             <div class="change">
                 <button class="btn-invite">
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704291239/projects/Neckbook/svg%20images/add_wiwu9t.png'" />
                     <span>Invite</span>
                 </button>
                 <button>
@@ -61,8 +55,7 @@
                     <span>Share</span>
                 </button>
                 <button>
-                    <img
-                        :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704716979/projects/Neckbook/svg%20images/group-users_1_cylxbp.png'" />
+                    <img :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704716979/projects/Neckbook/svg%20images/group-users_1_cylxbp.png'" />
                     <span v-if="members">Join{{ userInGroupState() ? 'ed' : '' }}</span>
                     <img
                         :src="'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704716868/projects/Neckbook/svg%20images/down_1_vwdgs0.png'" />
@@ -73,118 +66,29 @@
                 </button>
             </div>
         </div>
-        <div class="sub-page-details">
-            <div class="sub-page-info">
-
-                <div v-if="user && fullPath !== null && pageType === 'group'">
-                    <PostCreation :user="user" :fullPath="fullPath" />
-                </div>
-
-                <div v-if="pageType === 'group'" class="sub-page-posts">
-                    <PostList :posts="posts" />
-                </div>
-
-                <div v-if="pageType === 'user'">
-                    <div v-if="user.intro" class="sub-page-intro info">
-                        <div class="head">
-                            <span class="title">Intro</span>
-                        </div>
-                        <span>{{ user.intro.bio }}</span>
-                        <button>Edit bio</button>
-                        <button>Edit details</button>
-                        <button>Add features</button>
-                    </div>
-
-                    <div class="sub-page-photos info">
-                        <div class="head">
-                            <span class="title">Media</span>
-                            <button>See all media</button>
-                        </div>
-                        <div v-if="media" class="photos-container">
-                            <div v-for="file in media.slice(0, 9)">
-                                <video v-if="mediaType(file) === 'video' && file.src" width="100%" controls>
-                                    <source :src="file.src" type="video/mp4">
-                                </video>
-                                <video v-if="mediaType(file) === 'video' && !file.src" width="100%" controls>
-                                    <source :src="file" type="video/mp4">
-                                </video>
-                                <img v-if="mediaType(file) === 'image' && file.src" :src="file.src" />
-                                <img v-if="mediaType(file) === 'image' && !file.src" :src="file" />
-                            </div>
-                        </div>
-                        <span v-else>no media?</span>
-                    </div>
-
-                    <div class="sub-page-friends info">
-                        <div class="head">
-                            <span class="title">Friends</span>
-                            <button>See all friends</button>
-                        </div>
-                        <div v-if="friends" class="friends-container">
-                            <RouterLink :to="`/profile/${friend._id}`" v-for="friend in friends.slice(0, 9)"
-                                class="friend-container">
-                                <img v-if="friend.avatar" :src="friend.avatar" />
-                                <img v-else src="https://res.cloudinary.com/dqk28z6rq/image/upload/v1708621438/projects/Neckbook/website-images/user_eqfe6m.png"/>
-                                <span>{{ friend.fullName }}</span>
-                            </RouterLink>
-                        </div>
-                    </div>
-                </div>
+        <div class="sub-page-navbar"> 
+            <div v-if="pageType === 'user'" class="sub-navbar">
+                <RouterLink :to="`/${paths[0]}/${paths[1]}`" :class="{ 'active-link': !paths[2] }">Posts</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/About`" :class="{ 'active-link': paths[2] === 'About' }">About</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Friends`" :class="{ 'active-link': paths[2] === 'Friends' }">Friends</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Photos`" :class="{ 'active-link': paths[2] === 'Photos' }">Photos</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Videos`" :class="{ 'active-link': paths[2] === 'Videos' }">Videos</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Checkins`" :class="{ 'active-link': paths[2] === 'Checkins' }">Check-ins</RouterLink>
             </div>
-            <div class="sub-page-about info" v-if="group && group.description && pageType === 'group'">
-
-                <div class="head">
-                    <span class="title">About</span>
-                </div>
-
-                <span>{{ group.description }}</span>
-
-                <div class="sub-page-privacy">
-                    <img class="state" :src="getGroupStatus2()" />
-                    <div class="inner-details">
-                        <span>{{ group.groupType }}</span>
-                        <span> {{ group.groupType === 'Public' ?
-                            'Anyone can see whos in the group and what they post' :
-                            'Only those in the group can see posts' }}</span>
-                    </div>
-                </div>
-
-                <div class="sub-page-privacy">
-                    <img class="state" :src="getGroupStatus3()" />
-                    <div class="inner-details">
-                        <span>{{ group.groupType === 'Public' ? 'Visible' : 'Private' }}</span>
-                        <span> {{ group.groupType === 'Public' ?
-                            'Anyone can see this group' :
-                            'Only those invited cab join this group' }}</span>
-                    </div>
-                </div>
-
-                <button>Learn more</button>
-
+            
+            <div v-if="pageType === 'group'" class="sub-navbar"> 
+                <RouterLink :to="`/${paths[0]}/${paths[1]}`" :class="{ 'active-link': !paths[2] }">Discussion</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Features`" :class="{ 'active-link': paths[2] === 'Features' }">Featured</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/People`" :class="{ 'active-link': paths[2] === 'People' }">People</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Events`" :class="{ 'active-link': paths[2] === 'Events' }">Events</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Media`" :class="{ 'active-link': paths[2] === 'Media' }">Media</RouterLink>
+                <RouterLink :to="`/${paths[0]}/${paths[1]}/Files`" :class="{ 'active-link': paths[2] === 'Media' }">Files</RouterLink>
             </div>
-            <!-- <div class="sub-page-media info">
-                        <div class="head">
-                            <span class="title">Photos</span>
-                            <button>See all photos</button>
-                        </div>
-                        <div v-if="media" class="media-container">
-                            <div v-for="eachMedia in media.slice(0, 4)">
-                                <div>
 
-                                </div>
-                                <img :src="photo" />
-                            </div>
-                        </div>
-                        <span v-else>no photos?</span>
-                    </div> -->
-
-
-            <div v-if="pageType === 'user'" class="sub-page-posts">
-                <div v-if="user && fullPath !== null && pageType === 'user'">
-                    <PostCreation :user="user" :fullPath="fullPath" />
-                </div>
-                <PostList :posts="posts" />
-            </div>
+            <SvgIcon :iconName="'options'"/>
+        </div>
+        <div v-if="whatToDisplay === 'posts' || whatToDisplay === 'discussion'" class="sub-page-details">
+            <SubpagePosts :user="user" :fullPath="fullPath" :posts="posts" :pageType="pageType" :media="media" :friends="friends" :group="group"/>
         </div>
     </div>
 </template>
@@ -192,6 +96,7 @@
 <script>
 import PostList from '../components/PostList.vue';
 import PostCreation from '../components/PostCreation.vue';
+import SubpagePosts from '../components/SubpagePosts.vue';
 import SvgIcon from './SvgIcon.vue';
 
 import { toRaw } from 'vue';
@@ -233,7 +138,8 @@ export default {
             paths: [],
             fullPath: null,
             isProfileOfUser: null,
-            loggedinUser: null
+            loggedinUser: null,
+            whatToDisplay: 'posts'
         }
     },
     watch: {
@@ -248,7 +154,8 @@ export default {
     components: {
         PostList,
         PostCreation,
-        SvgIcon
+        SvgIcon,
+        SubpagePosts
     },
     methods: {
         updateRoutes() {
@@ -258,12 +165,12 @@ export default {
             this.fullPath = currentPath
             this.paths = currentPath.split('/')
             this.paths = this.paths.slice(1, this.paths.length)
+            if(this.paths[this.paths.length-3]){
+                this.whatToDisplay=this.paths[this.paths.length-1].toLowerCase()
+            } else {
+                this.whatToDisplay='posts'
+            }
             // console.log(this.paths)
-        },
-        replaceImage() {
-            var img = document.getElementById('cover')
-            img.src = 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704274663/projects/Neckbook/website-images/Persian_Cat_Facts_History_Personality_and_Care___ASPCA_Pet_Health_Insurance___white_Persian_cat_resting_on_a_brown_sofa-min_rgtjby.jpg'
-            img.onerror = null
         },
         userInGroupState() {
             if (toRaw(this.members).length !== 0) {
@@ -282,20 +189,6 @@ export default {
                 return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704629589/projects/Neckbook/svg%20images/padlock_cvbysn.png'
             }
         },
-        getGroupStatus2() {
-            if (this.group.groupType === 'Public') {
-                return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704802966/projects/Neckbook/svg%20images/globe-earth_1_fzgrkz.png'
-            } else {
-                return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704802970/projects/Neckbook/svg%20images/padlock_1_fqravs.png'
-            }
-        },
-        getGroupStatus3() {
-            if (this.group.groupType === 'Public') {
-                return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704802968/projects/Neckbook/svg%20images/eye_xqgfyt.png'
-            } else {
-                return 'https://res.cloudinary.com/dqk28z6rq/image/upload/v1704803460/projects/Neckbook/svg%20images/restriction_wxosu6.png'
-            }
-        },
         async setProfileState() {
             this.isProfileOfUser = null
             this.loggedinUser = await userService.getLoggedinUser()
@@ -303,12 +196,9 @@ export default {
                 this.isProfileOfUser = (this.loggedinUser._id === toRaw(this.user)._id)
             }
         },
-        mediaType(mediaUrl){
-            const sepMedia=mediaUrl.split('/')
-            return sepMedia[4]
-        },
         loadData() {
             this.setProfileState()
+            this.updateRoutes()
         },
         confirmFriend() {
             return toRaw(this.loggedinUser).friends.includes(toRaw(this.user)._id)

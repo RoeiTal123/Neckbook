@@ -262,7 +262,7 @@
         background-color: white;
         border-radius: 0.5em;
         margin-block-end: 1em;
-        padding: 1.25em;
+        padding: 1em;
         .head {
           display: flex;
           justify-content: space-between;
@@ -272,12 +272,16 @@
           .title {
             font-family: "Helvetica-Bold";
           }
-          button {
+          a {
             height: fit-content;
-            padding: 0;
+            padding: 0.5em 0.25em;
             border: 0;
             color: $clr1;
             background-color: $clrPrimary1;
+            &:hover {
+              background-color: $clrPrimary5;
+              border-radius: 0.5em;
+            }
           }
         }
 

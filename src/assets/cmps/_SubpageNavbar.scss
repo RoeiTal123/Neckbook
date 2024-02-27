@@ -1,0 +1,31 @@
+@import "../main/Variables";
+
+.sub-page-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.75em;
+  color: $clrPrimary14;
+  border-block-start: 1px solid #ccced2;
+  box-shadow: 0 1px 2px #0000001a;
+  .sub-navbar {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding-inline: 1em;
+      margin-block-end: 0.25em;
+      &:not(.active-link):hover {
+        background-color: $clrPrimary5;
+        border-radius: 0.5em;
+      }
+      &.active-link {
+        color: $clr1;
+        box-shadow: 0 0.25em $clr1;
+      }
+    }
+  }
+}
