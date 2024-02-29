@@ -155,6 +155,7 @@ export default {
             this.group = {}
             const groupId = this.paths[1];
             this.group = await groupService.getById(groupId)
+            console.log(this.group)
         },
         async updatePosts() {
             this.posts = []
@@ -177,7 +178,7 @@ export default {
             this.members = []
             for (const memberId of this.group.members) {
                 const member = await userService.getById(memberId);
-                this.members.push({ _id: member._id, avatar: member.avatar, fullName: member.fullName });
+                this.members.push({ _id: member._id, avatar: member.avatar, fullName: member.fullName, isAdmin: member.isAdmin });
             }
         },
         replaceImage() {
@@ -188,7 +189,6 @@ export default {
         userInGroupState() {
             if (toRaw(this.members).length !== 0) {
                 if (toRaw(this.members).find((member) => member._id === this.user._id)) {
-                    console.log("true")
                     return true
                 } else {
                     return false
@@ -228,7 +228,7 @@ export default {
         loadData() {
             this.updateRoutes()
             this.updateUser()
-            if (this.paths.length !== 3) {
+            if (this.paths.length !== 3 || this.paths[0] === 'groups') {
                 this.updateGroup().then(() =>
                     this.updatePosts().then(() =>
                         this.updateMembers().then(() => {

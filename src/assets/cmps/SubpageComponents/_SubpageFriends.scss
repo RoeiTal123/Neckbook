@@ -1,0 +1,152 @@
+@import "../../main/Variables";
+
+.sub-page-friends {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0 1px 2px #00000033;
+
+  &.group{
+    max-width: 680px;
+
+    .sub-header{
+      flex-direction: column;
+      align-items: start;
+      gap: 0.25em;
+    }
+  }
+
+  .sub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-family: "Helvetica-Bold";
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      border-radius: 0.5em;
+
+      a {
+        display: flex;
+        align-items: center;
+        height: 2.5em;
+        padding-inline: 1em;
+        color: $clr1;
+        &:hover {
+          background-color: $clrPrimary5;
+          border-radius: 0.5em;
+        }
+      }
+    }
+
+    .hovered-area {
+      margin-inline-start: 0.25em;
+      padding: 0.5em 1em;
+    }
+
+    .full-search {
+      display: flex;
+      align-items: center;
+      background-color: $clrPrimary5;
+      border-radius: 3.125em;
+      height: 2.5em;
+      max-width: 15em;
+      margin-inline-end: 0.25em;
+
+      i {
+        height: 20px;
+        width: 20px;
+        margin-inline-start: 12px;
+        margin-block-start: 4px;
+      }
+
+      .search {
+        height: 2.5em;
+        flex: 1;
+        border-radius: 3.125em;
+        background-color: $clrPrimary5;
+        border: 0;
+        max-width: 212px;
+        padding: 8px;
+        ::placeholder {
+          color: $clrPrimary13;
+        }
+      }
+    }
+  }
+
+  .sub-navbar {
+    display: flex;
+    align-items: center;
+    height: 3.75em;
+    padding-block-start: 0.25em;
+    color: $clrPrimary14;
+    a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding-inline: 1em;
+      margin-block-end: 0.25em;
+      &:not(.active-link):hover {
+        background-color: $clrPrimary5;
+        border-radius: 0.5em;
+      }
+      &.active-link {
+        color: $clr1;
+        box-shadow: 0 0.25em $clr1;
+      }
+    }
+  }
+
+  .sub-friends-container-area {
+    margin-block-start: 0.25em;
+    .sub-friends-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-block: 1em;
+      gap: 0.5em;
+
+      &.group{
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .sub-friend-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1em;
+        border: 1px solid #f4f4f4;
+        border-radius: 0.5em;
+        a {
+          display: flex;
+          align-items: center;
+          gap: 1em;
+          flex: 1;
+
+          :nth-child(2n) {
+            font-family: "Helvetica-Bold";
+          }
+
+          img {
+            height: 5em;
+            width: 5em;
+            object-fit: cover;
+            border-radius: 0.5em;
+          }
+
+          span{
+            &:hover{
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+  }
+}

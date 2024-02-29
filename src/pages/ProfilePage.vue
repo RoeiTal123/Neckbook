@@ -113,8 +113,8 @@ export default {
     }, watch: {
         $route(to, from) {
             this.updateRoutes()
-            console.log(to.path)
-            console.log(from.path)
+            // console.log(to.path)
+            // console.log(from.path)
             const toPath=to.path.split('/')
             const fromPath=from.path.split('/')
             if (toPath[2] !== fromPath[2]) {

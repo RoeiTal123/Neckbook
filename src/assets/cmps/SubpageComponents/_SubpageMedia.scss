@@ -1,0 +1,91 @@
+@import "../../main/Variables";
+
+.sub-page-media {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .sub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+      font-family: "Helvetica-Bold";
+      text-transform: capitalize;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      border-radius: 0.5em;
+
+      button {
+        display: flex;
+        align-items: center;
+        height: 2.5em;
+        padding-inline: 1em;
+        color: $clr1;
+        background-color: transparent;
+        border: none;
+        &:hover {
+          background-color: $clrPrimary5;
+          border-radius: 0.5em;
+        }
+      }
+    }
+
+    .hovered-area {
+      margin-inline-start: 0.25em;
+      padding: 0.5em 1em;
+    }
+  }
+
+  .sub-navbar {
+    display: flex;
+    align-items: center;
+    height: 3.75em;
+    padding-block-start: 0.25em;
+    color: $clrPrimary14;
+    a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding-inline: 1em;
+      margin-block-end: 0.25em;
+      &:not(.active-link):hover {
+        background-color: $clrPrimary5;
+        border-radius: 0.5em;
+      }
+      &.active-link {
+        color: $clr1;
+        box-shadow: 0 0.25em $clr1;
+      }
+    }
+  }
+
+  .sub-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 0.5em;
+    width: 100%;
+    height: fit-content;
+
+    .sub-media-container {
+      aspect-ratio: 1;
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 0.5em;
+      }
+
+      video {
+        height: 100%;
+        aspect-ratio: 1;
+        overflow: hidden;
+        object-fit: cover;
+        border-radius: 0.5em;
+      }
+    }
+  }
+}

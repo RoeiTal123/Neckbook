@@ -1,11 +1,20 @@
 
 
 // components
+
+//side navbar types
 @import url('./cmps/SideNavbar/_GroupsNavbar.scss'); 
 
 @import url('./cmps/SideNavbar/_FriendsNavbar.scss');
 
 @import url('./cmps/SideNavbar/_MessengerNavbar.scss');
+
+//sub-page sections
+@import url('./cmps/SubpageComponents/_SubpageNavbar.scss');
+
+@import url('./cmps/SubpageComponents/_SubpageFriends.scss');
+
+@import url('./cmps/SubpageComponents/_SubpageMedia.scss');
 
 
 @import url('./cmps/_Header.scss');
@@ -36,9 +45,6 @@
 @import url('./cmps/_GroupDisplay.scss');
 
 @import url('./cmps/_ChatDisplay.scss');
-
-
-@import url('./cmps/_SubpageNavbar.scss');
 
 //pages
 

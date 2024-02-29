@@ -82,7 +82,6 @@ function _createGroups() {
         events: [],
         files: [],
         mediaUrls: [],
-        videoUrls: [],
         lastPostAt: Date.now(),
         createdAt: Date.now()
       }
