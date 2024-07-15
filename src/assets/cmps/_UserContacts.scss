@@ -3,9 +3,9 @@
 .main-page-user-contacts {
     position: sticky;
     top: 3.5em;
-    flex-grow: 1;
-    max-width: 22.5em;
-    min-width: 18.125em;
+    // flex-grow: 1;
+    width: 18.5em;
+    // min-width: 18.125em;
     padding: 0 0.5em;
     padding-block-start: 1em;
     height: calc(100svh - 56px);

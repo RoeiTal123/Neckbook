@@ -91,7 +91,7 @@
     align-items: center;
     flex-grow: 1;
     height: 100%;
-    max-width: 22.5em;
+    max-width: 20em;
     padding-inline-end: 1em;
     gap: 0.5em;
     padding: 0.125em 1em;
@@ -124,6 +124,7 @@
         border: 0;
         max-width: 212px;
         padding: 8px;
+        outline: none;
         ::placeholder {
           color: $clrPrimary13;
         }
@@ -161,7 +162,7 @@
     padding: 0.5em 1em;
     padding-inline-start: 0;
     gap: 0.5em;
-    max-width: 22.5em;
+    max-width: 20em;
     flex-grow: 1;
     a {
       height: 2.5em;

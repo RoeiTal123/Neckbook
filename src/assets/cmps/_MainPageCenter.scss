@@ -32,6 +32,7 @@
                 height: 2.5em;
                 text-decoration: none;
                 color: $clrPrimary14;
+
             }
 
             span {
@@ -50,6 +51,7 @@
                 border-radius: 50%;
                 object-fit: cover;
             }
+            
         }
 
         .user-actions {
@@ -74,5 +76,16 @@
 @media (max-width:675px) {
     .main-page-center {
         padding: 0;
+
+        .post-creation{
+            border-radius: 0;
+            a{
+                color: black;
+                .hovered-area{
+                    background-color: white;
+                    border: 1px solid $clrPrimary5;;
+                }
+            }
+        }
     }
 }

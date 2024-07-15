@@ -29,10 +29,10 @@
 
     span {
       justify-content: start;
-      flex: 1;
+      // flex: 1;
       height: 2.5em;
       border-radius: 3.125em;
-      padding-inline-start: 0.75em;
+      // padding-inline-start: 0.5em;
     }
 
     img {
@@ -40,6 +40,13 @@
       width: 2.5em;
       border-radius: 50%;
       object-fit: cover;
+    }
+
+    
+    .name{
+      // display: flex;
+      align-items: center;
+      width: fit-content;
     }
   }
 
@@ -67,5 +74,18 @@
         border-radius: 0.5em;
       }
     }
+  }
+}
+
+
+@media (min-width:675px) {
+  .name{
+    display: flex;
+  }
+}
+
+@media (max-width:675px) {
+  .name{
+    display: none;
   }
 }

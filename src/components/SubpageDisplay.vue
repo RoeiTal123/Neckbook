@@ -91,7 +91,7 @@
             </div>
 
             <div v-if="pageType === 'user' && isInFriends" class="sub-navbar">
-                {{ `/${paths[0]}/${paths[1]}/${paths[2]}` }}
+                <!-- {{ `/${paths[0]}/${paths[1]}/${paths[2]}` }} -->
                 <RouterLink :to="`/${paths[0]}/${paths[1]}/${paths[2]}`" :class="{ 'active-link': !paths[2] }">Posts</RouterLink>
                 <RouterLink :to="`/${paths[0]}/${paths[1]}/${paths[2]}/About`" :class="{ 'active-link': paths[2] === 'About' }">About
                 </RouterLink>
