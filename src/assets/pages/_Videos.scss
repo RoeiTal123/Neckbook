@@ -1,0 +1,18 @@
+@import '../main/Variables';
+
+.videos-page{
+    display: flex;
+    width: 100%;
+    max-width: 1250px;
+    flex: 1;
+    .container{
+        display: flex;
+        justify-content: center;
+        // margin: auto;
+        width: 100%;
+        background-color: #f0f2f5;
+        .post-list{
+            margin-block-start: 1em;
+        }
+    }
+}

@@ -19,6 +19,7 @@ export const postService = {
   save,
   remove,
   getDefaultFilter,
+  isVideoPost,
 }
 // debug trick
 window.bs = postService
@@ -87,6 +88,18 @@ function postExists(posts, post) {
   return false
 }
 
+function isVideoPost(post){
+  let videoCount = 0
+  for(let url of post.mediaUrls){
+    if(url.includes('/image/')) return false
+    if(url.includes('/video/')) videoCount++
+    if(videoCount === 2) return false
+  }
+  if(videoCount === 0) return false
+  console.log(`${post._id} is a video type post`)
+  return true
+}
+
 function getDefaultFilter() {
   return {
     search: ''
@@ -142,8 +155,9 @@ function _createPosts() {
         ownerId: "u003",
         postType: 'group',
         postGroupId: 'g001',
-        mediaUrls: ['https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4',
-          'https://res.cloudinary.com/dqk28z6rq/image/upload/v1703150515/projects/giggler_explore_wic27f.png'],
+        mediaUrls: ['https://res.cloudinary.com/dqk28z6rq/video/upload/v1704616450/projects/Neckbook/user-videos/giggler_1_chxjgx.mp4'
+          // ,'https://res.cloudinary.com/dqk28z6rq/image/upload/v1703150515/projects/giggler_explore_wic27f.png'
+        ],
         likedByUsers: ['fake id'],
         sharedByUsers: ['fake id'],
         comments: [],
